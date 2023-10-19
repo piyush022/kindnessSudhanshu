@@ -3376,7 +3376,9 @@ input[type="text"]:hover {
 .fix-radio {
   display: flex;
 }
-
+#fix-width-piyush {
+  width: 93% !important ;
+}
 /* -----------------------Media Queries----------------------- */
 
 @media (max-width: 768px) {

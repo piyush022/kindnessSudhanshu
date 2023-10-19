@@ -10,7 +10,6 @@ const ImageSlider = ({ Images }) => {
     infinite: true,
     speed: 800,
     slidesToShow: 4,
-    
 
     responsive: [
       {
@@ -20,7 +19,6 @@ const ImageSlider = ({ Images }) => {
           slidesToScroll: 1,
           infinite: true,
           dots: false,
-          
         },
       },
       {
@@ -30,7 +28,6 @@ const ImageSlider = ({ Images }) => {
           slidesToScroll: 1,
           infinite: true,
           dots: false,
-     
         },
       },
       {
@@ -40,7 +37,6 @@ const ImageSlider = ({ Images }) => {
           slidesToScroll: 1,
           infinite: true,
           dots: false,
-          
         },
       },
     ],
@@ -53,6 +49,7 @@ const ImageSlider = ({ Images }) => {
           ? Images?.map((item, key) => (
               <div key={key}>
                 <img
+                  id="fix-width-piyush"
                   src={
                     item?.event_media
                       ? process.env.SITE_URL + item?.event_media
