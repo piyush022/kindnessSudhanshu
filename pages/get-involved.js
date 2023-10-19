@@ -565,7 +565,7 @@ const Get_involved = () => {
                     <ul>
                       <div>
                         <input
-                          className="form-check-input label_radio"
+                          className="form-check-input label_radio fix-Margin-piyush"
                           type="radio"
                           value="Volunteering"
                           name="radio-group"
@@ -583,7 +583,7 @@ const Get_involved = () => {
 
                       <div className="form-check">
                         <input
-                          className="form-check-input label_radio"
+                          className="form-check-input label_radio fix-Margin-piyush"
                           type="radio"
                           value="Partnering"
                           name="radio-group"
@@ -592,7 +592,7 @@ const Get_involved = () => {
                           onChange={handleRadioChange}
                         />
                         <label
-                          className="form-check-label label_radio"
+                          className="form-check-label label_radio "
                           htmlFor="flexCheckDefault_2"
                         >
                           Partnering
@@ -601,7 +601,7 @@ const Get_involved = () => {
 
                       <div className="form-check">
                         <input
-                          className="form-check-input label_radio"
+                          className="form-check-input label_radio fix-Margin-piyush"
                           type="radio"
                           value="Other"
                           name="radio-group"
@@ -619,7 +619,7 @@ const Get_involved = () => {
                     </ul>
 
                     <textarea
-                      className="form-control donation_form_text"
+                      className="form-control donation_form_text "
                       id="Textarea6"
                       placeholder="Message:"
                       rows="3"
