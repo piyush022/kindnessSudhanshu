@@ -3373,9 +3373,7 @@ input[type="text"]:hover {
   cursor: pointer;
   color: var(--color-secondary);
 }
-.fix-Margin-piyush {
-  margin-left: 0 !important;
-}
+
 
 /* -----------------------Media Queries----------------------- */
 

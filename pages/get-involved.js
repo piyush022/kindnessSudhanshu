@@ -565,7 +565,7 @@ const Get_involved = () => {
                     <ul>
                       <div>
                         <input
-                          className="form-check-input label_radio fix-Margin-piyush"
+                          className="form-check-input2 label_radio "
                           type="radio"
                           value="Volunteering"
                           name="radio-group"
@@ -583,7 +583,7 @@ const Get_involved = () => {
 
                       <div className="form-check">
                         <input
-                          className="form-check-input label_radio fix-Margin-piyush"
+                          className="form-check-input2 label_radio"
                           type="radio"
                           value="Partnering"
                           name="radio-group"
@@ -601,7 +601,7 @@ const Get_involved = () => {
 
                       <div className="form-check">
                         <input
-                          className="form-check-input label_radio fix-Margin-piyush"
+                          className="form-check-input2 label_radio "
                           type="radio"
                           value="Other"
                           name="radio-group"

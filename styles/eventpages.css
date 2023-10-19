@@ -304,6 +304,10 @@
   margin-top: 0.3rem;
   margin-left: 1rem !important;
 }
+.form-check-input2 {
+  position: absolute;
+  margin-top: 0.3rem;
+}
 
 .divider:after,
 .divider:before {
@@ -336,5 +340,5 @@
     width: 100%;
     padding: 8px 15px;
     text-align: center;
-  } 
+  }
 }
