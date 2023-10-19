@@ -1,0 +1,405 @@
+import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { contactPageSevices } from "@/store/services/contactUs.js";
+
+import showNotification from "@/helpers/show_notification";
+
+import AdminLayout from "@/layout/adminLayout";
+const ContactUs = () => {
+  const [contactHeader, setcontactHeader] = useState("");
+  const [contactImage, setcontactImage] = useState("");
+  const [companyName, setcompanyName] = useState("");
+  const [address, setaddress] = useState("");
+  const [phone, setphone] = useState("");
+  const [zip, setzip] = useState("");
+  const [email, setemail] = useState("");
+  const [shareheader, setshareheader] = useState("");
+  const [shareimage, setshareimage] = useState("");
+  const [sharetext, setsharetext] = useState("");
+  const [sharelink, setsharelink] = useState("");
+
+  const [contactStaticPageData, setContactStaticPageData] = useState([]);
+
+  useEffect(() => {
+    contactPageData();
+  }, []);
+
+  const updatecontactform1 = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("pageName", "contact_us");
+      formData.append("shareHeader", shareheader);
+      formData.append("shareText", sharetext);
+      formData.append("websiteLink", sharelink);
+      formData.append("shareImage", shareimage);
+
+      const resp = await contactPageSevices.pageStaticData(formData);
+    } catch (err) {
+      // Handle any other errors that may occur during the request
+      console.log(err);
+    }
+  };
+
+  const updateContactus = async (e) => {
+    //e.preventDefault();
+    const formData = new FormData();
+    formData.append("contactHeader", contactHeader);
+    formData.append("contactImage", contactImage);
+    formData.append("companyName", companyName);
+    formData.append("address", address);
+    formData.append("phoneNumber", phone);
+    formData.append("cityStateZip", zip);
+    formData.append("corpEmail", email);
+
+    try {
+      const resp = await contactPageSevices.updateContactSection(formData);
+      // console.log(resp);
+      if (resp?.data?.success) {
+        showNotification(resp?.data?.message, "Success");
+      } else {
+        showNotification(resp?.data?.success, "Error");
+      }
+    } catch (err) {
+      console.log("err", err);
+      showNotification(resp?.data?.success, "Error");
+    }
+  };
+
+  const contactPageData = async () => {
+    try {
+      const resp = await contactPageSevices.contactUsGet();
+
+      if (resp.data.success) {
+        setContactStaticPageData(resp?.data?.data);
+
+        setcontactHeader(resp?.data?.data?.contact_header);
+        setcompanyName(resp?.data?.data?.company_name);
+        setaddress(resp?.data?.data?.address);
+        setphone(resp?.data?.data?.phone_number);
+        setzip(resp?.data?.data?.city_state_zip);
+        setemail(resp?.data?.data?.corp_email);
+      } else {
+        setContactStaticPageData();
+
+        setcontactHeader();
+        setcompanyName();
+        setaddress();
+        setphone();
+        setzip();
+        setemail();
+      }
+    } catch (err) {
+      // Handle any other errors that may occur during the request
+      console.log(err);
+    }
+  };
+
+  return (
+    <>
+      <AdminLayout title={"Contact us - Kindness Admin"}>
+        <main role="main">
+          <section className="panel important">
+            <h2>
+              {" "}
+              <i className="fa fa-hand-o-right" aria-hidden="true"></i> Hear
+              About Us (Share It)
+            </h2>
+            <div className="container">
+              <label className="form-label-1" htmlFor="typeText">
+                Share Header
+              </label>
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="form-outline">
+                    <textarea
+                      className="form-control"
+                      placeholder="Type here"
+                      name="headerText"
+                      onChange={(e) => setshareheader(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br /> <br />
+            <div className="container">
+              <div className="row">
+                <div className="col-md-4">
+                  <label className="form-label-1" htmlFor="typeText">
+                    Share Image
+                  </label>
+                  <br />
+                  <Image
+                    src="/no-img.jpg"
+                    width={80}
+                    height={80}
+                    alt="Picture of the author"
+                  />
+                </div>
+
+                <div className="col-md-4">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files[0]?.size < 6 * 1024 * 1024) {
+                        setshareimage(e.target.files[0]);
+                      } else {
+                        showNotification(
+                          "File size exceeds 6MB. Please choose a smaller file",
+                          "Error"
+                        );
+
+                        // Clear the file input
+                        e.target.value = null;
+                      }
+                    }}
+                  />
+                  <span className="mbSpan">
+                    Max file size for images is 6 MB
+                  </span>
+                </div>
+
+                <div className="col-md-4">
+                  <br />
+                  <div className="text-right">
+                    <button
+                      type="button"
+                      className="btn btn btn-outline-primary align-bottom"
+                    >
+                      Update Site
+                    </button>
+                  </div>
+                </div>
+
+                <hr />
+
+                <div className="container">
+                  <br />
+
+                  <div className="row">
+                    <div className="col-md-12">
+                      <label className="form-label-1" htmlFor="typeText">
+                        Share Text
+                      </label>
+                      <div className="form-outline">
+                        <textarea
+                          className="form-control"
+                          placeholder="Type here"
+                          name="headerText"
+                          onChange={(e) => setsharetext(e.target.value)}
+                        ></textarea>
+                      </div>
+                    </div>
+
+                    <div className="col-md-12">
+                      <br />
+                      <label className="form-label-1" htmlFor="typeText">
+                        Website Link
+                      </label>
+                      <div className="form-outline">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="headerText"
+                          onChange={(e) => setsharelink(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-12">
+                  <br />
+                  <div className="text-right">
+                    <button
+                      type="button"
+                      className="btn btn align-bottom btn-success"
+                      onClick={updatecontactform1}
+                    >
+                      View Sample
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="panel important">
+            <h2>
+              <i className="fa fa-hand-o-right" aria-hidden="true"></i> Contact
+              Us
+            </h2>
+            <div className="container">
+              <label className="form-label-1" htmlFor="typeText">
+                Contact Header
+              </label>
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="form-outline">
+                    <textarea
+                      className="form-control"
+                      placeholder="Type here"
+                      name="headerText"
+                      value={contactHeader}
+                      onChange={(e) => setcontactHeader(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br /> <br />
+            <div className="container">
+              <div className="row">
+                <div className="col-md-4">
+                  <label className="form-label-1" htmlFor="typeText">
+                    Share Image
+                  </label>
+                  <br />
+                  <Image
+                    src={
+                      contactStaticPageData?.contact_image
+                        ? process.env.SITE_URL +
+                          contactStaticPageData?.contact_image
+                        : "/no-img.jpg"
+                    }
+                    width={80}
+                    height={80}
+                    alt="Picture of the author"
+                  />
+                </div>
+
+                <div className="col-md-4">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e?.target?.files[0]?.size < 6 * 1024 * 1024) {
+                        setcontactImage(e?.target?.files[0]);
+                      } else {
+                        showNotification(
+                          "File size exceeds 6MB. Please choose a smaller file",
+                          "Error"
+                        );
+
+                        // Clear the file input
+                        e.target.value = null;
+                      }
+                    }}
+                  />
+                  <span className="mbSpan">
+                    Max file size for images is 6 MB
+                  </span>
+                </div>
+
+                <div className="col-md-4">
+                  <br />
+                </div>
+
+                <div className="container">
+                  <br />
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label className="form-label-1" htmlFor="typeText">
+                        Company Name
+                      </label>
+                      <div className="form-outline">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="company_name"
+                          value={companyName}
+                          onChange={(e) => setcompanyName(e?.target?.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label-1" htmlFor="typeText">
+                        Address
+                      </label>
+                      <div className="form-outline">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="address"
+                          value={address}
+                          onChange={(e) => setaddress(e?.target?.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label className="form-label-1" htmlFor="typeText">
+                        City, State, Zip
+                      </label>
+                      <div className="form-outline">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="city"
+                          value={zip}
+                          onChange={(e) => setzip(e?.target?.value)}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label-1" htmlFor="typeText">
+                        Phone Number
+                      </label>
+                      <div className="form-outline">
+                        <input
+                          type="phone"
+                          className="form-control"
+                          name="phone"
+                          value={phone}
+                          onChange={(e) => setphone(e?.target?.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-md-12">
+                      <label className="form-label-1" htmlFor="typeText">
+                        Coorporate Email
+                      </label>
+                      <div className="form-outline">
+                        <input
+                          type="email"
+                          className="form-control"
+                          name="headerText"
+                          value={email}
+                          onChange={(e) => setemail(e?.target?.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-12">
+                  <br />
+                  <div className="text-right">
+                    <button
+                      type="button"
+                      className="btn btn btn-outline-primary align-bottom"
+                      onClick={updateContactus}
+                    >
+                      Update Site
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </AdminLayout>
+    </>
+  );
+};
+
+export default ContactUs;
