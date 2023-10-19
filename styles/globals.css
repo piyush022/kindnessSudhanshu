@@ -3373,7 +3373,9 @@ input[type="text"]:hover {
   cursor: pointer;
   color: var(--color-secondary);
 }
-
+.fix-radio {
+  display: flex;
+}
 
 /* -----------------------Media Queries----------------------- */
 
