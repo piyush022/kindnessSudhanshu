@@ -3382,6 +3382,10 @@ input[type="text"]:hover {
 .eventImageIcon:hover {
   cursor: pointer;
 }
+#centerForm {
+  display: flex !important;
+  justify-content: center !important;
+}
 /* -----------------------Media Queries----------------------- */
 
 @media (max-width: 768px) {
