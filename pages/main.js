@@ -270,7 +270,7 @@ function MainPage({ data }) {
   };
 
   useEffect(() => {
-    // console.log("newsSectionFirstData", newsSectionFirstData);
+    console.log("newsSectionFirstData", newsSectionFirstData);
   }, [newsSectionFirstData]);
   useEffect(() => {
     // console.log("....>>", newsURL);
@@ -663,13 +663,13 @@ function MainPage({ data }) {
                               &nbsp;
                             </FacebookShareButton>
 
-                            <Link href="#">
+                            {/* <Link href="#">
                               <i
                                 className="fa fa-youtube-play"
                                 aria-hidden="true"
                               ></i>{" "}
                               &nbsp;
-                            </Link>
+                            </Link> */}
 
                             <TwitterShareButton
                               url={`${process.env.BASE_LIVE_URL}/news/${newsSectionFirstData?.id}`}
@@ -693,13 +693,13 @@ function MainPage({ data }) {
                               &nbsp;
                             </LinkedinShareButton>
 
-                            <Link href="#">
-                              {/* <i
+                            {/* <Link href="#">
+                              <i
                                 className="fa fa-instagram"
                                 aria-hidden="true"
-                              ></i> */}
+                              ></i>
                               &nbsp;
-                            </Link>
+                            </Link> */}
                           </span>
                         </a>
                       </h3>

@@ -5,8 +5,8 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <NextSeo
-          title={data?.title}
-          description={data.description}
+          title="The Kindness Campaign"
+          description="The Kindness Campaign"
           canonical="https://kindness-omega.vercel.app"
           openGraph={{
             url: `https://kindness-omega.vercel.app`,
