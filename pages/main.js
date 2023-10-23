@@ -470,10 +470,11 @@ function MainPage({ data }) {
                   {" "}
                   <Link
                     target="_blank"
-                    href={`${staticContent?.impact_link
+                    href={`${
+                      staticContent?.impact_link
                         ? staticContent?.impact_link
                         : "#!"
-                      }`}
+                    }`}
                   >
                     <u className="decriptions_wrap">
                       CLICK HERE for detail decriptions of our IMPACTS
@@ -586,7 +587,7 @@ function MainPage({ data }) {
                   <p className="fst2">
                     {newsSectionFirstData?.news_artical?.length > 500
                       ? newsSectionFirstData?.news_artical?.substring(0, 500) +
-                      "..."
+                        "..."
                       : newsSectionFirstData?.news_artical}
                   </p>
                   {newsSectionFirstData?.news_artical?.length > 500 && (
@@ -654,7 +655,7 @@ function MainPage({ data }) {
                                     newsSectionFirstData?.title,
                                     newsSectionFirstData?.news_artical,
                                     process.env.SITE_URL +
-                                    newsSectionFirstData?.media,
+                                      newsSectionFirstData?.media,
                                     process.env.BASE_LIVE_URL
                                   )
                                 }
@@ -711,15 +712,15 @@ function MainPage({ data }) {
         ) : (
           ""
         )}
-        <section  id="swiper_slider">
-        <SliderCompNews
-          updateNewsView={updateNewsView}
-          FacebookShareButton={FacebookShareButton}
-          TwitterShareButton={TwitterShareButton}
-          LinkedinShareButton={LinkedinShareButton}
-          showLoader={showLoader}
-          newsSectionData={newsSectionData}
-         />
+        <section id="swiper_slider">
+          <SliderCompNews
+            updateNewsView={updateNewsView}
+            FacebookShareButton={FacebookShareButton}
+            TwitterShareButton={TwitterShareButton}
+            LinkedinShareButton={LinkedinShareButton}
+            showLoader={showLoader}
+            newsSectionData={newsSectionData}
+          />
         </section>
 
         <section className="text-center p-5 my-5" id="signuptoday">

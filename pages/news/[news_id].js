@@ -17,6 +17,7 @@ import { BiSolidUserCircle } from "react-icons/bi";
 import { getFormatedDate } from "../../store/library/utils";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { NextSeo } from "next-seo";
 
 export async function getStaticPaths() {
   const response = await fetch(
@@ -49,11 +50,11 @@ export async function getStaticProps(context) {
   const data = value[0];
 
   return {
-    props: { data },
+    props: { data, Newsid: context.params.news_id },
   };
 }
 
-function NewsDetailPage({ data }) {
+function NewsDetailPage({ data, Newsid }) {
   const router = useRouter();
 
   const [loader, setLoader] = useState(false);
@@ -163,40 +164,40 @@ function NewsDetailPage({ data }) {
             </div>
           </div>
         ) : null}
-        {/* <Head>
-          
-          <title>{data?.title}</title>
-          <meta name="title" content={data?.title} />
-          <meta
-            name="description"
-            content={data?.description}
-            key={"desc"}
-          />
-          <meta property="og:title" content={data?.title} />
-          <meta
-            property="og:description"
-            content={data?.description}
-          />
-          <meta
-            property="og:url"
-            content={
-              process.env.BASE_LIVE_URL + "news/" + router.query?.news_id
-            }
-          />
-          <meta
-            property="og:image"
-            content={
-              data?.media
-                ? process.env.SITE_URL + data?.media
-                : "news-title.png"
-            }
-          />
-          <meta property="og:image:width" content="1200" />
+        <NextSeo
+          title={data?.title}
+          description={data.description}
+          canonical="https://kindness-omega.vercel.app"
+          openGraph={{
+            url: `https://kindness-omega.vercel.app/news/${Newsid}`,
+            title: data?.title,
+            description: data.description,
+            images: [
+              {
+                url: process.env.SITE_URL + data?.media,
+                width: 800,
+                height: 600,
+                alt: "Og Image Alt",
+                type: "image/jpeg",
+              },
+              {
+                url: process.env.SITE_URL + data?.media,
+                width: 900,
+                height: 800,
+                alt: "Og Image Alt Second",
+                type: "image/jpeg",
+              },
+            ],
+            siteName: "KindnessCampaign",
+          }}
+          twitter={{
+            handle: "@handle",
+            site: "@site",
+            cardType: "summary_large_image",
+          }}
+        />
 
-          <meta property="og:image:height" content="630" />
-        </Head> */}
-
-        {Object.keys(data).length > 0 ? (
+        {/* {Object.keys(data).length > 0 ? (
           <Head>
             <title>{data?.title}</title>
             <meta name="description" content={data.description} />
@@ -236,7 +237,7 @@ function NewsDetailPage({ data }) {
               content={process.env.SITE_URL + data?.media}
             />
           </Head>
-        ) : null}
+        ) : null} */}
 
         <section className="news_title_one ">
           <div
