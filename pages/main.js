@@ -281,11 +281,11 @@ function MainPage({ data }) {
       const resp = await newsPageService.getFilteredComments(params);
 
       const sortedComments = resp.data.data;
-      // console.log("sortedComments", sortedComments);
+      console.log("sortedComments", sortedComments);
       const featuredComments = sortedComments.filter(
         (item) => item.post_id == newsSectionFirstData.id
       );
-      // console.log("Featured comments", featuredComments);
+      console.log("Featured comments", featuredComments);
       setfeaturedCmts(featuredComments);
     } catch (error) {
       console.log(error);
@@ -613,7 +613,7 @@ function MainPage({ data }) {
                             <i className="fa fa-comment" aria-hidden="true" />
                             {featuredCmts?.length > 0
                               ? featuredCmts?.length
-                              : null}
+                              : "0"}
                           </span>
                         </Link>
                       </h3>

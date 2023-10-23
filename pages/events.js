@@ -20,6 +20,8 @@ import {
   getFormatedDate,
 } from ".././store/library/utils";
 import showNotification from "@/helpers/show_notification";
+import { AiFillEye } from "react-icons/ai";
+import { useRouter } from "next/router";
 
 const Events = () => {
   const [value, onChange] = useState(new Date());
@@ -39,6 +41,8 @@ const Events = () => {
   const [trackFilter, settrackFilter] = useState(null);
   const [Attention, setAttention] = useState("");
   const [promo, setpromo] = useState([]);
+
+  const router = useRouter();
 
   const [Images, setImages] = useState([]);
   useEffect(() => {
@@ -179,7 +183,7 @@ const Events = () => {
       const newsResp = await eventPageSevices.getAllEventList(params);
 
       if (newsResp?.data?.success) {
-        console.log("newsResp?.data", newsResp?.data);
+        console.log("showAllevents", newsResp?.data);
         setTodayEvent(newsResp?.data?.today_events);
         setMonthEvent(newsResp?.data?.this_month_events);
         setWeekEvent(newsResp?.data?.this_week_events);
@@ -229,6 +233,29 @@ const Events = () => {
 
     return formattedDate;
   }
+
+  //function to manage Event hits
+  const updateEventView = async (eventId, views) => {
+    console.log("eventId", eventId);
+    console.log("views", views);
+    try {
+      let currentViews = views == null ? 0 : views;
+
+      const formData = new FormData();
+      formData.append("updateId", eventId);
+      formData.append("hits", parseInt(currentViews) + 1);
+
+      const resp = await eventPageSevices.updateEventManagement(formData);
+
+      if (resp?.data?.success) {
+        router.push(`/event/${eventId}`);
+      } else {
+        showNotification(response?.data?.message, "Error");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -388,19 +415,22 @@ const Events = () => {
                           <div className="container" key={randomKey()}>
                             <div className="row">
                               <div className="col-md-12 col-lg-4 mt-4">
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <Image
-                                    src={
-                                      item?.event_media
-                                        ? process.env.SITE_URL +
-                                          item?.event_media
-                                        : "/today_event_img.png"
-                                    }
-                                    width={200}
-                                    height={250}
-                                    alt={item?.event_title}
-                                  />
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <Image
+                                  className="eventImageIcon"
+                                  src={
+                                    item?.event_media
+                                      ? process.env.SITE_URL + item?.event_media
+                                      : "/today_event_img.png"
+                                  }
+                                  width={200}
+                                  height={250}
+                                  alt={item?.event_title}
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                />
+                                {/* </Link> */}
                               </div>
 
                               <div className="col-md-12 col-lg-8 mt-4">
@@ -423,11 +453,16 @@ const Events = () => {
                                 </p>
                                 {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <p className="fst_event color_heading">
-                                    {item?.event_title}
-                                  </p>
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <p
+                                  className="fst_event color_heading eventImageIcon"
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                >
+                                  {item?.event_title}
+                                </p>
+                                {/* </Link> */}
 
                                 <p className="fst_event">
                                   <b>Location:</b> {item?.location_address},{" "}
@@ -443,6 +478,9 @@ const Events = () => {
                                     className="fa fa-plus-square-o"
                                     aria-hidden="true"
                                   ></i> */}
+                                    <i className="fa fa-eye" aria-hidden="true">
+                                      {item?.hits == null ? 0 : item?.hits}
+                                    </i>
                                   </span>
                                 </p>
                               </div>
@@ -468,19 +506,22 @@ const Events = () => {
                           <div className="container" key={randomKey()}>
                             <div className="row">
                               <div className="col-md-12 col-lg-4 mt-4">
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <Image
-                                    src={
-                                      item?.event_media
-                                        ? process.env.SITE_URL +
-                                          item?.event_media
-                                        : "/today_event_img.png"
-                                    }
-                                    width={200}
-                                    height={250}
-                                    alt={item?.event_title}
-                                  />
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <Image
+                                  className="eventImageIcon"
+                                  src={
+                                    item?.event_media
+                                      ? process.env.SITE_URL + item?.event_media
+                                      : "/today_event_img.png"
+                                  }
+                                  width={200}
+                                  height={250}
+                                  alt={item?.event_title}
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                />
+                                {/* </Link> */}
                               </div>
 
                               <div className="col-md-12 col-lg-8 mt-4">
@@ -503,11 +544,16 @@ const Events = () => {
                                 </p>
                                 {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <p className="fst_event color_heading">
-                                    {item?.event_title}
-                                  </p>
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <p
+                                  className="fst_event color_heading eventImageIcon"
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                >
+                                  {item?.event_title}
+                                </p>
+                                {/* </Link> */}
 
                                 <p className="fst_event">
                                   <b>Location:</b> {item?.location_address},{" "}
@@ -523,6 +569,9 @@ const Events = () => {
                                     className="fa fa-plus-square-o"
                                     aria-hidden="true"
                                   ></i> */}
+                                    <i className="fa fa-eye" aria-hidden="true">
+                                      {item?.hits == null ? 0 : item?.hits}
+                                    </i>
                                   </span>
                                 </p>
                               </div>
@@ -548,19 +597,22 @@ const Events = () => {
                           <div className="container" key={randomKey()}>
                             <div className="row">
                               <div className="col-md-12 col-lg-4 mt-4">
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <Image
-                                    src={
-                                      item?.event_media
-                                        ? process.env.SITE_URL +
-                                          item?.event_media
-                                        : "/today_event_img.png"
-                                    }
-                                    width={200}
-                                    height={250}
-                                    alt={item?.event_title}
-                                  />
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <Image
+                                  className="eventImageIcon"
+                                  src={
+                                    item?.event_media
+                                      ? process.env.SITE_URL + item?.event_media
+                                      : "/today_event_img.png"
+                                  }
+                                  width={200}
+                                  height={250}
+                                  alt={item?.event_title}
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                />
+                                {/* </Link> */}
                               </div>
 
                               <div className="col-md-12 col-lg-8 mt-4">
@@ -583,11 +635,16 @@ const Events = () => {
                                 </p>
                                 {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <p className="fst_event color_heading">
-                                    {item?.event_title}
-                                  </p>
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <p
+                                  className="fst_event color_heading eventImageIcon"
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                >
+                                  {item?.event_title}
+                                </p>
+                                {/* </Link> */}
 
                                 <p className="fst_event">
                                   <b>Location:</b> {item?.location_address},{" "}
@@ -603,6 +660,9 @@ const Events = () => {
                                     className="fa fa-plus-square-o"
                                     aria-hidden="true"
                                   ></i> */}
+                                    <i className="fa fa-eye" aria-hidden="true">
+                                      {item?.hits == null ? 0 : item?.hits}
+                                    </i>
                                   </span>
                                 </p>
                               </div>
@@ -628,19 +688,22 @@ const Events = () => {
                           <div className="container" key={randomKey()}>
                             <div className="row">
                               <div className="col-md-12 col-lg-4 mt-4">
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <Image
-                                    src={
-                                      item?.event_media
-                                        ? process.env.SITE_URL +
-                                          item?.event_media
-                                        : "/today_event_img.png"
-                                    }
-                                    width={200}
-                                    height={250}
-                                    alt={item?.event_title}
-                                  />
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <Image
+                                  className="eventImageIcon"
+                                  src={
+                                    item?.event_media
+                                      ? process.env.SITE_URL + item?.event_media
+                                      : "/today_event_img.png"
+                                  }
+                                  width={200}
+                                  height={250}
+                                  alt={item?.event_title}
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                />
+                                {/* </Link> */}
                               </div>
 
                               <div className="col-md-12 col-lg-8  mt-4">
@@ -663,11 +726,16 @@ const Events = () => {
                                 </p>
                                 {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <p className="fst_event color_heading">
-                                    {item?.event_title}
-                                  </p>
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <p
+                                  className="fst_event color_heading eventImageIcon"
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                >
+                                  {item?.event_title}
+                                </p>
+                                {/* </Link> */}
 
                                 <p className="fst_event">
                                   <b>Location:</b> {item?.location_address},{" "}
@@ -683,6 +751,9 @@ const Events = () => {
                                     className="fa fa-plus-square-o"
                                     aria-hidden="true"
                                   ></i> */}
+                                    <i className="fa fa-eye" aria-hidden="true">
+                                      {item?.hits == null ? 0 : item?.hits}
+                                    </i>
                                   </span>
                                 </p>
                               </div>
@@ -706,19 +777,22 @@ const Events = () => {
                           <div className="container" key={randomKey()}>
                             <div className="row">
                               <div className="col-md-12 col-lg-4 mt-4">
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <Image
-                                    src={
-                                      item?.event_media
-                                        ? process.env.SITE_URL +
-                                          item?.event_media
-                                        : "/today_event_img.png"
-                                    }
-                                    width={200}
-                                    height={250}
-                                    alt={item?.event_title}
-                                  />
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <Image
+                                  className="eventImageIcon"
+                                  src={
+                                    item?.event_media
+                                      ? process.env.SITE_URL + item?.event_media
+                                      : "/today_event_img.png"
+                                  }
+                                  width={200}
+                                  height={250}
+                                  alt={item?.event_title}
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                />
+                                {/* </Link> */}
                               </div>
 
                               <div className="col-md-12 col-lg-8 mt-4">
@@ -741,11 +815,11 @@ const Events = () => {
                                 </p>
                                 {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <p className="fst_event color_heading">
-                                    {item?.event_title}
-                                  </p>
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <p className="fst_event color_heading eventImageIcon">
+                                  {item?.event_title}
+                                </p>
+                                {/* </Link> */}
 
                                 <p className="fst_event">
                                   <b>Location:</b> {item?.location_address},{" "}
@@ -761,6 +835,9 @@ const Events = () => {
                                     className="fa fa-plus-square-o"
                                     aria-hidden="true"
                                   ></i> */}
+                                    <i className="fa fa-eye" aria-hidden="true">
+                                      {item?.hits == null ? 0 : item?.hits}
+                                    </i>
                                   </span>
                                 </p>
                               </div>
@@ -783,19 +860,22 @@ const Events = () => {
                           <div className="container" key={randomKey()}>
                             <div className="row">
                               <div className="col-md-12 col-lg-4 mt-4">
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <Image
-                                    src={
-                                      item?.event_media
-                                        ? process.env.SITE_URL +
-                                          item?.event_media
-                                        : "/today_event_img.png"
-                                    }
-                                    width={200}
-                                    height={250}
-                                    alt={item?.event_title}
-                                  />
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <Image
+                                  className="eventImageIcon"
+                                  src={
+                                    item?.event_media
+                                      ? process.env.SITE_URL + item?.event_media
+                                      : "/today_event_img.png"
+                                  }
+                                  width={200}
+                                  height={250}
+                                  alt={item?.event_title}
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                />
+                                {/* </Link> */}
                               </div>
 
                               <div className="col-md-12 col-lg-8 mt-4">
@@ -818,11 +898,16 @@ const Events = () => {
                                 </p>
                                 {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                                <Link href={`${"/event/"}${item?.id}`}>
-                                  <p className="fst_event color_heading">
-                                    {item?.event_title}
-                                  </p>
-                                </Link>
+                                {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                                <p
+                                  className="fst_event color_heading eventImageIcon"
+                                  onClick={() =>
+                                    updateEventView(item?.id, item?.hits)
+                                  }
+                                >
+                                  {item?.event_title}
+                                </p>
+                                {/* </Link> */}
 
                                 <p className="fst_event">
                                   <b>Location:</b> {item?.location_address},{" "}
@@ -835,9 +920,13 @@ const Events = () => {
                                   <b>Cost:</b> {item?.event_cost}{" "}
                                   <span>
                                     {/* <i
-                                    className="fa fa-plus-square-o"
-                                    aria-hidden="true"
-                                  ></i> */}
+                                      className="fa fa-plus-square-o"
+                                      aria-hidden="true"
+                                    ></i> */}
+
+                                    <i className="fa fa-eye" aria-hidden="true">
+                                      {item?.hits == null ? 0 : item?.hits}
+                                    </i>
                                   </span>
                                 </p>
                               </div>

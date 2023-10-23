@@ -513,7 +513,7 @@ const EventPage = () => {
   const eventListsection = async () => {
     try {
       const eventListresp = await eventPageSevices.eventList();
-      // console.log('eventListresp', eventListresp);
+      console.log("eventListresp", eventListresp);
       seteventList(eventListresp?.data?.data);
     } catch (err) {
       // Handle any other errors that may occur during the request

@@ -20,11 +20,11 @@ import { addToGoogleCalendar } from "@/store/library/utils";
 import ReactPlayer from "react-player";
 
 export async function getStaticPaths() {
-
-  const response = await fetch("http://nextupgrad.us/laravel-old/diligent-api/api/getEventManagement");
+  const response = await fetch(
+    "http://nextupgrad.us/laravel-old/diligent-api/api/getEventManagement"
+  );
 
   const data1 = await response.json();
-
 
   const paths = data1.data.map((curElm) => {
     return {
@@ -32,46 +32,41 @@ export async function getStaticPaths() {
         id: curElm.id.toString(),
       },
     };
-
-  })
+  });
 
   return {
     paths,
-    fallback: false
-  }
+    fallback: false,
+  };
 }
 
 export async function getStaticProps(context) {
-
   // const id=context.params.news_id;
-  const response = await fetch(`http://nextupgrad.us/laravel-old/diligent-api/api/getEventManagement`);
-  
+  const response = await fetch(
+    `http://nextupgrad.us/laravel-old/diligent-api/api/getEventManagement`
+  );
+
   // [https://nextupgrad.us/laravel-old/diligent-api/api/getEventManagement?id=17]
 
   const data2 = await response.json();
 
-
   const filter_data = data2.data;
   // const filter_data = data2.data.filter(element => element.sectionName == "camp_news")
   return {
-
-    props: { filter_data }
-
-  }
+    props: { filter_data },
+  };
 }
 
-
-const singleEventData = ({filter_data}) => {
-
+const singleEventData = ({ filter_data }) => {
   const router = useRouter();
 
   let id = router.query?.id;
-  const filter_data2 = filter_data.filter(element => element.id == id)
+  const filter_data2 = filter_data.filter((element) => element.id == id);
 
-  console.log("filter_data2",filter_data2[0])
+  console.log("filter_data2", filter_data2[0]);
 
   const [value, onChange] = useState(new Date());
-  
+
   const { query, isReady } = useRouter();
   const [eventCategoryData, setEventCategoryData] = useState([]);
   const [eventData, setEventData] = useState([]);
@@ -88,6 +83,7 @@ const singleEventData = ({filter_data}) => {
   const [state, setstate] = useState("");
   const [promo, setpromo] = useState([]);
   const [Attention, setAttention] = useState("");
+  const [eventListLoader, setEventListLoader] = useState(false);
 
   useEffect(() => {
     console.log(name, email, city, state);
@@ -311,7 +307,9 @@ const singleEventData = ({filter_data}) => {
 <p className="fst_event">
     <b>TIME:</b>
     
-    ${filter_data2[0]?.time ? convertTo12HourFormat(filter_data2[0]?.time) : "-"}
+    ${
+      filter_data2[0]?.time ? convertTo12HourFormat(filter_data2[0]?.time) : "-"
+    }
   </p>
 <p className="fst_event">
     <b>LOCATION:</b>
@@ -336,6 +334,7 @@ const singleEventData = ({filter_data}) => {
                                 ${filter_data2[0]?.event_description}
                               </p>
 </div>
+
 <div class="question-container2"><p>The Kindness Campaign
 703 E 75th St Chicago, IL 60619</p><p>info@kindnesseveryday.org</p></div>
 </div>`;
@@ -359,6 +358,27 @@ const singleEventData = ({filter_data}) => {
       printWindow.print();
     } else {
       warn("Popup blocked in browser");
+    }
+  };
+  const updateEventView = async (eventId, views) => {
+    console.log("eventId", eventId);
+    console.log("views", views);
+    try {
+      let currentViews = views == null ? 0 : views;
+
+      const formData = new FormData();
+      formData.append("updateId", eventId);
+      formData.append("hits", parseInt(currentViews) + 1);
+
+      const resp = await eventPageSevices.updateEventManagement(formData);
+
+      if (resp?.data?.success) {
+        router.push(`/event/${eventId}`);
+      } else {
+        showNotification(response?.data?.message, "Error");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -397,7 +417,7 @@ const singleEventData = ({filter_data}) => {
                   <h3 className="event_categories_wrap">Event Categories</h3>
 
                   {eventCategoryData?.length ? (
-                    <ul className="event_categories_list" >
+                    <ul className="event_categories_list">
                       {eventCategoryData?.map((item) =>
                         item?.active ? (
                           <li key={randomKey()}>{item?.event_category}</li>
@@ -474,7 +494,10 @@ const singleEventData = ({filter_data}) => {
                             <div className="col-md-12">
                               <p className="fst_single_event_date">
                                 {" "}
-                                {getFormatedDate(filter_data2[0]?.date, "LL")}{" "}
+                                {getFormatedDate(
+                                  filter_data2[0]?.date,
+                                  "LL"
+                                )}{" "}
                               </p>
                             </div>
 
@@ -512,7 +535,8 @@ const singleEventData = ({filter_data}) => {
                                 <b>LOCATION:</b>
                                 <br />
                                 {filter_data2[0]?.location_address} <br />
-                                {filter_data2[0]?.city}, {filter_data2[0]?.state},{" "}
+                                {filter_data2[0]?.city},{" "}
+                                {filter_data2[0]?.state},{" "}
                                 {filter_data2[0]?.zip_code}
                               </p>
                               <p className="fst_event">
@@ -662,11 +686,13 @@ const singleEventData = ({filter_data}) => {
                                     <span
                                       className="ICAL"
                                       onClick={() => {
-                                        const title = filter_data2[0]?.event_title;
+                                        const title =
+                                          filter_data2[0]?.event_title;
                                         const location =
                                           filter_data2[0]?.location_address;
                                         const Date = filter_data2[0]?.date;
-                                        const Desc = filter_data2[0]?.event_type;
+                                        const Desc =
+                                          filter_data2[0]?.event_type;
                                         addToGoogleCalendar(
                                           title,
                                           location,
@@ -710,7 +736,7 @@ const singleEventData = ({filter_data}) => {
                   </TabPanel>
 
                   <TabPanel>
-                    {isSubmittingLoader ? (
+                    {eventListLoader ? (
                       <Spinner
                         style={{
                           width: "50px",
@@ -725,23 +751,27 @@ const singleEventData = ({filter_data}) => {
                         <div className="container" key={randomKey()}>
                           <div className="row">
                             <div className="col-md-12 col-lg-4 mt-4">
-                              <Link href={`${"/event/"}${item?.id}`}>
-                                <Image
-                                  src={
-                                    item?.event_media
-                                      ? process.env.SITE_URL + item?.event_media
-                                      : "/today_event_img.png"
-                                  }
-                                  width={200}
-                                  height={250}
-                                  alt={item?.event_title}
-                                />
-                              </Link>
+                              {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                              <Image
+                                className="eventImageIcon"
+                                src={
+                                  item?.event_media
+                                    ? process.env.SITE_URL + item?.event_media
+                                    : "/today_event_img.png"
+                                }
+                                width={200}
+                                height={250}
+                                alt={item?.event_title}
+                                onClick={() =>
+                                  updateEventView(item?.id, item?.hits)
+                                }
+                              />
+                              {/* </Link> */}
                             </div>
 
                             <div className="col-md-12 col-lg-8 mt-4">
                               <p className="fst_event">
-                                THIS WEEK
+                                THIS WEEK{" "}
                                 <span>
                                   {/* <i
                                     className="fa fa-download"
@@ -750,15 +780,26 @@ const singleEventData = ({filter_data}) => {
                                 </span>
                               </p>
                               <p className="fst_event">
-                                {item?.date} {item?.time}
+                                {item?.date
+                                  ? getFormatedDate(item?.date, "M-D-Y")
+                                  : null}{" "}
+                                {item?.time
+                                  ? convertTo12HourFormat(item?.time)
+                                  : null}
                               </p>
                               {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                              <Link href={`${"/event/"}${item?.id}`}>
-                                <p className="fst_event color_heading">
-                                  {item?.event_title}
-                                </p>
-                              </Link>
+                              {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                              <p
+                                className="fst_event color_heading eventImageIcon"
+                                onClick={() =>
+                                  updateEventView(item?.id, item?.hits)
+                                }
+                              >
+                                {item?.event_title}
+                              </p>
+                              {/* </Link> */}
+
                               <p className="fst_event">
                                 <b>Location:</b> {item?.location_address},{" "}
                                 {item?.city}, {item?.state}
@@ -773,6 +814,9 @@ const singleEventData = ({filter_data}) => {
                                     className="fa fa-plus-square-o"
                                     aria-hidden="true"
                                   ></i> */}
+                                  <i className="fa fa-eye" aria-hidden="true">
+                                    {item?.hits == null ? 0 : item?.hits}
+                                  </i>
                                 </span>
                               </p>
                             </div>
@@ -783,7 +827,7 @@ const singleEventData = ({filter_data}) => {
                   </TabPanel>
 
                   <TabPanel>
-                    {isSubmittingLoader ? (
+                    {eventListLoader ? (
                       <Spinner
                         style={{
                           width: "50px",
@@ -798,23 +842,27 @@ const singleEventData = ({filter_data}) => {
                         <div className="container" key={randomKey()}>
                           <div className="row">
                             <div className="col-md-12 col-lg-4 mt-4">
-                              <Link href={`${"/event/"}${item?.id}`}>
-                                <Image
-                                  src={
-                                    item?.event_media
-                                      ? process.env.SITE_URL + item?.event_media
-                                      : "/today_event_img.png"
-                                  }
-                                  width={200}
-                                  height={250}
-                                  alt={item?.event_title}
-                                />
-                              </Link>
+                              {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                              <Image
+                                className="eventImageIcon"
+                                src={
+                                  item?.event_media
+                                    ? process.env.SITE_URL + item?.event_media
+                                    : "/today_event_img.png"
+                                }
+                                width={200}
+                                height={250}
+                                alt={item?.event_title}
+                                onClick={() =>
+                                  updateEventView(item?.id, item?.hits)
+                                }
+                              />
+                              {/* </Link> */}
                             </div>
 
                             <div className="col-md-12 col-lg-8 mt-4">
                               <p className="fst_event">
-                                THIS MONTH
+                                THIS MONTH{" "}
                                 <span>
                                   {/* <i
                                     className="fa fa-download"
@@ -823,15 +871,25 @@ const singleEventData = ({filter_data}) => {
                                 </span>
                               </p>
                               <p className="fst_event">
-                                {item?.date} {item?.time}{" "}
+                                {item?.date
+                                  ? getFormatedDate(item?.date, "M-D-Y")
+                                  : null}{" "}
+                                {item?.time
+                                  ? convertTo12HourFormat(item?.time)
+                                  : null}
                               </p>
                               {/* <p className="fst_event">{item?.time} 3:00pm - 5:30pm</p> */}
 
-                              <Link href={`${"/event/"}${item?.id}`}>
-                                <p className="fst_event color_heading">
-                                  {item?.event_title}
-                                </p>
-                              </Link>
+                              {/* <Link href={`${"/event/"}${item?.id}`}> */}
+                              <p
+                                className="fst_event color_heading eventImageIcon"
+                                onClick={() =>
+                                  updateEventView(item?.id, item?.hits)
+                                }
+                              >
+                                {item?.event_title}
+                              </p>
+                              {/* </Link> */}
 
                               <p className="fst_event">
                                 <b>Location:</b> {item?.location_address},{" "}
@@ -847,6 +905,9 @@ const singleEventData = ({filter_data}) => {
                                     className="fa fa-plus-square-o"
                                     aria-hidden="true"
                                   ></i> */}
+                                  <i className="fa fa-eye" aria-hidden="true">
+                                    {item?.hits == null ? 0 : item?.hits}
+                                  </i>
                                 </span>
                               </p>
                             </div>

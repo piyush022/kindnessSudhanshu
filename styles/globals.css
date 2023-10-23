@@ -3379,6 +3379,9 @@ input[type="text"]:hover {
 #fix-width-piyush {
   width: 93% !important ;
 }
+.eventImageIcon:hover {
+  cursor: pointer;
+}
 /* -----------------------Media Queries----------------------- */
 
 @media (max-width: 768px) {
