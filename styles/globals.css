@@ -3386,6 +3386,9 @@ input[type="text"]:hover {
   display: flex !important;
   justify-content: center !important;
 }
+#newsSlider > .slick-slider {
+  width: 90%;
+}
 /* -----------------------Media Queries----------------------- */
 
 @media (max-width: 768px) {
