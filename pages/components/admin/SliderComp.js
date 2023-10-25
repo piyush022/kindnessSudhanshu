@@ -58,7 +58,7 @@ const SliderComp = (props) => {
               } img-responsive`}
             >
               <div className="container">
-                <p className="counter_wrap_2">{item?.column_1}</p>
+                <p className="counter_wrap_2">{item?.column_1}+</p>
 
                 <p className="accessed_p">{item?.column_2}</p>
 

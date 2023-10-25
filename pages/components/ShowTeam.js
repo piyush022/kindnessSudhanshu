@@ -2,6 +2,7 @@ import { getFormatedDate } from "@/store/library/utils";
 import { imageConfigDefault } from "next/dist/shared/lib/image-config";
 
 const TeamModal = (props) => {
+  console.log("Team ", props);
   return (
     <>
       {props?.toggle && (
@@ -29,20 +30,22 @@ const TeamModal = (props) => {
                   <tbody>
                     {props.meetExeutive?.length
                       ? props.meetExeutive.map((item, index) => {
-                          return (
-                            <tr key={item?.id + index}>
-                              <td>{index + 1}</td>
-                              <td>
-                                <img
-                                  className="listImgPreview"
-                                  src={process.env.SITE_URL + item.media}
-                                ></img>
-                              </td>
-                              <td>{item?.column_1} </td>
-                              <td>{item?.column_2}</td>
-                              <td>{item?.description}</td>
-                            </tr>
-                          );
+                          if (item.active == "1") {
+                            return (
+                              <tr key={item?.id + index}>
+                                <td>{index + 1}</td>
+                                <td>
+                                  <img
+                                    className="listImgPreview"
+                                    src={process.env.SITE_URL + item.media}
+                                  ></img>
+                                </td>
+                                <td>{item?.column_1} </td>
+                                <td>{item?.column_2}</td>
+                                <td>{item?.description}</td>
+                              </tr>
+                            );
+                          }
                         })
                       : ""}
                   </tbody>

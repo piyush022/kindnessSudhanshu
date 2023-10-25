@@ -476,7 +476,7 @@ const Home = () => {
         }
       }
 
-      if (/\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf)$/.test(fileName)) {
+      if (/\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|mpg)$/.test(fileName)) {
         if (img.size > 100 * 1024 * 1024) {
           e.target.value = null;
           showNotification(
@@ -1337,36 +1337,6 @@ const Home = () => {
               {/* Compleate  */}
               <div className="container">
                 <label className="form-label-1" htmlFor="typeText">
-                  Vision Text
-                </label>
-                <div className="row">
-                  <div className="col-md-9">
-                    <div className="form-outline">
-                      <textarea
-                        className="form-control"
-                        placeholder="Type here"
-                        name="vissionText"
-                        onChange={(e) => setVisionText(e?.target?.value)}
-                        value={visionText}
-                      ></textarea>
-                    </div>
-                  </div>
-
-                  <div className="col-md-3 ">
-                    <div className="text-right">
-                      <button
-                        type="button"
-                        onClick={() => updateStaticContent("vissionText")}
-                        className="btn btn btn-outline-primary align-bottom"
-                      >
-                        Update Site
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="container">
-                <label className="form-label-1" htmlFor="typeText">
                   Mission Text
                 </label>
                 <div className="row">
@@ -1395,6 +1365,36 @@ const Home = () => {
                   </div>
                 </div>
               </div>
+              <div className="container">
+                <label className="form-label-1" htmlFor="typeText">
+                  Vision Text
+                </label>
+                <div className="row">
+                  <div className="col-md-9">
+                    <div className="form-outline">
+                      <textarea
+                        className="form-control"
+                        placeholder="Type here"
+                        name="vissionText"
+                        onChange={(e) => setVisionText(e?.target?.value)}
+                        value={visionText}
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div className="col-md-3 ">
+                    <div className="text-right">
+                      <button
+                        type="button"
+                        onClick={() => updateStaticContent("vissionText")}
+                        className="btn btn btn-outline-primary align-bottom"
+                      >
+                        Update Site
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
 
             <section className="panel important">
@@ -1406,6 +1406,9 @@ const Home = () => {
                 />{" "}
                 Description/Accomplishment
               </h2>
+              <span className="mbSpan">
+                &nbsp;Note - Please dont add '+' symbol with total.
+              </span>
               <div className="container">
                 <div className="row">
                   <div className="col-md-12">

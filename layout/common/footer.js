@@ -3,12 +3,11 @@ import Link from "next/link";
 import { contactPageSevices } from "@/store/services";
 export default function Footer() {
   useEffect(() => {
-    contactPageData()
+    contactPageData();
   }, []);
 
   const [data, setData] = useState();
   const contactPageData = async () => {
-
     try {
       const resp = await contactPageSevices.contactUsGet();
       setData(resp?.data?.data);
@@ -18,38 +17,39 @@ export default function Footer() {
     }
   };
 
-
   return (
     <>
       <footer id="footer" className="footer">
         <div className="container">
           <div className="row">
             <div className="col-md-3 footer-info">
-
               <a href="/">
                 <img src="/footer_logo.png" />
               </a>
             </div>
             <div className="col-md-12 col-lg-6 footer-info">
               <p>
-                Lorem ipsum dolor sit amet, eder iut consectetuer adipiscing elit,
-                sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                aliquam erat volutpat ed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-                aliquam erat volutpat.
+                Lorem ipsum dolor sit amet, eder iut consectetuer adipiscing
+                elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                magna aliquam erat volutpat ed diam nonummy nibh euismod
+                tincidunt ut laoreet dolore magna aliquam erat volutpat.
               </p>
               <div className="row">
                 <div className="col-md-6 col-lg-6">
                   <p className="footer_btn">
-                    <a href="/get-involved/">
+                    <a target="_blank" href="/get-involved/">
                       {" "}
-                      <i className="fa fa-arrow-right" aria-hidden="true" />{" "}
+                      <i
+                        className="fa fa-arrow-right"
+                        aria-hidden="true"
+                      />{" "}
                       <span> SUPPORT US </span>
                     </a>
                   </p>
                 </div>
                 <div className="col-md-6 col-lg-6">
                   <p className="footer_btn">
-                    <a href="/contact-us">
+                    <a target="_blank" href="/contact-us">
                       <i className="fa fa-arrow-right" aria-hidden="true" />{" "}
                       <span> CONTACT US </span>
                     </a>
@@ -76,9 +76,9 @@ export default function Footer() {
             <div className="row">
               <div className="col-md-6 footer-info  border-right">
                 <h4 className="footer_wrap">
-                  Get exclusive updates on our work <br />and how you can help.
+                  Get exclusive updates on our work <br />
+                  and how you can help.
                 </h4>
-
 
                 <Link href="./#signuptoday">
                   <button type="butto1" className="footer_sign social_1">
@@ -89,25 +89,33 @@ export default function Footer() {
               </div>
               <div className="col-md-6 footer-info">
                 <h4 className="footer_wrap">
-                  Think people should hear about this? <br />Share it.
+                  Think people should hear about this? <br />
+                  Share it.
                 </h4>
                 <div className="social-links d-flex mt-4 social_1">
-                  <a href="https://www.youtube.com/c/TheKindnessCampaign" className="youtube" target="_blank">
+                  <a
+                    href="https://www.youtube.com/c/TheKindnessCampaign"
+                    className="youtube"
+                    target="_blank"
+                  >
                     <i className="fa fa-youtube-play" aria-hidden="true"></i>
-
                   </a>
-                  <a href="https://www.facebook.com/Show.Kindness.Everyday/" className="facebook" target="_blank">
+                  <a
+                    href="https://www.facebook.com/Show.Kindness.Everyday/"
+                    className="facebook"
+                    target="_blank"
+                  >
                     <i className="fa fa-facebook" aria-hidden="true"></i>
-
-
                   </a>
-                  <a href="https://www.instagram.com/showkindnesseveryday/" className="instagram" target="_blank">
+                  <a
+                    href="https://www.instagram.com/showkindnesseveryday/"
+                    className="instagram"
+                    target="_blank"
+                  >
                     <i className="fa fa-instagram" aria-hidden="true"></i>
-
                   </a>
                   <a href="#" className="linkedin">
                     <i className="fa fa-twitter" aria-hidden="true"></i>
-
                   </a>
                 </div>
               </div>
@@ -122,13 +130,12 @@ export default function Footer() {
         <div className="row">
           <div className="col-md-12">
             <p className="bottom_wrap align-middle">
-              © 2023 by The Kindness Campaign. &nbsp;&nbsp;{" "}
-              The Kindness Campaign is a 501©3 organization.{" "}
+              © 2023 by The Kindness Campaign. &nbsp;&nbsp; The Kindness
+              Campaign is a 501©3 organization.{" "}
             </p>
           </div>
         </div>
       </div>
-
     </>
-  )
+  );
 }

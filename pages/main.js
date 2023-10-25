@@ -535,7 +535,7 @@ function MainPage({ data }) {
                   {" "}
                   <Link href="#!" onClick={showTeamData}>
                     <u className="decriptions_wrap">
-                      CLICK HERE to meet The Kindness Compaign TEAM!
+                      CLICK HERE to meet The Kindness Campaign TEAM!
                     </u>
                   </Link>
                 </h2>
