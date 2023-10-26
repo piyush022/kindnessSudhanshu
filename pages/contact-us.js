@@ -38,7 +38,7 @@ const Events = () => {
 
       const response = await contactPageSevices.sendContactFormData(formData);
 
-      if (response.ok) {
+      if (response?.success == true) {
         setEmail("");
         setName("");
         setMessage("");
