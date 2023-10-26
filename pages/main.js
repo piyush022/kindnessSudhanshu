@@ -644,6 +644,7 @@ function MainPage({ data }) {
                             <FacebookShareButton
                               url={`${process.env.BASE_LIVE_URL}/news/${newsSectionFirstData?.id}`}
                               quote={newsSectionFirstData?.title}
+                              hashtag="#kindnesscampaign"
                               description={newsSectionFirstData?.news_artical}
                             >
                               <i
