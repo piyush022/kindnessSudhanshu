@@ -14,6 +14,20 @@ const SliderCompNews = ({
   TwitterShareButton,
   LinkedinShareButton,
   updateNewsView,
+  ogDesc,
+  setogDesc,
+  ogTitle,
+  setogTitle,
+  ogURL,
+  setogURL,
+  ogSiteName,
+  setogSiteName,
+  ogImg,
+  setogImg,
+  ogSummary,
+  setSummary,
+  handlefbshare,
+  newsSectionFirstData,
 }) => {
   let color = "red";
   var settings = {

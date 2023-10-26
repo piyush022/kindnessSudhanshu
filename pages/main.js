@@ -297,6 +297,25 @@ function MainPage({ data }) {
         <title>Kindness Campaign</title>
         <meta name="description" content="Kindness Campaign" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content={`Kindness Campaign News |${ogTitle}`}
+        />
+        <meta property="og:description" content={ogDesc} />
+        <meta property="og:url" content={ogURL} />
+        <meta property="og:site_name" content="Kindness Campaign" />
+        <meta
+          property="article:modified_time"
+          content="2023-09-18T05:45:43+00:00"
+        />
+        <meta property="og:image" content={ogImg} />
+        <meta property="og:image:width" content="1024" />
+        <meta property="og:image:height" content="413" />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:card" content={ogImg} />
       </Head>
       <Layout headData={data}>
         <TeamModal
@@ -715,12 +734,24 @@ function MainPage({ data }) {
         )}
         <section id="swiper_slider">
           <SliderCompNews
+            handlefbshare={handlefbshare}
             updateNewsView={updateNewsView}
             FacebookShareButton={FacebookShareButton}
             TwitterShareButton={TwitterShareButton}
             LinkedinShareButton={LinkedinShareButton}
             showLoader={showLoader}
             newsSectionData={newsSectionData}
+            ogDesc={ogDesc}
+            setogDesc={setogDesc}
+            ogTitle={ogTitle}
+            setogTitle={setogTitle}
+            ogURL={ogURL}
+            setogURL={setogURL}
+            ogSiteName={ogSiteName}
+            setogSiteName={setogSiteName}
+            ogImg={ogImg}
+            setogImg={setogImg}
+            newsSectionFirstData={newsSectionFirstData}
           />
         </section>
 

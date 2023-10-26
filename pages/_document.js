@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <meta name="description" content="Kindness Campaign" />
+        {/* <meta name="description" content="Kindness Campaign" />
 
         <meta
           property="og:title"
@@ -26,7 +26,7 @@ export default function Document() {
         <meta property="og:image:width" content="1024" />
         <meta property="og:image:height" content="413" />
         <meta property="og:image:type" content="image/png" />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="summary_large_image" /> */}
       </Head>
       <body>
         <Main />
