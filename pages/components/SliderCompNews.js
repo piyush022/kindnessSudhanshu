@@ -145,7 +145,7 @@ const SliderCompNews = ({
                                 aria-hidden="true"
                                 onClick={() =>
                                   handlefbshare(
-                                    `${process.env.BASE_LIVE_URL}/news/${newsSectionFirstData?.id}`,
+                                    `${process.env.BASE_LIVE_URL}news/${newsSectionFirstData?.id}`,
                                     newsSectionFirstData?.title,
                                     newsSectionFirstData?.news_artical,
                                     process.env.SITE_URL +

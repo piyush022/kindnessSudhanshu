@@ -59,6 +59,14 @@ function MainPage({ data }) {
 
   //function to handle facebook share
   function handlefbshare(url, quote, description, image, domain) {
+    console.log(
+      "url, quote, description, image, domain",
+      url,
+      quote,
+      description,
+      image,
+      domain
+    );
     setogURL(url);
     setogDesc(description);
     setogImg(image);
@@ -294,7 +302,7 @@ function MainPage({ data }) {
   return (
     <>
       <Head>
-        <title>Kindness Piysh</title>
+        <title>Kindness Campaign</title>
         <meta name="description" content="Kindness Campaign" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -671,7 +679,7 @@ function MainPage({ data }) {
                                 aria-hidden="true"
                                 onClick={() =>
                                   handlefbshare(
-                                    `${process.env.BASE_LIVE_URL}/news/${newsSectionFirstData?.id}`,
+                                    `${process.env.BASE_LIVE_URL}news/${newsSectionFirstData?.id}`,
                                     newsSectionFirstData?.title,
                                     newsSectionFirstData?.news_artical,
                                     process.env.SITE_URL +
