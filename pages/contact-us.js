@@ -156,18 +156,20 @@ const Events = () => {
                           placeholder="Enter your name"
                           value={name}
                           onChange={(e) => setName(e?.target?.value)}
+                          required
                         />
                       </div>
                     </div>
                     <div className="row">
                       <div className="col-md-12">
                         <input
-                          type="text"
+                          type="email"
                           id="lname"
                           name="lastname"
                           placeholder="Enter a valid email address"
                           value={email}
                           onChange={(e) => setEmail(e?.target?.value)}
+                          required
                         />
                       </div>
                     </div>
