@@ -294,7 +294,7 @@ function MainPage({ data }) {
   return (
     <>
       <Head>
-        <title>Kindness Campaign</title>
+        <title>Kindness Piysh</title>
         <meta name="description" content="Kindness Campaign" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
