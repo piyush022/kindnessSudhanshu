@@ -27,7 +27,8 @@ const Events = () => {
     }
   };
 
-  const submitContactForm = async () => {
+  const submitContactForm = async (e) => {
+    e.preventdefault();
     try {
       const formData = new FormData();
 
