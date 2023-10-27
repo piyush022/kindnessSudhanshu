@@ -37,16 +37,20 @@ const Events = () => {
       formData.append("section_name", "contact_us");
 
       const response = await contactPageSevices.sendContactFormData(formData);
+      console.log("FORMpostRESP", response);
 
-      if (response?.success == true) {
+      if (response?.status == 200) {
+        console.log("if RAN");
+
         setEmail("");
         setName("");
         setMessage("");
 
-        showNotification(response?.data?.message, "Success");
+        showNotification(response?.data.message, "Success");
         // showNotification("Form sent successfully", "Success");
       } else {
-        showNotification(response?.data?.message, "Error");
+        console.log("else RAN");
+        showNotification("Error");
       }
     } catch (error) {
       console.error(error);

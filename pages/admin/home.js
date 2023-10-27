@@ -895,7 +895,7 @@ const Home = () => {
         if (response?.data?.success) {
           showNotification(response.data.message, "Success");
           setSponActive("");
-
+          setSponTitle("");
           setSponMedia("");
           setSponMediaPreview("");
         } else {
@@ -1682,7 +1682,7 @@ const Home = () => {
                     <table className="table">
                       <thead>
                         <tr>
-                          <th>Order</th>
+                          {/* <th>Order</th> */}
                           <th>Name</th>
                           <th>Title</th>
                           <th>Overview </th>
@@ -1695,7 +1695,7 @@ const Home = () => {
                           ? meetExeutive.map((item, index) => {
                               return (
                                 <tr key={item?.id + index}>
-                                  <td>{index + 1}</td>
+                                  {/* <td>{index + 1}</td> */}
                                   {item?.edit ? (
                                     <>
                                       <td>
@@ -2505,7 +2505,7 @@ const Home = () => {
             <section className="panel important">
               <h2>
                 {" "}
-                <i className="fa fa-hand-o-right" aria-hidden="true"></i>{" "}
+                <i className="fa fa-hand-o-right" aria-hidden="true"></i>
                 Sponsors & Partners
               </h2>
 
@@ -2520,7 +2520,7 @@ const Home = () => {
                         <tr>
                           <th>Order</th>
                           <th>Company</th>
-                          <th>Title</th>
+                          {/* <th>Title</th> */}
                           <th>Upload Date </th>
                           <th>Active</th>
                           <th>Action</th>
@@ -2531,7 +2531,7 @@ const Home = () => {
                           ? sponsorPartnerData?.map((item, index) => (
                               <tr key={index}>
                                 <td>{index + 1}</td>
-                                <td>132 </td>
+                                {/* <td>132 </td> */}
                                 {item?.edit ? (
                                   <>
                                     <td>
@@ -2646,6 +2646,7 @@ const Home = () => {
                         <div className="col-md-5">
                           <label className="form-label-1">Company Name</label>
                           <input
+                            value={sponTitle}
                             type="text"
                             onChange={(e) => setSponTitle(e?.target?.value)}
                           />

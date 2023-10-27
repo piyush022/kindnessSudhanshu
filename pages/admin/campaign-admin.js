@@ -15,15 +15,15 @@ import { BsYoutube, BsFileEarmarkImage } from "react-icons/bs";
 
 const Compaign_page = () => {
   const [eqtDes, setEqtDes] = useState();
-  const [eqtMedia, setEqtMedia] = useState();
-  const [eduMedia, setEduMedia] = useState();
+  const [eqtMedia, setEqtMedia] = useState("");
+  const [eduMedia, setEduMedia] = useState("");
   const [eduDes, setEduDes] = useState();
   const [wDes, setWDes] = useState();
-  const [wMedia, setWMedia] = useState();
-  const [pMedia, setPMedia] = useState();
+  const [wMedia, setWMedia] = useState("");
+  const [pMedia, setPMedia] = useState("");
   const [pDes, setPDes] = useState();
   const [hPost, setHPost] = useState();
-  const [hMedia, setHMedia] = useState();
+  const [hMedia, setHMedia] = useState("");
   const [hTitle, setHTitle] = useState();
   const [adminMedia1, setadminMedia1] = useState("");
   const [adminMedia2, setadminMedia2] = useState([]);
@@ -58,6 +58,11 @@ const Compaign_page = () => {
   const [upMediaPreview4, setupMediaPreview4] = useState();
   const [ToggleYoutube, setToggleYoutube] = useState(true);
   const [youtubeLinkCampHeader, setyoutubeLinkCampHeader] = useState("");
+
+  const [preview, setpreview] = useState("");
+  const [preview2, setpreview2] = useState("");
+  const [preview3, setpreview3] = useState("");
+  const [preview4, setpreview4] = useState("");
   //function to update data - piyush
 
   function editFieldData(id, index, sectionName) {
@@ -431,13 +436,22 @@ const Compaign_page = () => {
       if (response?.data) {
         setIsSubmittingLoader(false);
         showNotification(response.data.message, "Success");
+        setEqtDes("");
+        setEqtMedia("");
+        setpreview("");
       } else {
         setIsSubmittingLoader(false);
         showNotification(response.data.message, "Error");
+        setEqtDes("");
+        setEqtMedia("");
+        setpreview("");
       }
     } catch (error) {
       setIsSubmittingLoader(false);
       console.error(error);
+      setEqtDes("");
+      setEqtMedia("");
+      setpreview("");
     }
   };
   const updateEdu = async (e) => {
@@ -453,11 +467,29 @@ const Compaign_page = () => {
       if (response?.data) {
         setIsSubmittingLoader(false);
         showNotification(response.data.message, "Success");
+        setEduDes("");
+        setEduMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
       } else {
         setIsSubmittingLoader(false);
         showNotification(response.data.message, "Error");
+        setEduDes("");
+        setEduMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
       }
     } catch (error) {
+      setEduDes("");
+      setEduMedia("");
+      setpreview("");
+      setpreview2("");
+      setpreview3("");
+      setpreview4("");
       setIsSubmittingLoader(false);
       console.error(error);
     }
@@ -475,13 +507,31 @@ const Compaign_page = () => {
       if (response?.data) {
         setIsSubmittingLoader(false);
         showNotification(response.data.message, "Success");
+        setWDes("");
+        setWMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
       } else {
         setIsSubmittingLoader(false);
         showNotification(response.data.message, "Error");
+        setWDes("");
+        setWMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
       }
     } catch (error) {
       setIsSubmittingLoader(false);
       console.error(error);
+      setWDes("");
+      setWMedia("");
+      setpreview("");
+      setpreview2("");
+      setpreview3("");
+      setpreview4("");
     }
   };
   const updatePublic = async (e) => {
@@ -497,13 +547,31 @@ const Compaign_page = () => {
       if (response?.data) {
         setIsSubmittingLoader(false);
         showNotification(response?.data?.message, "Success");
+        setPDes("");
+        setPMedia("");
+        setpreview2("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
       } else {
         setIsSubmittingLoader(false);
         showNotification(response.data.message, "Error");
+        setPDes("");
+        setPMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
       }
     } catch (error) {
       setIsSubmittingLoader(false);
       console.error(error);
+      setPDes("");
+      setPMedia("");
+      setpreview("");
+      setpreview2("");
+      setpreview3("");
+      setpreview4("");
     }
   };
 
@@ -635,6 +703,38 @@ const Compaign_page = () => {
   useEffect(() => {
     // console.log("Youtube Link => ", youtubeLinkCampHeader);
   }, [youtubeLinkCampHeader]);
+
+  async function setPrevieww(img) {
+    let fileData = await getBase64(img);
+    setpreview(fileData);
+  }
+  async function setPrevieww2(img) {
+    let fileData = await getBase64(img);
+    setpreview2(fileData);
+  }
+  async function setPrevieww3(img) {
+    let fileData = await getBase64(img);
+    setpreview3(fileData);
+  }
+  async function setPrevieww4(img) {
+    let fileData = await getBase64(img);
+    setpreview4(fileData);
+  }
+
+  useEffect(() => {
+    if (eqtMedia != "") {
+      setPrevieww(eqtMedia);
+    }
+    if (pMedia != "") {
+      setPrevieww2(pMedia);
+    }
+    if (wMedia != "") {
+      setPrevieww3(wMedia);
+    }
+    if (eduMedia != "") {
+      setPrevieww4(eduMedia);
+    }
+  }, [eqtMedia, pMedia, wMedia, eduMedia]);
 
   var sno = 1;
   return (
@@ -994,6 +1094,7 @@ const Compaign_page = () => {
                                 Image Description
                               </label>
                               <input
+                                value={eqtDes}
                                 type="text"
                                 onChange={(e) => setEqtDes(e?.target?.value)}
                               />
@@ -1007,7 +1108,7 @@ const Compaign_page = () => {
                           </div>
                           <div className="col-md-3">
                             <Image
-                              src="/no-img.jpg"
+                              src={`${preview == "" ? "/no-img.jpg" : preview}`}
                               width={80}
                               height={80}
                               alt="Picture of the author"
@@ -1216,6 +1317,7 @@ const Compaign_page = () => {
                                 Image Description
                               </label>
                               <input
+                                value={eduDes}
                                 type="text"
                                 onChange={(e) => setEduDes(e?.target?.value)}
                               />
@@ -1229,7 +1331,9 @@ const Compaign_page = () => {
                           </div>
                           <div className="col-md-3">
                             <Image
-                              src="/no-img.jpg"
+                              src={`${
+                                preview4 == "" ? "/no-img.jpg" : preview4
+                              }`}
                               width={80}
                               height={80}
                               alt="Picture of the author"
@@ -1438,6 +1542,7 @@ const Compaign_page = () => {
                                 Image Description
                               </label>
                               <input
+                                value={wDes}
                                 type="text"
                                 onChange={(e) => setWDes(e?.target?.value)}
                               />
@@ -1451,7 +1556,9 @@ const Compaign_page = () => {
                           </div>
                           <div className="col-md-3">
                             <Image
-                              src="/no-img.jpg"
+                              src={`${
+                                preview3 == "" ? "/no-img.jpg" : preview3
+                              }`}
                               width={80}
                               height={80}
                               alt="Picture of the author"
@@ -1659,6 +1766,7 @@ const Compaign_page = () => {
                                 Image Description
                               </label>
                               <input
+                                value={pDes}
                                 type="text"
                                 onChange={(e) => setPDes(e?.target?.value)}
                               />
@@ -1672,7 +1780,9 @@ const Compaign_page = () => {
                           </div>
                           <div className="col-md-3">
                             <Image
-                              src="/no-img.jpg"
+                              src={`${
+                                preview2 == "" ? "/no-img.jpg" : preview2
+                              }`}
                               width={80}
                               height={80}
                               alt="Picture of the author"

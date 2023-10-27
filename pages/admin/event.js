@@ -419,6 +419,13 @@ const EventPage = () => {
       formData.append("eventPromoVideo", promo_video);
 
       const resp = await eventPageSevices.updateEventSectionVideo(formData);
+      console.log("event promo", resp);
+      if (resp.status == 200) {
+        setpromo_video("");
+        showNotification("Video uploaded Successfully", "Success");
+      } else {
+        showNotification("Video upload Failed", "Error");
+      }
     } catch (err) {
       // Handle any other errors that may occur during the request
       console.log(err);
