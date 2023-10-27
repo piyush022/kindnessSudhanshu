@@ -707,6 +707,7 @@ const Get_involved = () => {
 
                         <div className="text-center">
                           <a
+                            target="_blank"
                             href={process.env.SITE_URL + data2?.image2}
                             className="buy-btn involved_btn"
                             download
@@ -721,6 +722,7 @@ const Get_involved = () => {
 
                         <div className="text-center">
                           <a
+                            target="_blank"
                             href={process.env.SITE_URL + data2?.image3}
                             className="buy-btn involved_btn"
                             download
