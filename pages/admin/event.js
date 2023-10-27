@@ -39,7 +39,8 @@ const EventPage = () => {
   const [eventpromovideo, seteventpromovideo] = useState("");
 
   const [editEventTitle, setEditEventTitle] = useState("");
-  const [editEventDescription3, setEditEventDescription3] = useState();
+  const [editEventDescription3, setEditEventDescription3] = useState("");
+  const [EditAddress, setEditAddress] = useState("");
   const [editStartDate, setEditStartDate] = useState(new Date());
 
   const [editActive3, setEditActive3] = useState("");
@@ -83,8 +84,10 @@ const EventPage = () => {
 
       if (resp?.data?.success) {
         showNotification("Data updated Successfully", "Success");
+        setAttentionText("");
       } else {
         showNotification("Some Data is missing", "Error");
+        setAttentionText("");
       }
     } catch (err) {
       showNotification(err?.message, "Error");
@@ -293,6 +296,12 @@ const EventPage = () => {
         if (editStartDate) {
           formData.append("date", getFormatedDate(editStartDate, "YYYY-MM-DD"));
         }
+        if (editEventDescription3 != "") {
+          formData.append("eventDescription", editEventDescription3);
+        }
+        if (EditAddress != "") {
+          formData.append("locationAddress", EditAddress);
+        }
         // console.log("editActive3", editActive3);
         formData.append("active", editActive3 ? 1 : 0);
 
@@ -433,44 +442,58 @@ const EventPage = () => {
   };
 
   const updateEventManagementSection = async () => {
-    try {
-      // console.log("eventType2", eventType2);
-      const formData = new FormData();
-      formData.append("eventTitle", eventTitle);
-      formData.append("eventDescription", eventDescription3);
-      formData.append("date", getFormatedDate(startDate, "YYYY-MM-DD"));
-      formData.append("time", time);
-      formData.append("eventType", eventType2);
-      formData.append("locationAddress", locationAddress);
-      formData.append("city", city);
-      formData.append("state", state);
-      formData.append("eventMedia", newsMedia2);
-      formData.append("zipcode", zipcode);
-      formData.append("eventCost", eventCost);
-      formData.append("active", active3 ? 1 : 0);
+    if (
+      eventTitle != "" &&
+      eventDescription3 != "" &&
+      eventType2 != "" &&
+      locationAddress != "" &&
+      city != "" &&
+      state != "" &&
+      zipcode != "" &&
+      eventCost != ""
+    ) {
+      try {
+        // console.log("eventType2", eventType2);
+        const formData = new FormData();
+        formData.append("eventTitle", eventTitle);
+        formData.append("eventDescription", eventDescription3);
+        formData.append("date", getFormatedDate(startDate, "YYYY-MM-DD"));
+        formData.append("time", time);
+        formData.append("eventType", eventType2);
+        formData.append("locationAddress", locationAddress);
+        formData.append("city", city);
+        formData.append("state", state);
+        formData.append("eventMedia", newsMedia2);
+        formData.append("zipcode", zipcode);
+        formData.append("eventCost", eventCost);
+        formData.append("active", active3 ? 1 : 0);
 
-      const resp = await eventPageSevices.updateEventManagement(formData);
+        const resp = await eventPageSevices.updateEventManagement(formData);
 
-      if (resp?.data?.success) {
-        showNotification("Record Added Successfully", "Success");
-        seteventTitle("");
-        seteventDescription3("");
-        setStartDate("");
-        settime("");
-        seteventType2("");
-        setlocationAddress("");
-        setcity("");
-        setstate("");
-        setnewsMedia("");
-        setzipcode("");
-        seteventCost("");
-        setactive3(false);
-      } else {
-        showNotification(resp?.data?.message, "Error");
+        if (resp?.data?.success) {
+          eventListsection();
+          showNotification("Record Added Successfully", "Success");
+          seteventTitle("");
+          seteventDescription3("");
+          setStartDate("");
+          settime("");
+          seteventType2("");
+          setlocationAddress("");
+          setcity("");
+          setstate("");
+          setnewsMedia("");
+          setzipcode("");
+          seteventCost("");
+          setactive3(false);
+        } else {
+          showNotification(resp?.data?.message, "Error");
+        }
+      } catch (err) {
+        // Handle any other errors that may occur during the request
+        console.log(err);
       }
-    } catch (err) {
-      // Handle any other errors that may occur during the request
-      console.log(err);
+    } else {
+      showNotification("Please fill all fields", "Error");
     }
   };
 
@@ -923,6 +946,7 @@ const EventPage = () => {
                                 <td>
                                   {getFormatedDate(item?.updated_at, "LL")}
                                 </td>
+
                                 <td>{parseInt(item?.active) ? "Yes" : "No"}</td>
                               </>
                             )}
@@ -973,7 +997,7 @@ const EventPage = () => {
                 </div>
 
                 <div className="row">
-                  <p>News Title</p>
+                  <p>Event Title</p>
                   <div className="col-md-12">
                     <input
                       type="text"
@@ -986,7 +1010,7 @@ const EventPage = () => {
 
               <div className="row">
                 <div className="col-md-4">
-                  <p>News Media</p>
+                  <p>Event Media</p>
                   <Image
                     src={upMediaPreview ? upMediaPreview : "/no-img.jpg"}
                     width={80}
@@ -1028,12 +1052,13 @@ const EventPage = () => {
                 <div className="col-md">
                   <p>Attention Text</p>
                   <input
+                    value={AttentionText}
                     type="text"
                     onChange={(e) => setAttentionText(e.target.value)}
                   />
                 </div>
 
-                <div className="col-md-4 text-right">
+                <div className="col-md-4 text-right mt-5">
                   <button
                     type="button"
                     className="btn btn btn-outline-primary align-bottom"
@@ -1087,11 +1112,18 @@ const EventPage = () => {
                         <th>Event Title</th>
                         <th># of RSVP</th>
                         <th>Date</th>
+                        <th>Description</th>
+                        <th>Address</th>
                         <th>Active</th>
                         <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
+                      <>
+                        {eventList?.length
+                          ? console.log("EventList", eventList)
+                          : null}
+                      </>
                       {eventList?.length &&
                         eventList?.map((item, index) => (
                           <tr key={index}>
@@ -1117,6 +1149,25 @@ const EventPage = () => {
                                 </td>
                                 <td>
                                   <input
+                                    type="text"
+                                    value={editEventDescription3}
+                                    onChange={(e) =>
+                                      setEditEventDescription3(e?.target?.value)
+                                    }
+                                  />
+                                </td>
+                                <td>
+                                  <input
+                                    type="text"
+                                    value={EditAddress}
+                                    onChange={(e) =>
+                                      setEditAddress(e?.target?.value)
+                                    }
+                                  />
+                                </td>
+
+                                <td>
+                                  <input
                                     type="checkbox"
                                     id="flexCheckDefault"
                                     checked={editActive3}
@@ -1131,6 +1182,8 @@ const EventPage = () => {
                                 <td>{item?.event_title}</td>
                                 <td>0</td>
                                 <td>{getFormatedDate(item?.date, "M-DD-Y")}</td>
+                                <td>{item?.event_description}</td>
+                                <td>{item?.location_address}</td>
                                 <td>{parseInt(item?.active) ? "Yes" : "No"}</td>
                               </>
                             )}
@@ -1183,16 +1236,20 @@ const EventPage = () => {
                   <div className="col-md-6">
                     <p>Event Title</p>
                     <input
+                      value={eventTitle}
                       type="text"
                       onChange={(e) => seteventTitle(e.target.value)}
+                      required
                     />
                   </div>
 
                   <div className="col-md-6">
                     <p>Description</p>
                     <input
+                      value={eventDescription3}
                       type="text"
                       onChange={(e) => seteventDescription3(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -1235,16 +1292,20 @@ const EventPage = () => {
                   <div className="col-md-6">
                     <label className="form-label">Location Address</label>
                     <input
+                      value={locationAddress}
                       type="text"
                       onChange={(e) => setlocationAddress(e.target.value)}
+                      required
                     />
                   </div>
 
                   <div className="col-md-6">
                     <label className="form-label">City</label>
                     <input
+                      value={city}
                       type="text"
                       onChange={(e) => setcity(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -1263,8 +1324,10 @@ const EventPage = () => {
                   <div className="col-md-6">
                     <label className="form-label">Zip</label>
                     <input
+                      value={zipcode}
                       type="text"
                       onChange={(e) => setzipcode(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -1348,8 +1411,10 @@ const EventPage = () => {
                   <div className="col-md-6">
                     <label className="form-label">Event Cost</label>
                     <input
-                      type="text"
+                      value={eventCost}
+                      type="number"
                       onChange={(e) => seteventCost(e.target.value)}
+                      required
                     />
                   </div>
 
