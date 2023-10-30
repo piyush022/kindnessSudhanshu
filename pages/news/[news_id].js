@@ -144,7 +144,7 @@ function NewsDetailPage({ data, Newsid }) {
           </div>
         ) : null}
 
-        <Head>
+        {/* <Head>
           <title>{data?.title}</title>
           <meta name="description" content={data.news_artical} />
 
@@ -177,7 +177,7 @@ function NewsDetailPage({ data, Newsid }) {
             rel="canonical"
             href={process.env.BASE_LIVE_URL + "news/" + data?.id}
           />
-        </Head>
+        </Head> */}
 
         <section className="news_title_one ">
           <div
