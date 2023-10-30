@@ -7,13 +7,54 @@ import "@/styles/Home.module.css";
 import "@/styles/admin.css";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { useEffect, useState } from "react";
 
 let persistor = persistStore(store);
 
 export default function MyApp({ Component, pageProps }) {
+  const [data, setData] = useState("");
+
+  useEffect(() => {
+    const newsData = localStorage.getItem("N-d");
+    if (newsData) {
+      setData(newsData);
+      localStorage.removeItem("N-d");
+    }
+  });
   return (
     <>
       <Head>
+        <meta name="description" content={data.news_artical} />
+
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:url"
+          content={process.env.BASE_LIVE_URL + "news/" + data?.id}
+        />
+        <meta property="og:title" content={data?.title} />
+        <meta property="og:description" content={data.description} />
+        <meta
+          property="og:image"
+          content={process.env.SITE_URL + data?.media}
+        />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta
+          property="twitter:url"
+          content={process.env.BASE_LIVE_URL + "news/" + data?.id}
+        />
+        <meta property="twitter:title" content={data?.title} />
+        <meta property="twitter:description" content={data.description} />
+        <meta
+          property="twitter:image"
+          content={process.env.SITE_URL + data?.media}
+        />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="canonical"
+          href={process.env.BASE_LIVE_URL + "news/" + data?.id}
+        />
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"

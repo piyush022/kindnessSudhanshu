@@ -2014,7 +2014,6 @@ const Home = () => {
 
             <section className="panel important">
               <h2>
-                {" "}
                 <i className="fa fa-hand-o-right" aria-hidden="true"></i>{" "}
                 Campaign News
               </h2>
@@ -2217,7 +2216,7 @@ const Home = () => {
                                             )}
                                         </td>
                                         <td>
-                                          <p className="para-width">
+                                          <p className="para-width  ">
                                             {manageReadmore ? (
                                               <>
                                                 {item?.news_artical?.slice(

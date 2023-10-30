@@ -72,6 +72,7 @@ function NewsDetailPage({ data, Newsid }) {
       // const singleNews = data.data.filter((item) => item.id == id);
       // console.log("singleNews", singleNews);
       console.log("DATA", data);
+      localStorage.setItem("N-d", data);
 
       fetchComments(id);
     }
