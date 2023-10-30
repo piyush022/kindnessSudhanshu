@@ -17,6 +17,7 @@ import {
   checkImageOrVideoFromUrl,
   getFileType,
 } from "@/store/library/utils";
+import { BsYoutube, BsFileEarmarkImage } from "react-icons/bs";
 const Home = () => {
   const router = useRouter();
   const [startDate, setStartDate] = useState(new Date());
@@ -112,6 +113,8 @@ const Home = () => {
   const [CmtCount, setCmtCount] = useState([]);
   const [updateOrder, setUpdateOrder] = useState("");
   const [manageReadmore, setmanageReadmore] = useState(true);
+  const [toggleYoutube, setToggleYoutube] = useState(false);
+  const [youtubeLinkCampHeader, setyoutubeLinkCampHeader] = useState("");
 
   //function to update the table data
   function editFieldData(id, index, sectionName) {
@@ -937,6 +940,10 @@ const Home = () => {
         message = "File Uploaded Successfully";
         form_data.append("middleImage", middleImage);
       }
+      if (fieldname == "youtube") {
+        message = "Youtube Media Uploaded Successfully";
+        form_data.append("middleImage", youtubeLinkCampHeader);
+      }
 
       if (fieldname == "rightImage") {
         message = "Image Uploaded Successfully";
@@ -1211,64 +1218,142 @@ const Home = () => {
               <br />
               <div className="container upload_container">
                 <div className="row">
-                  <div className="col-md-3">
-                    <label className="form-label-1" htmlFor="typeText">
-                      Middle Media
-                    </label>
-                  </div>
-                  <div className="col-md-3">
-                    {pageStaticContent?.imageType2 == "video" ? (
-                      <ReactPlayer
-                        url={
-                          middleImagePreview
-                            ? middleImagePreview
-                            : pageStaticContent?.image2
-                            ? process.env.SITE_URL + pageStaticContent?.image2
-                            : "demo-video.mp4"
-                        }
-                        playing={true}
-                        muted={true}
-                        width={"50%"}
-                        height={80}
-                      />
-                    ) : (
-                      <Image
-                        src={
-                          middleImagePreview
-                            ? middleImagePreview
-                            : pageStaticContent?.image2
-                            ? process.env.SITE_URL + pageStaticContent?.image2
-                            : "/no-img.jpg"
-                        }
-                        width={80}
-                        height={80}
-                        alt="middle-media"
-                      />
-                    )}
-                  </div>
+                  {toggleYoutube ? (
+                    <>
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-md-3">
+                            <label className="form-label" htmlFor="typeText">
+                              Youtube Media
+                            </label>
+                          </div>
+                          <div className="col-md-3">
+                            {youtubeLinkCampHeader != ""
+                              ? showVideo(youtubeLinkCampHeader)
+                              : showVideo("no-video")}
+                          </div>
+                          <div className="col-md-3">
+                            <input
+                              className="form-control"
+                              type="text"
+                              value={youtubeLinkCampHeader}
+                              onChange={(e) => {
+                                const inputValue = e.target.value.trim();
+                                setyoutubeLinkCampHeader(inputValue);
+                              }}
+                            />
+                            <span className="mbSpan">
+                              Add YouTube video link.
+                            </span>
+                          </div>
 
-                  <div className="col-md-3">
-                    <input
-                      type="file"
-                      name="middleImage"
-                      onChange={(e) => onchangeFile(e, "middleImage")}
-                    />
-                    <span className="mbSpan">
-                      Max file size for image is 6 MB , video 100MB
-                    </span>
-                  </div>
+                          <div className="col-md-3">
+                            <button
+                              type="button"
+                              className="btn btn-outline-primary"
+                              onClick={() => updateStaticContent("youtube")}
+                            >
+                              Update Site
+                            </button>
+                          </div>
+                        </div>
+                        <p className="text-center my-4">OR</p>
+                        <div className="text-center">
+                          <BsFileEarmarkImage className="youTubeLogo" />
+                          <span
+                            className="mx-4 custom-youtube-toggleLink"
+                            onClick={() => {
+                              toggleYoutube
+                                ? setToggleYoutube(false)
+                                : (setToggleYoutube(true),
+                                  setyoutubeLinkCampHeader(""));
+                            }}
+                          >
+                            Custom Video
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="col-md-3">
+                        <label className="form-label-1" htmlFor="typeText">
+                          Middle Media
+                        </label>
+                      </div>
+                      <div className="col-md-3">
+                        {pageStaticContent?.imageType2 == "video" ? (
+                          <ReactPlayer
+                            url={
+                              middleImagePreview
+                                ? middleImagePreview
+                                : pageStaticContent?.image2
+                                ? process.env.SITE_URL +
+                                  pageStaticContent?.image2
+                                : "demo-video.mp4"
+                            }
+                            playing={true}
+                            muted={true}
+                            width={"50%"}
+                            height={80}
+                          />
+                        ) : (
+                          <Image
+                            src={
+                              middleImagePreview
+                                ? middleImagePreview
+                                : pageStaticContent?.image2
+                                ? process.env.SITE_URL +
+                                  pageStaticContent?.image2
+                                : "/no-img.jpg"
+                            }
+                            width={80}
+                            height={80}
+                            alt="middle-media"
+                          />
+                        )}
+                      </div>
 
-                  <div className="col-md-3">
-                    <div className="text-right">
-                      <button
-                        type="button"
-                        onClick={() => updateStaticContent("middleImage")}
-                        className="btn btn btn-outline-primary align-bottom"
+                      <div className="col-md-3">
+                        <input
+                          type="file"
+                          name="middleImage"
+                          onChange={(e) => onchangeFile(e, "middleImage")}
+                        />
+                        <span className="mbSpan">
+                          Max file size for image is 6 MB , video 100MB
+                        </span>
+                      </div>
+
+                      <div className="col-md-3">
+                        <div className="text-right">
+                          <button
+                            type="button"
+                            onClick={() => updateStaticContent("middleImage")}
+                            className="btn btn btn-outline-primary align-bottom"
+                          >
+                            Update Site
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        style={{ width: "100%" }}
+                        className="d-flex justify-content-center align-items-center"
                       >
-                        Update Site
-                      </button>
-                    </div>
-                  </div>
+                        <BsYoutube className="youTubeLogo" />
+                        <span
+                          className="mx-4 custom-youtube-toggleLink"
+                          onClick={() => {
+                            toggleYoutube
+                              ? setToggleYoutube(false)
+                              : setToggleYoutube(true);
+                          }}
+                        >
+                          YouTube Link
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
               <br />
@@ -2718,5 +2803,38 @@ const Home = () => {
     </>
   );
 };
+
+function showVideo(fileSrc) {
+  return (
+    <>
+      {fileSrc == "no-video" ? (
+        <Image src="/no-img.jpg" width={80} height={80} alt="video-banner" />
+      ) : (
+        <ReactPlayer
+          url={fileSrc}
+          playing={true}
+          muted={true}
+          width={"50%"}
+          height={80}
+        />
+      )}
+    </>
+  );
+}
+
+function showImage(fileSrc) {
+  return <Image src={fileSrc} width={80} height={80} alt="video-banner" />;
+}
+function showYoutube(fileSrc) {
+  return (
+    <ReactPlayer
+      url={fileSrc}
+      playing={true}
+      muted={true}
+      width={"50%"}
+      height={80}
+    />
+  );
+}
 
 export default Home;

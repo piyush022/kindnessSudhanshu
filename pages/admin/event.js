@@ -436,9 +436,9 @@ const EventPage = () => {
         console.log("event promo", resp);
         if (resp.status == 200) {
           setpromo_video("");
-          showNotification("Video uploaded Successfully", "Success");
+          showNotification("Youtube media updated", "Success");
         } else {
-          showNotification("Video upload Failed", "Error");
+          showNotification("Youtube media update Failed", "Error");
         }
       } catch (err) {
         // Handle any other errors that may occur during the request
