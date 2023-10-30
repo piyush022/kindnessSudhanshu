@@ -1763,10 +1763,16 @@ const Home = () => {
                                     </>
                                   ) : (
                                     <>
-                                      <td>{item?.column_1} </td>
-                                      <td>{item?.column_2}</td>
-                                      <td>{item?.description}</td>
-                                      <td>
+                                      <td className="fixNameBreak fixLineHeight">
+                                        {item?.column_1}{" "}
+                                      </td>
+                                      <td className="fixLineHeight">
+                                        {item?.column_2}
+                                      </td>
+                                      <td className="fixLineHeight">
+                                        {item?.description}
+                                      </td>
+                                      <td className="fixLineHeight">
                                         <span className="btn ">
                                           {parseInt(item?.active)
                                             ? "Yes"

@@ -3389,6 +3389,12 @@ input[type="text"]:hover {
 #newsSlider > .slick-slider {
   width: 90%;
 }
+.fixLineHeight {
+  line-height: 30px;
+}
+.fixNameBreak {
+  width: 150px;
+}
 /* -----------------------Media Queries----------------------- */
 
 @media (max-width: 768px) {
