@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import AdminLayout from "@/layout/adminLayout";
 import showNotification from "@/helpers/show_notification";
 import { getFormatedDate, randomKey } from "@/store/library/utils";
+import { BsYoutube, BsFileEarmarkImage } from "react-icons/bs";
 import { Spinner } from "react-bootstrap";
 import Link from "next/link";
 const EventPage = () => {
@@ -64,6 +65,8 @@ const EventPage = () => {
   const [upDesc2, setupDesc2] = useState();
   const [AttentionText, setAttentionText] = useState("");
   const [rsvp, setrsvp] = useState([]);
+  const [toggleYoutube, setToggleYoutube] = useState(false);
+  const [youtubeLinkCampHeader, setyoutubeLinkCampHeader] = useState("");
   let total = 0;
 
   function countRSVP() {
@@ -422,22 +425,44 @@ const EventPage = () => {
   };
 
   const updateEventPageVideo = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("pageName", "event");
-      formData.append("eventPromoVideo", promo_video);
+    if (toggleYoutube == true) {
+      console.log("youtube upload");
+      try {
+        const formData = new FormData();
+        formData.append("pageName", "event");
+        formData.append("eventPromoVideo", youtubeLinkCampHeader);
 
-      const resp = await eventPageSevices.updateEventSectionVideo(formData);
-      console.log("event promo", resp);
-      if (resp.status == 200) {
-        setpromo_video("");
-        showNotification("Video uploaded Successfully", "Success");
-      } else {
-        showNotification("Video upload Failed", "Error");
+        const resp = await eventPageSevices.updateEventSectionVideo(formData);
+        console.log("event promo", resp);
+        if (resp.status == 200) {
+          setpromo_video("");
+          showNotification("Video uploaded Successfully", "Success");
+        } else {
+          showNotification("Video upload Failed", "Error");
+        }
+      } catch (err) {
+        // Handle any other errors that may occur during the request
+        console.log(err);
       }
-    } catch (err) {
-      // Handle any other errors that may occur during the request
-      console.log(err);
+    } else {
+      console.log("video upload");
+      try {
+        const formData = new FormData();
+        formData.append("pageName", "event");
+        formData.append("eventPromoVideo", promo_video);
+
+        const resp = await eventPageSevices.updateEventSectionVideo(formData);
+        console.log("event promo", resp);
+        if (resp.status == 200) {
+          setpromo_video("");
+          showNotification("Video uploaded Successfully", "Success");
+        } else {
+          showNotification("Video upload Failed", "Error");
+        }
+      } catch (err) {
+        // Handle any other errors that may occur during the request
+        console.log(err);
+      }
     }
   };
 
@@ -798,10 +823,66 @@ const EventPage = () => {
               Promotions Images
             </h2>
             <div className="container">
-              <div className="row">
-                <div className="col-md-4">
-                  <p>Event Promo Video</p>
-                  {/* <Image
+              {toggleYoutube ? (
+                <>
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-3">
+                        <label className="form-label" htmlFor="typeText">
+                          Youtube Media
+                        </label>
+                      </div>
+                      <div className="col-md-3">
+                        {youtubeLinkCampHeader != ""
+                          ? showVideo(youtubeLinkCampHeader)
+                          : showVideo("no-video")}
+                      </div>
+                      <div className="col-md-3">
+                        <input
+                          className="form-control"
+                          type="text"
+                          value={youtubeLinkCampHeader}
+                          onChange={(e) => {
+                            const inputValue = e.target.value.trim();
+                            setyoutubeLinkCampHeader(inputValue);
+                          }}
+                        />
+                        <span className="mbSpan">Add YouTube video link.</span>
+                      </div>
+
+                      <div className="col-md-3">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={updateEventPageVideo}
+                        >
+                          Update Site
+                        </button>
+                      </div>
+                    </div>
+                    <p className="text-center my-4">OR</p>
+                    <div className="text-center">
+                      <BsFileEarmarkImage className="youTubeLogo" />
+                      <span
+                        className="mx-4 custom-youtube-toggleLink"
+                        onClick={() => {
+                          toggleYoutube
+                            ? setToggleYoutube(false)
+                            : (setToggleYoutube(true),
+                              setyoutubeLinkCampHeader(""));
+                        }}
+                      >
+                        Custom Video
+                      </span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="row">
+                    <div className="col-md-4">
+                      <p>Event Promo Video</p>
+                      {/* <Image
                     src={
                       eventpromovideo
                         ? process.env.API_URL + eventpromovideo
@@ -812,19 +893,19 @@ const EventPage = () => {
                     alt="Picture of the author"
                   /> */}
 
-                  <ReactPlayer
-                    url={
-                      eventpromovideo
-                        ? process.env.SITE_URL + eventpromovideo
-                        : ""
-                    }
-                    playing={true}
-                    muted={true}
-                    width={"50%"}
-                    height={80}
-                  />
+                      <ReactPlayer
+                        url={
+                          eventpromovideo
+                            ? process.env.SITE_URL + eventpromovideo
+                            : ""
+                        }
+                        playing={true}
+                        muted={true}
+                        width={"50%"}
+                        height={80}
+                      />
 
-                  {/* <video
+                      {/* <video
                     autoPlay
                     width="100%"
                     height={300}
@@ -840,41 +921,59 @@ const EventPage = () => {
                       type="video/*"
                     />
                   </video> */}
-                </div>
+                    </div>
 
-                <div className="col-md-4">
-                  <input
-                    type="file"
-                    accept="video/*"
-                    onChange={(e) => {
-                      if (e.target.files[0]?.size < 100 * 1024 * 1024) {
-                        setpromo_video(e.target.files[0]);
-                      } else {
-                        showNotification(
-                          "File size exceeds 100MB. Please choose a smaller file",
-                          "Error"
-                        );
+                    <div className="col-md-4">
+                      <input
+                        type="file"
+                        accept="video/*"
+                        onChange={(e) => {
+                          if (e.target.files[0]?.size < 100 * 1024 * 1024) {
+                            setpromo_video(e.target.files[0]);
+                          } else {
+                            showNotification(
+                              "File size exceeds 100MB. Please choose a smaller file",
+                              "Error"
+                            );
 
-                        // Clear the file input
-                        e.target.value = null;
-                      }
-                    }}
-                  />
-                  <span className="mbSpan">
-                    Max file size for video is 100 MB
-                  </span>
-                </div>
+                            // Clear the file input
+                            e.target.value = null;
+                          }
+                        }}
+                      />
+                      <span className="mbSpan">
+                        Max file size for video is 100 MB
+                      </span>
+                    </div>
 
-                <div className="col-md-4 text-right">
-                  <button
-                    type="button"
-                    className="btn btn btn-outline-primary align-bottom"
-                    onClick={updateEventPageVideo}
-                  >
-                    Update Site
-                  </button>
-                </div>
-              </div>
+                    <div className="col-md-4 text-right">
+                      <button
+                        type="button"
+                        className="btn btn btn-outline-primary align-bottom"
+                        onClick={updateEventPageVideo}
+                      >
+                        Update Site
+                      </button>
+                    </div>
+                    <div
+                      style={{ width: "100%" }}
+                      className="d-flex justify-content-center align-items-center"
+                    >
+                      <BsYoutube className="youTubeLogo" />
+                      <span
+                        className="mx-4 custom-youtube-toggleLink"
+                        onClick={() => {
+                          toggleYoutube
+                            ? setToggleYoutube(false)
+                            : setToggleYoutube(true);
+                        }}
+                      >
+                        YouTube Link
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
               <br />
               <div className="container">
                 <div className="row">
@@ -1504,5 +1603,38 @@ const EventPage = () => {
     </>
   );
 };
+
+function showVideo(fileSrc) {
+  return (
+    <>
+      {fileSrc == "no-video" ? (
+        <Image src="/no-img.jpg" width={80} height={80} alt="video-banner" />
+      ) : (
+        <ReactPlayer
+          url={fileSrc}
+          playing={true}
+          muted={true}
+          width={"50%"}
+          height={80}
+        />
+      )}
+    </>
+  );
+}
+
+function showImage(fileSrc) {
+  return <Image src={fileSrc} width={80} height={80} alt="video-banner" />;
+}
+function showYoutube(fileSrc) {
+  return (
+    <ReactPlayer
+      url={fileSrc}
+      playing={true}
+      muted={true}
+      width={"50%"}
+      height={80}
+    />
+  );
+}
 
 export default EventPage;
