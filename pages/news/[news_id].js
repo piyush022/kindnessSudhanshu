@@ -164,80 +164,39 @@ function NewsDetailPage({ data, Newsid }) {
             </div>
           </div>
         ) : null}
-        <NextSeo
-          title={data?.title}
-          description={data.description}
-          canonical="https://kindness-omega.vercel.app"
-          openGraph={{
-            url: `https://kindness-omega.vercel.app/news/${Newsid}`,
-            title: data?.title,
-            description: data.description,
-            images: [
-              {
-                url: process.env.SITE_URL + data?.media,
-                width: 800,
-                height: 600,
-                alt: "Og Image Alt",
-                type: "image/jpeg",
-              },
-              {
-                url: process.env.SITE_URL + data?.media,
-                width: 900,
-                height: 800,
-                alt: "Og Image Alt Second",
-                type: "image/jpeg",
-              },
-            ],
-            siteName: "KindnessCampaign",
-          }}
-          twitter={{
-            handle: "@handle",
-            site: "@site",
-            cardType: "summary_large_image",
-          }}
-        />
 
-        {/* {Object.keys(data).length > 0 ? (
-          <Head>
-            <title>{data?.title}</title>
-            <meta name="description" content={data.description} />
+        <Head>
+          <title>News - {data?.title}</title>
+          <meta name="description" content={data.news_artical} />
 
-            <meta
-              property="og:url"
-              content={
-                process.env.BASE_LIVE_URL + "news/" + router.query?.news_id
-              }
-            />
-            <meta property="og:type" content="website" />
-            <meta property="og:title" content={data?.title} />
-            <meta property="og:description" content={data.description} />
-            <meta
-              property="og:image"
-              content={process.env.SITE_URL + data?.media}
-            />
+          <meta
+            property="og:url"
+            content={process.env.BASE_LIVE_URL + "news/" + data?.id}
+          />
+          <meta property="og:type" content="website" />
+          <meta property="og:title" content={data?.title} />
+          <meta property="og:description" content={data.description} />
+          <meta
+            property="og:image"
+            content={process.env.SITE_URL + data?.media}
+          />
 
-            <meta
-              name="twitter:card"
-              content={process.env.SITE_URL + data?.media}
-            />
-            <meta
-              property="twitter:domain"
-              content="kindness-omega.vercel.app"
-            />
-            <meta
-              property="twitter:url"
-              content={
-                process.env.BASE_LIVE_URL + "news/" + router.query?.news_id
-              }
-            />
-            <meta name="twitter:title" content={data?.title} />
-            <meta name="twitter:description" content={data.description} />
-            <meta
-              name="twitter:image"
-              content={process.env.SITE_URL + data?.media}
-            />
-          </Head>
-        ) : null} */}
+          <meta
+            name="twitter:card"
+            content={process.env.SITE_URL + data?.media}
+          />
+          <meta property="twitter:domain" content="kindness-omega.vercel.app" />
+          <meta
+            property="twitter:url"
+            content={process.env.BASE_LIVE_URL + "news/" + data?.id}
+          />
+          <meta name="twitter:title" content={data?.title} />
+          <meta name="twitter:description" content={data.description} />
+          <meta
+            name="twitter:image"
+            content={process.env.SITE_URL + data?.media}
+          />
+        </Head>
 
         <section className="news_title_one ">
           <div
