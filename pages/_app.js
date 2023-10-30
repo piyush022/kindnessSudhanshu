@@ -33,10 +33,7 @@ export default function MyApp({ Component, pageProps }) {
         />
         <meta property="og:title" content={data?.title} />
         <meta property="og:description" content={data.description} />
-        <meta
-          property="og:image"
-          content={process.env.SITE_URL + data?.media}
-        />
+        <meta property="og:image" content="/logo.png" />
 
         <meta property="twitter:card" content="summary_large_image" />
         <meta
@@ -45,10 +42,7 @@ export default function MyApp({ Component, pageProps }) {
         />
         <meta property="twitter:title" content={data?.title} />
         <meta property="twitter:description" content={data.description} />
-        <meta
-          property="twitter:image"
-          content={process.env.SITE_URL + data?.media}
-        />
+        <meta property="twitter:image" content="/logo.png" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
