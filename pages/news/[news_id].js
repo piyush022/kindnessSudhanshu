@@ -124,28 +124,6 @@ function NewsDetailPage({ data, Newsid }) {
     }
   }
 
-  // const getSingleNewsPost = async (id) => {
-  //   try {
-  //     setLoader(true);
-  //     let params = {};
-  //     params.id = id;
-
-  //     let resp = await getInvolvePageSevices.getDynamicData(params);
-
-  //     if (resp.data?.success) {
-  //       setLoader(false);
-  //       setdata(resp?.data?.data);
-  //       console.log("data", data);
-  //     } else {
-  //       setdata([]);
-  //       setLoader(false);
-  //     }
-  //   } catch (error) {
-  //     setLoader(false);
-  //     console.log("error", error);
-  //   }
-  // };
-
   return (
     <>
       <Layout>
@@ -166,14 +144,14 @@ function NewsDetailPage({ data, Newsid }) {
         ) : null}
 
         <Head>
-          <title>News - {data?.title}</title>
+          <title>{data?.title}</title>
           <meta name="description" content={data.news_artical} />
 
+          <meta property="og:type" content="website" />
           <meta
             property="og:url"
             content={process.env.BASE_LIVE_URL + "news/" + data?.id}
           />
-          <meta property="og:type" content="website" />
           <meta property="og:title" content={data?.title} />
           <meta property="og:description" content={data.description} />
           <meta
@@ -181,20 +159,22 @@ function NewsDetailPage({ data, Newsid }) {
             content={process.env.SITE_URL + data?.media}
           />
 
-          <meta
-            name="twitter:card"
-            content={process.env.SITE_URL + data?.media}
-          />
-          <meta property="twitter:domain" content="kindness-omega.vercel.app" />
+          <meta property="twitter:card" content="summary_large_image" />
           <meta
             property="twitter:url"
             content={process.env.BASE_LIVE_URL + "news/" + data?.id}
           />
-          <meta name="twitter:title" content={data?.title} />
-          <meta name="twitter:description" content={data.description} />
+          <meta property="twitter:title" content={data?.title} />
+          <meta property="twitter:description" content={data.description} />
           <meta
-            name="twitter:image"
+            property="twitter:image"
             content={process.env.SITE_URL + data?.media}
+          />
+
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link
+            rel="canonical"
+            href={process.env.BASE_LIVE_URL + "news/" + data?.id}
           />
         </Head>
 
