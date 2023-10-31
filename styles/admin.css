@@ -373,7 +373,7 @@ td {
   background-size: cover;
   background-attachment: fixed;
   padding-bottom: 50px;
-  height:100vh;
+  height: 100vh;
 }
 
 .login-title {
@@ -632,8 +632,8 @@ input:focus {
 .users a:hover {
   color: #ff651f;
 }
-.upload_container .col-md-3{
+.upload_container .col-md-3 {
   -ms-flex: 0 0 25%;
-    flex: 0 0 25%;
-    max-width: 25%;
+  flex: 0 0 25%;
+  max-width: 25%;
 }

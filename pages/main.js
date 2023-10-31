@@ -581,7 +581,7 @@ function MainPage({ data }) {
               </h3>
               <div className="row">
                 <div className="col-md-12 col-lg-6 align-self-center">
-                  <Image
+                  {/* <Image
                     src={
                       newsSectionFirstData?.media
                         ? process.env.SITE_URL + newsSectionFirstData?.media
@@ -592,7 +592,39 @@ function MainPage({ data }) {
                     alt={newsSectionFirstData?.title}
                     sizes="100vw"
                     style={{ width: "100%", height: "auto" }}
-                  />
+                  /> */}
+                  {newsSectionFirstData.media_type == "image" ? (
+                    <Image
+                      src={
+                        newsSectionFirstData?.media
+                          ? process.env.SITE_URL + newsSectionFirstData?.media
+                          : "/no-img.jpg"
+                      }
+                      width={0}
+                      height={0}
+                      alt={newsSectionFirstData?.title}
+                      sizes="100vw"
+                      style={{ width: "100%", height: "auto" }}
+                    />
+                  ) : newsSectionFirstData.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        newsSectionFirstData?.media
+                          ? process.env.SITE_URL + newsSectionFirstData?.media
+                          : "/no-img.jpg"
+                      }
+                      playing={true}
+                      muted={true}
+                      width={"100%"}
+                    />
+                  ) : (
+                    <ReactPlayer
+                      url={newsSectionFirstData?.media}
+                      playing={true}
+                      muted={true}
+                      width={"100%"}
+                    />
+                  )}
                 </div>
                 <div className="col-md-12 col-lg-6 news_sec">
                   <span
