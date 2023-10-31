@@ -17,6 +17,7 @@ import { BiSolidUserCircle } from "react-icons/bi";
 import { getFormatedDate } from "../../store/library/utils";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import ReactPlayer from "react-player";
 import { NextSeo } from "next-seo";
 
 export async function getStaticPaths() {
@@ -189,8 +190,8 @@ function NewsDetailPage({ data, Newsid }) {
             </h3>
             {data?.media ? (
               <div className="row">
-                <div className="col-md-12 col-lg-6 align-self-center">
-                  <Image
+                <div className="col-md-12 col-lg align-self-center">
+                  {/* <Image
                     src={
                       data?.media
                         ? process.env.SITE_URL + data?.media
@@ -201,7 +202,39 @@ function NewsDetailPage({ data, Newsid }) {
                     alt={data?.title}
                     sizes="100vw"
                     style={{ width: "100%", height: "auto" }}
-                  />
+                  /> */}
+                  {data.media_type == "image" ? (
+                    <Image
+                      src={
+                        data?.media
+                          ? process.env.SITE_URL + item?.media
+                          : "/no-img.jpg"
+                      }
+                      width={0}
+                      height={0}
+                      alt={data?.title}
+                      sizes="100vw"
+                      style={{ width: "100%", height: "auto" }}
+                    />
+                  ) : data.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        data?.media
+                          ? process.env.SITE_URL + item?.media
+                          : "/no-img.jpg"
+                      }
+                      playing={true}
+                      muted={true}
+                      width={"100%"}
+                    />
+                  ) : (
+                    <ReactPlayer
+                      url={data?.media}
+                      playing={true}
+                      muted={true}
+                      width={"100%"}
+                    />
+                  )}
                 </div>
                 <div className="col-md-12 col-lg-6">
                   <p className="News_titleSingleNews">{data?.title}</p>

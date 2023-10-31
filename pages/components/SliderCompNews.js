@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ReactPlayer from "react-player";
 const SliderCompNews = ({
   newsSectionData,
   showLoader,
@@ -80,16 +81,37 @@ const SliderCompNews = ({
                 <div className="sliderItemNews" key={index}>
                   <article>
                     <div className="post-img">
-                      <Image
-                        src={
-                          item?.media
-                            ? process.env.SITE_URL + item?.media
-                            : "news-title-two.png"
-                        }
-                        width={300}
-                        height={300}
-                        alt={item?.title}
-                      />
+                      {item.media_type == "image" ? (
+                        <Image
+                          src={
+                            item?.media
+                              ? process.env.SITE_URL + item?.media
+                              : "/no-img.jpg"
+                          }
+                          width={300}
+                          height={300}
+                        />
+                      ) : item.media_type == "video" ? (
+                        <ReactPlayer
+                          url={
+                            item?.media
+                              ? process.env.SITE_URL + item?.media
+                              : "/no-img.jpg"
+                          }
+                          playing={true}
+                          muted={true}
+                          width={"100%"}
+                          height={""}
+                        />
+                      ) : (
+                        <ReactPlayer
+                          url={item?.media}
+                          playing={true}
+                          muted={true}
+                          width={"100%"}
+                          height={""}
+                        />
+                      )}
                     </div>
                     <h2 className="News_title">
                       <Link

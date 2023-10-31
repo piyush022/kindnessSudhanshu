@@ -355,7 +355,7 @@ function MainPage({ data }) {
                             ? process.env.SITE_URL + staticContent?.image
                             : "demo-video.mp4"
                         }
-                        controls
+                        controls={false}
                         playing={true}
                         muted={true}
                         width={100}
@@ -386,7 +386,7 @@ function MainPage({ data }) {
                             ? process.env.SITE_URL + staticContent?.image2
                             : "demo-video.mp4"
                         }
-                        controls
+                        controls={false}
                         playing={true}
                         muted={true}
                         width={"100%"}
@@ -416,7 +416,7 @@ function MainPage({ data }) {
                             ? process.env.SITE_URL + staticContent?.image3
                             : "demo-video.mp4"
                         }
-                        controls
+                        controls={false}
                         playing={true}
                         muted={true}
                         width={100}

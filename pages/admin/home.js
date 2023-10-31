@@ -114,7 +114,10 @@ const Home = () => {
   const [updateOrder, setUpdateOrder] = useState("");
   const [manageReadmore, setmanageReadmore] = useState(true);
   const [toggleYoutube, setToggleYoutube] = useState(false);
+  const [toggleNewsYoutube, setToggleNewsYoutube] = useState(false);
   const [youtubeLinkCampHeader, setyoutubeLinkCampHeader] = useState("");
+  const [youtubeLinkCampHeaderNews, setyoutubeLinkCampHeaderNews] =
+    useState("");
 
   //function to update the table data
   function editFieldData(id, index, sectionName) {
@@ -829,58 +832,116 @@ const Home = () => {
   };
 
   const updateCampNews = async (e) => {
-    try {
-      if (campItem) {
-        let featuredActiveStatus = newsSectionData.filter(
-          (item) => item?.featuredItem == "1"
-        );
+    if (toggleNewsYoutube) {
+      try {
+        if (campItem) {
+          let featuredActiveStatus = newsSectionData.filter(
+            (item) => item?.featuredItem == "1"
+          );
 
-        if (featuredActiveStatus?.length) {
+          if (featuredActiveStatus?.length) {
+            showNotification(
+              "Please remove previous news from featured section",
+              "Error"
+            );
+            return false;
+          }
+        }
+
+        if (campTitle && youtubeLinkCampHeaderNews && startDate) {
+          setIsSubmitingLoader(true);
+          const formData = new FormData();
+          formData.append("title", campTitle);
+          formData.append("media", youtubeLinkCampHeaderNews);
+          formData.append("date", campDate);
+          formData.append("newsArticle", campSection);
+
+          formData.append("featuredItem", campItem ? 1 : 0);
+          formData.append("active", campActive ? 1 : 0);
+          formData.append("secName", "camp_news");
+
+          const response = await homePageService.addCampaignNewsData(formData);
+
+          if (response?.data?.success) {
+            showNewsSection();
+            showNotification(response?.data?.message, "Success");
+            setIsSubmitingLoader(false);
+
+            setCampActive("");
+            setStartDate("");
+            setCampDate("");
+            setCampItem("");
+            setCampMedia(null);
+            setCampMediaPreview(null);
+            setCampSection("");
+          } else {
+            setIsSubmitingLoader(false);
+            showNotification(response.data.message, "Error");
+          }
+        } else {
           showNotification(
-            "Please remove previous news from featured section",
+            "Please fill all fields of Campaign news section",
             "Error"
           );
-          return false;
         }
+      } catch (error) {
+        console.error(error);
       }
+    } else {
+      try {
+        if (campItem) {
+          let featuredActiveStatus = newsSectionData.filter(
+            (item) => item?.featuredItem == "1"
+          );
 
-      if (campTitle && campMedia && startDate) {
-        setIsSubmitingLoader(true);
-        const formData = new FormData();
-        formData.append("title", campTitle);
-        formData.append("media", campMedia);
-        formData.append("date", campDate);
-        formData.append("newsArticle", campSection);
+          if (featuredActiveStatus?.length) {
+            showNotification(
+              "Please remove previous news from featured section",
+              "Error"
+            );
+            return false;
+          }
+        }
 
-        formData.append("featuredItem", campItem ? 1 : 0);
-        formData.append("active", campActive ? 1 : 0);
-        formData.append("secName", "camp_news");
+        if (campTitle && campMedia && startDate) {
+          setIsSubmitingLoader(true);
+          const formData = new FormData();
+          formData.append("title", campTitle);
+          formData.append("media", campMedia);
+          formData.append("date", campDate);
+          formData.append("newsArticle", campSection);
 
-        const response = await homePageService.addCampaignNewsData(formData);
+          formData.append("featuredItem", campItem ? 1 : 0);
+          formData.append("active", campActive ? 1 : 0);
+          formData.append("secName", "camp_news");
 
-        if (response?.data?.success) {
-          showNotification(response?.data?.message, "Success");
-          setIsSubmitingLoader(false);
+          const response = await homePageService.addCampaignNewsData(formData);
 
-          setCampActive("");
-          setStartDate("");
-          setCampDate("");
-          setCampItem("");
-          setCampMedia(null);
-          setCampMediaPreview(null);
-          setCampSection("");
+          if (response?.data?.success) {
+            showNewsSection();
+            showNotification(response?.data?.message, "Success");
+            setIsSubmitingLoader(false);
+
+            setCampActive("");
+            setStartDate("");
+            setCampDate("");
+            setCampItem("");
+            setCampMedia(null);
+            setCampMediaPreview(null);
+            setCampSection("");
+          } else {
+            setIsSubmitingLoader(false);
+            showNotification(response.data.message, "Error");
+          }
         } else {
-          setIsSubmitingLoader(false);
-          showNotification(response.data.message, "Error");
+          showNotification(
+            "Please fill all fields of Campaign news section",
+            "Error"
+          );
         }
-      } else {
-        showNotification(
-          "Please fill all fields of Campaign news section",
-          "Error"
-        );
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
   };
   const updateSponPartner = async (e) => {
@@ -2280,18 +2341,40 @@ const Home = () => {
                                         <td>{item?.view ? item?.view : 0} </td>
                                         <td>{item?.title}</td>
                                         <td>
-                                          {" "}
-                                          <Image
-                                            src={
-                                              item?.media
-                                                ? process.env.SITE_URL +
-                                                  item?.media
-                                                : "/no-img.jpg"
-                                            }
-                                            width={80}
-                                            height={80}
-                                            alt="Picture of the author"
-                                          />
+                                          {item.media_type == "image" ? (
+                                            <Image
+                                              src={
+                                                item?.media
+                                                  ? process.env.SITE_URL +
+                                                    item?.media
+                                                  : "/no-img.jpg"
+                                              }
+                                              width={80}
+                                              height={80}
+                                              alt="Picture of the author"
+                                            />
+                                          ) : item.media_type == "video" ? (
+                                            <ReactPlayer
+                                              url={
+                                                item?.media
+                                                  ? process.env.SITE_URL +
+                                                    item?.media
+                                                  : "/no-img.jpg"
+                                              }
+                                              playing={true}
+                                              muted={true}
+                                              width={"150px"}
+                                              height={"100px"}
+                                            />
+                                          ) : (
+                                            <ReactPlayer
+                                              url={item?.media}
+                                              playing={true}
+                                              muted={true}
+                                              width={"150px"}
+                                              height={"100px"}
+                                            />
+                                          )}
                                         </td>
                                         <td>
                                           {item?.expire_date &&
@@ -2421,48 +2504,130 @@ const Home = () => {
                           />
                           <label className="form-label-1">News Media</label>
                         </div>
-                        <div className="col-md-3">
-                          <div className="form-group">
-                            {campMediaPreview?.filetype == "video" ? (
-                              <ReactPlayer
-                                url={
-                                  campMediaPreview?.src
-                                    ? campMediaPreview?.src
-                                    : "demo-video.mp4"
-                                }
-                                controls
-                                playing={true}
-                                muted={true}
-                                width={"50%"}
-                                height={80}
-                              />
-                            ) : (
-                              <Image
-                                src={
-                                  campMediaPreview?.src
-                                    ? campMediaPreview?.src
-                                    : "/no-img.jpg"
-                                }
-                                width={80}
-                                height={80}
-                                alt="Picture of the author"
-                              />
-                            )}
-                          </div>
-                        </div>
-                        <div className="col-md-3">
-                          <label className="form-label-1"> Upload Image </label>
-                          <div className="form-group">
-                            <input
-                              type="file"
-                              onChange={(e) => onchangeFile(e, "campaign")}
-                            />
-                            <span className="mbSpan">
-                              Upload image or video only, Size must be less than
-                              6MB or 100MB
-                            </span>
-                          </div>
-                        </div>
+                        {toggleNewsYoutube ? (
+                          <>
+                            <div className="container">
+                              <div className="row">
+                                <div className="col-md-3">
+                                  <label
+                                    className="form-label"
+                                    htmlFor="typeText"
+                                  >
+                                    Youtube Media
+                                  </label>
+                                </div>
+                                <div className="col-md-3">
+                                  {youtubeLinkCampHeaderNews != ""
+                                    ? showVideo(youtubeLinkCampHeaderNews)
+                                    : showVideo("no-video")}
+                                </div>
+                                <div className="col-md-3">
+                                  <input
+                                    className="form-control"
+                                    type="text"
+                                    value={youtubeLinkCampHeaderNews}
+                                    onChange={(e) => {
+                                      const inputValue = e.target.value.trim();
+                                      setyoutubeLinkCampHeaderNews(inputValue);
+                                    }}
+                                  />
+                                  <span className="mbSpan">
+                                    Add YouTube video link.
+                                  </span>
+                                </div>
+
+                                <div className="col-md-3">
+                                  <button
+                                    type="button"
+                                    className="btn btn-outline-primary"
+                                    onClick={(e) => updateCampNews(e)}
+                                  >
+                                    Update Site
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="text-center youTubeOption2">
+                                <span
+                                  className="mx-4 custom-youtube-toggleLink"
+                                  onClick={() => {
+                                    toggleNewsYoutube
+                                      ? setToggleNewsYoutube(false)
+                                      : (setToggleNewsYoutube(true),
+                                        setyoutubeLinkCampHeaderNews(""));
+                                  }}
+                                >
+                                  <BsFileEarmarkImage id="youTubelogo" />
+                                  Custom Video
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="col-md-3">
+                              <div className="form-group">
+                                {campMediaPreview?.filetype == "video" ? (
+                                  <ReactPlayer
+                                    url={
+                                      campMediaPreview?.src
+                                        ? campMediaPreview?.src
+                                        : "demo-video.mp4"
+                                    }
+                                    controls
+                                    playing={true}
+                                    muted={true}
+                                    width={"50%"}
+                                    height={80}
+                                  />
+                                ) : (
+                                  <Image
+                                    src={
+                                      campMediaPreview?.src
+                                        ? campMediaPreview?.src
+                                        : "/no-img.jpg"
+                                    }
+                                    width={80}
+                                    height={80}
+                                    alt="Picture of the author"
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            <div className="col-md-3">
+                              <label className="form-label-1">
+                                {" "}
+                                Upload Image{" "}
+                              </label>
+                              <div className="form-group">
+                                <input
+                                  type="file"
+                                  onChange={(e) => onchangeFile(e, "campaign")}
+                                />
+                                <span className="mbSpan">
+                                  Upload image or video only, Size must be less
+                                  than 6MB or 100MB
+                                </span>
+                              </div>
+                              <div
+                                style={{ width: "100%" }}
+                                className="d-flex justify-content-center align-items-center youTubeOption2"
+                              >
+                                <span
+                                  className="mx-4 custom-youtube-toggleLink"
+                                  onClick={() => {
+                                    toggleNewsYoutube
+                                      ? setToggleNewsYoutube(false)
+                                      : setToggleNewsYoutube(true);
+                                  }}
+                                >
+                                  <BsYoutube id="youTubelogo" />
+                                  YouTube Link
+                                </span>
+                              </div>
+                            </div>
+                          </>
+                        )}
                         <div className="col-md-2">
                           <label className="form-label-1"> Expire Date </label>
                           <div className="form-group_1">
