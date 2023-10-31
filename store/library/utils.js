@@ -95,7 +95,7 @@ export function checkImageOrVideoFromUrl(dataurl) {
     } else if (videoEx) {
       return "video";
     } else {
-      return null;
+      return "video";
     }
   } else {
     return null;

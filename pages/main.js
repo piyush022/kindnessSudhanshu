@@ -377,7 +377,7 @@ function MainPage({ data }) {
                   </div>
                 </div>
 
-                <div className="banner_items banner_vid">
+                <div className=" banner_vid">
                   <div className="">
                     {staticContent?.imageType2 == "video" ? (
                       <ReactPlayer
@@ -389,8 +389,7 @@ function MainPage({ data }) {
                         controls
                         playing={true}
                         muted={true}
-                        width={100}
-                        height={100}
+                        width={"100%"}
                       />
                     ) : (
                       <Image

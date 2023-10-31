@@ -1258,8 +1258,8 @@ const Home = () => {
                           </div>
                         </div>
                         <p className="text-center my-4">OR</p>
-                        <div className="text-center">
-                          <BsFileEarmarkImage className="youTubeLogo" />
+                        <div className="text-center youTubeOption2">
+                          <BsFileEarmarkImage id="youTubelogo" />
                           <span
                             className="mx-4 custom-youtube-toggleLink"
                             onClick={() => {
@@ -1338,9 +1338,9 @@ const Home = () => {
                       </div>
                       <div
                         style={{ width: "100%" }}
-                        className="d-flex justify-content-center align-items-center"
+                        className="d-flex justify-content-center align-items-center youTubeOption2"
                       >
-                        <BsYoutube className="youTubeLogo" />
+                        <BsYoutube id="youTubelogo" />
                         <span
                           className="mx-4 custom-youtube-toggleLink"
                           onClick={() => {

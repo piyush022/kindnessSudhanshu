@@ -3395,6 +3395,13 @@ input[type="text"]:hover {
 .fixNameBreak {
   width: 150px;
 }
+.youTubeOption2 {
+  margin-bottom: 4rem;
+  padding-left: 16rem;
+}
+#youTubelogo {
+  font-size: 3rem !important;
+}
 /* -----------------------Media Queries----------------------- */
 
 @media (max-width: 768px) {
