@@ -237,18 +237,32 @@ const About = () => {
                         width="100%"
                         height={300}
                       />
+                    ) : heathEquityData[0]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={heathEquityData[0]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
                     ) : (
-                      <Image
-                        src={
-                          heathEquityData[0]?.media
-                            ? process.env.SITE_URL + heathEquityData[0]?.media
-                            : "/about_video_2.png"
-                        }
-                        width={455}
-                        height={300}
-                        alt={heathEquityData[0]?.description}
-                        className="about_img_bottom "
-                      />
+                      <>
+                        <Image
+                          src={
+                            heathEquityData[0]?.media
+                              ? process.env.SITE_URL + heathEquityData[0]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={heathEquityData[0]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
                     )}
                   </div>
                 </div>

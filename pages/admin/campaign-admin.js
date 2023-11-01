@@ -63,6 +63,16 @@ const Compaign_page = () => {
   const [preview2, setpreview2] = useState("");
   const [preview3, setpreview3] = useState("");
   const [preview4, setpreview4] = useState("");
+  const [toggleHealthYoutube, setToggleHalthYoutube] = useState(false);
+  const [toggleEducationYoutube, setToggleEducationYoutube] = useState(false);
+  const [toggleWorkforceYoutube, setToggleWorkforceYoutube] = useState(false);
+  const [togglePublicYoutube, setTogglePublicYoutube] = useState(false);
+  const [youtubeLinkValueHealth, setyoutubeLinkValueHealth] = useState("");
+  const [youtubeLinkValuePublic, setyoutubeLinkValuePublic] = useState("");
+  const [youtubeLinkValueWorkforce, setyoutubeLinkValueWorkforce] =
+    useState("");
+  const [youtubeLinkValueEducation, setyoutubeLinkValueEducation] =
+    useState("");
   //function to update data - piyush
 
   function editFieldData(id, index, sectionName) {
@@ -409,6 +419,7 @@ const Compaign_page = () => {
           0,
           5
         );
+        console.log("Health", convertObjectToArray(health));
 
         setHeathEquityData(convertObjectToArray(health));
         setWorkforceEquityData(convertObjectToArray(workforce));
@@ -425,97 +436,195 @@ const Compaign_page = () => {
   };
 
   const updateEqt = async (e) => {
-    try {
-      setIsSubmittingLoader(true);
-      const formData = new FormData();
-      formData.append("imgDesc", eqtDes);
-      formData.append("newsMedia", eqtMedia);
-      formData.append("secName", "health_equity");
-      const response = await campaignServices.addEquitySectionContent(formData);
+    if (toggleHealthYoutube) {
+      try {
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", eqtDes);
+        formData.append("newsMedia", youtubeLinkValueHealth);
+        formData.append("secName", "health_equity");
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
 
-      if (response?.data) {
+        if (response?.data) {
+          getEquitySectionData();
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Success");
+          setEqtDes("");
+          setEqtMedia("");
+          setpreview("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setEqtDes("");
+          setEqtMedia("");
+          setpreview("");
+        }
+      } catch (error) {
         setIsSubmittingLoader(false);
-        showNotification(response.data.message, "Success");
-        setEqtDes("");
-        setEqtMedia("");
-        setpreview("");
-      } else {
-        setIsSubmittingLoader(false);
-        showNotification(response.data.message, "Error");
+        console.error(error);
         setEqtDes("");
         setEqtMedia("");
         setpreview("");
       }
-    } catch (error) {
-      setIsSubmittingLoader(false);
-      console.error(error);
-      setEqtDes("");
-      setEqtMedia("");
-      setpreview("");
+    } else {
+      try {
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", eqtDes);
+        formData.append("newsMedia", eqtMedia);
+        formData.append("secName", "health_equity");
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
+
+        if (response?.data) {
+          getEquitySectionData();
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Success");
+          setEqtDes("");
+          setEqtMedia("");
+          setpreview("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setEqtDes("");
+          setEqtMedia("");
+          setpreview("");
+        }
+      } catch (error) {
+        setIsSubmittingLoader(false);
+        console.error(error);
+        setEqtDes("");
+        setEqtMedia("");
+        setpreview("");
+      }
     }
   };
   const updateEdu = async (e) => {
-    try {
-      setIsSubmittingLoader(true);
-      const formData = new FormData();
-      formData.append("imgDesc", eduDes);
-      formData.append("newsMedia", eduMedia);
-      formData.append("secName", "education_equity");
+    if (toggleEducationYoutube) {
+      try {
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", eduDes);
+        formData.append("newsMedia", youtubeLinkValueEducation);
+        formData.append("secName", "education_equity");
 
-      const response = await campaignServices.addEquitySectionContent(formData);
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
 
-      if (response?.data) {
-        setIsSubmittingLoader(false);
-        showNotification(response.data.message, "Success");
+        if (response?.data) {
+          getEquitySectionData();
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Success");
+          setEduDes("");
+          setEduMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setEduDes("");
+          setEduMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        }
+      } catch (error) {
         setEduDes("");
         setEduMedia("");
         setpreview("");
         setpreview2("");
         setpreview3("");
         setpreview4("");
-      } else {
         setIsSubmittingLoader(false);
-        showNotification(response.data.message, "Error");
-        setEduDes("");
-        setEduMedia("");
-        setpreview("");
-        setpreview2("");
-        setpreview3("");
-        setpreview4("");
+        console.error(error);
       }
-    } catch (error) {
-      setEduDes("");
-      setEduMedia("");
-      setpreview("");
-      setpreview2("");
-      setpreview3("");
-      setpreview4("");
-      setIsSubmittingLoader(false);
-      console.error(error);
+    } else {
+      try {
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", eduDes);
+        formData.append("newsMedia", eduMedia);
+        formData.append("secName", "education_equity");
+
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
+
+        if (response?.data) {
+          getEquitySectionData();
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Success");
+          setEduDes("");
+          setEduMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setEduDes("");
+          setEduMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        }
+      } catch (error) {
+        setEduDes("");
+        setEduMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
+        setIsSubmittingLoader(false);
+        console.error(error);
+      }
     }
   };
   const updateWork = async (e) => {
-    try {
-      setIsSubmittingLoader(true);
-      const formData = new FormData();
-      formData.append("imgDesc", wDes);
-      formData.append("newsMedia", wMedia);
-      formData.append("secName", "workforce_equity");
+    if (toggleWorkforceYoutube) {
+      try {
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", wDes);
+        formData.append("newsMedia", youtubeLinkValueWorkforce);
+        formData.append("secName", "workforce_equity");
 
-      const response = await campaignServices.addEquitySectionContent(formData);
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
 
-      if (response?.data) {
+        if (response?.data) {
+          setIsSubmittingLoader(false);
+          getEquitySectionData();
+          showNotification(response.data.message, "Success");
+          setWDes("");
+          setWMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setWDes("");
+          setWMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        }
+      } catch (error) {
         setIsSubmittingLoader(false);
-        showNotification(response.data.message, "Success");
-        setWDes("");
-        setWMedia("");
-        setpreview("");
-        setpreview2("");
-        setpreview3("");
-        setpreview4("");
-      } else {
-        setIsSubmittingLoader(false);
-        showNotification(response.data.message, "Error");
+        console.error(error);
         setWDes("");
         setWMedia("");
         setpreview("");
@@ -523,15 +632,48 @@ const Compaign_page = () => {
         setpreview3("");
         setpreview4("");
       }
-    } catch (error) {
-      setIsSubmittingLoader(false);
-      console.error(error);
-      setWDes("");
-      setWMedia("");
-      setpreview("");
-      setpreview2("");
-      setpreview3("");
-      setpreview4("");
+    } else {
+      try {
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", wDes);
+        formData.append("newsMedia", wMedia);
+        formData.append("secName", "workforce_equity");
+
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
+
+        if (response?.data) {
+          getEquitySectionData();
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Success");
+          setWDes("");
+          setWMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setWDes("");
+          setWMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        }
+      } catch (error) {
+        setIsSubmittingLoader(false);
+        console.error(error);
+        setWDes("");
+        setWMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
+      }
     }
   };
   const updatePublic = async (e) => {
@@ -736,6 +878,10 @@ const Compaign_page = () => {
     }
   }, [eqtMedia, pMedia, wMedia, eduMedia]);
 
+  useEffect(() => {
+    console.log("eduMedia", eduMedia);
+  }, [eduMedia]);
+
   var sno = 1;
   return (
     <>
@@ -850,7 +996,7 @@ const Compaign_page = () => {
                               setHMedia(e?.target?.files[0]);
                             }
                           } else if (
-                            /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf)$/.test(
+                            /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
                               fileName
                             )
                           ) {
@@ -1009,15 +1155,38 @@ const Compaign_page = () => {
                                     </td>
 
                                     <td>
-                                      <Image
-                                        src={
-                                          upMediaPreview
-                                            ? upMediaPreview
-                                            : "/no-img.jpg"
-                                        }
-                                        width={80}
-                                        height={80}
-                                      />
+                                      {item?.media_type == "video" ? (
+                                        <>
+                                          <ReactPlayer
+                                            url={upMediaPreview}
+                                            controls
+                                            playing={true}
+                                            muted={true}
+                                            width="250px"
+                                            height="150px"
+                                          />
+                                        </>
+                                      ) : (
+                                        <>
+                                          {item?.media_type == "image" ? (
+                                            <Image
+                                              src={upMediaPreview}
+                                              width={250}
+                                              height={150}
+                                            />
+                                          ) : (
+                                            <ReactPlayer
+                                              url={upMediaPreview}
+                                              controls
+                                              playing={true}
+                                              muted={true}
+                                              width={"250px"}
+                                              height={"150px"}
+                                            />
+                                          )}
+                                        </>
+                                      )}
+
                                       <input
                                         type="file"
                                         onChange={(e) =>
@@ -1101,90 +1270,178 @@ const Compaign_page = () => {
                             </div>
                           </div>
 
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Add News Media
-                            </label>
-                          </div>
-                          <div className="col-md-3">
-                            <Image
-                              src={`${preview == "" ? "/no-img.jpg" : preview}`}
-                              width={80}
-                              height={80}
-                              alt="Picture of the author"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Upload Image
-                            </label>
-                            <input
-                              className="form-control"
-                              type="file"
-                              onChange={(e) => {
-                                const img = e?.target?.files[0];
+                          {toggleHealthYoutube ? (
+                            <>
+                              <div className="container">
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="typeText"
+                                    >
+                                      Youtube Media
+                                    </label>
+                                  </div>
+                                  <div className="col-md-3">
+                                    {youtubeLinkValueHealth != ""
+                                      ? showVideo(youtubeLinkValueHealth)
+                                      : showVideo("no-video")}
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      className="form-control"
+                                      type="text"
+                                      value={youtubeLinkValueHealth}
+                                      onChange={(e) => {
+                                        const inputValue =
+                                          e.target.value.trim();
+                                        setyoutubeLinkValueHealth(inputValue);
+                                      }}
+                                    />
+                                    <span className="mbSpan">
+                                      Add YouTube video link.
+                                    </span>
+                                  </div>
 
-                                const fileName = img.name.toLowerCase();
+                                  <div className="col-md-3">
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-primary"
+                                      onClick={(e) => updateEqt(e)}
+                                    >
+                                      Update Site
+                                    </button>
+                                  </div>
+                                </div>
 
-                                // Check if the file has an image extension
-                                if (
-                                  /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 6 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Image size exceeds 6MB. Please choose a smaller image.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setEqtMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 100 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Video size exceeds 100MB. Please choose a smaller video.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setEqtMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  e.target.value = null;
-                                  showNotification(
-                                    "Unsupported File type.",
-                                    "Error"
-                                  );
-                                  return;
-                                }
-                              }}
-                            />
-                            <span className="mbSpan">
-                              Max file size for images is 6 MB, video 100 MB
-                            </span>
-                          </div>
+                                <div className="text-center youTubeOption2">
+                                  <span
+                                    className="mx-4 custom-youtube-toggleLink"
+                                    onClick={() => {
+                                      toggleHealthYoutube
+                                        ? setToggleHalthYoutube(false)
+                                        : (setToggleHalthYoutube(true),
+                                          setyoutubeLinkValueHealth(""));
+                                    }}
+                                  >
+                                    <BsFileEarmarkImage id="youTubelogo" />
+                                    Custom Video
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Add News Media
+                                </label>
+                              </div>
+                              <div className="col-md-3">
+                                <Image
+                                  src={`${
+                                    preview == "" ? "/no-img.jpg" : preview
+                                  }`}
+                                  width={80}
+                                  height={80}
+                                  alt="Picture of the author"
+                                />
+                              </div>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Upload Image
+                                </label>
+                                <input
+                                  className="form-control"
+                                  type="file"
+                                  onChange={(e) => {
+                                    const img = e?.target?.files[0];
 
-                          <div className="col-md-3">
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary"
-                              onClick={(e) => updateEqt(e)}
-                            >
-                              Update Site
-                            </button>
-                          </div>
+                                    const fileName = img.name.toLowerCase();
+
+                                    // Check if the file has an image extension
+                                    if (
+                                      /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 6 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Image size exceeds 6MB. Please choose a smaller image.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setEqtMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 100 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Video size exceeds 100MB. Please choose a smaller video.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setEqtMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      e.target.value = null;
+                                      showNotification(
+                                        "Unsupported File type.",
+                                        "Error"
+                                      );
+                                      return;
+                                    }
+                                  }}
+                                />
+                                <span className="mbSpan">
+                                  Max file size for images is 6 MB, video 100 MB
+                                </span>
+                              </div>
+
+                              <div className="col-md-3">
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-primary"
+                                  onClick={(e) => updateEqt(e)}
+                                >
+                                  Update Site
+                                </button>
+                              </div>
+                              <div
+                                style={{ width: "100%" }}
+                                className="d-flex justify-content-center align-items-center youTubeOption2"
+                              >
+                                <span
+                                  className="mx-4 custom-youtube-toggleLink"
+                                  onClick={() => {
+                                    toggleHealthYoutube
+                                      ? setToggleHalthYoutube(false)
+                                      : setToggleHalthYoutube(true);
+                                  }}
+                                >
+                                  <BsYoutube id="youTubelogo" />
+                                  YouTube Link
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -1232,21 +1489,46 @@ const Compaign_page = () => {
                                     </td>
 
                                     <td>
-                                      <Image
-                                        src={
-                                          upMediaPreview3
-                                            ? upMediaPreview3
-                                            : "/no-img.jpg"
-                                        }
-                                        width={80}
-                                        height={80}
-                                      />
                                       <input
                                         type="file"
                                         onChange={(e) =>
                                           onchangeFile(e, "educationEquity")
                                         }
                                       />
+                                      {console.log("item.media", item.media)}
+
+                                      {item?.media_type == "video" ? (
+                                        <>
+                                          <ReactPlayer
+                                            url={upMediaPreview3}
+                                            controls
+                                            playing={true}
+                                            muted={true}
+                                            width="250px"
+                                            height="150px"
+                                          />
+                                        </>
+                                      ) : item?.media_type == "image" ? (
+                                        <Image
+                                          src={
+                                            item.media
+                                              ? process.env.SITE_URL +
+                                                item.media
+                                              : "/no-img.jpg"
+                                          }
+                                          width={80}
+                                          height={80}
+                                        />
+                                      ) : (
+                                        <ReactPlayer
+                                          url={item.media}
+                                          controls
+                                          playing={true}
+                                          muted={true}
+                                          width={"250px"}
+                                          height={"150px"}
+                                        />
+                                      )}
                                     </td>
                                     <td></td>
                                   </>
@@ -1323,93 +1605,180 @@ const Compaign_page = () => {
                               />
                             </div>
                           </div>
+                          {toggleEducationYoutube ? (
+                            <>
+                              <div className="container">
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="typeText"
+                                    >
+                                      Youtube Media
+                                    </label>
+                                  </div>
+                                  <div className="col-md-3">
+                                    {youtubeLinkValueEducation != ""
+                                      ? showVideo(youtubeLinkValueEducation)
+                                      : showVideo("no-video")}
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      className="form-control"
+                                      type="text"
+                                      value={youtubeLinkValueEducation}
+                                      onChange={(e) => {
+                                        const inputValue =
+                                          e.target.value.trim();
+                                        setyoutubeLinkValueEducation(
+                                          inputValue
+                                        );
+                                      }}
+                                    />
+                                    <span className="mbSpan">
+                                      Add YouTube video link.
+                                    </span>
+                                  </div>
 
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Add News Media
-                            </label>
-                          </div>
-                          <div className="col-md-3">
-                            <Image
-                              src={`${
-                                preview4 == "" ? "/no-img.jpg" : preview4
-                              }`}
-                              width={80}
-                              height={80}
-                              alt="Picture of the author"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Upload Image
-                            </label>
-                            <input
-                              className="form-control"
-                              type="file"
-                              onChange={(e) => {
-                                const img = e?.target?.files[0];
+                                  <div className="col-md-3">
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-primary"
+                                      onClick={(e) => updateEdu(e)}
+                                    >
+                                      Update Site
+                                    </button>
+                                  </div>
+                                </div>
 
-                                const fileName = img.name.toLowerCase();
+                                <div className="text-center youTubeOption2">
+                                  <span
+                                    className="mx-4 custom-youtube-toggleLink"
+                                    onClick={() => {
+                                      toggleEducationYoutube
+                                        ? setToggleEducationYoutube(false)
+                                        : (setToggleEducationYoutube(true),
+                                          setyoutubeLinkValueEducation(""));
+                                    }}
+                                  >
+                                    <BsFileEarmarkImage id="youTubelogo" />
+                                    Custom Video
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Add News Media
+                                </label>
+                              </div>
+                              <div className="col-md-3">
+                                <Image
+                                  src={`${
+                                    preview4 == "" ? "/no-img.jpg" : preview4
+                                  }`}
+                                  width={80}
+                                  height={80}
+                                  alt="Picture of the author"
+                                />
+                              </div>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Upload File
+                                </label>
+                                <input
+                                  className="form-control"
+                                  type="file"
+                                  onChange={(e) => {
+                                    const img = e?.target?.files[0];
 
-                                // Check if the file has an image extension
-                                if (
-                                  /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 6 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Image size exceeds 6MB. Please choose a smaller image.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setEduMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 100 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Video size exceeds 100MB. Please choose a smaller video.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setEduMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  e.target.value = null;
-                                  showNotification(
-                                    "Unsupported File type.",
-                                    "Error"
-                                  );
-                                  return;
-                                }
-                              }}
-                            />
-                            <span className="mbSpan">
-                              Max file size for images is 6 MB, video 100 MB
-                            </span>
-                          </div>
+                                    const fileName = img.name.toLowerCase();
 
-                          <div className="col-md-3">
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary"
-                              onClick={(e) => updateEdu(e)}
-                            >
-                              Update Site
-                            </button>
-                          </div>
+                                    // Check if the file has an image extension
+                                    if (
+                                      /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 6 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Image size exceeds 6MB. Please choose a smaller image.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setEduMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 100 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Video size exceeds 100MB. Please choose a smaller video.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setEduMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      e.target.value = null;
+                                      showNotification(
+                                        "Unsupported File type.",
+                                        "Error"
+                                      );
+                                      return;
+                                    }
+                                  }}
+                                />
+                                <span className="mbSpan">
+                                  Max file size for images is 6 MB, video 100 MB
+                                </span>
+                              </div>
+
+                              <div className="col-md-3">
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-primary"
+                                  onClick={(e) => updateEdu(e)}
+                                >
+                                  Update Site
+                                </button>
+                              </div>
+                              <div
+                                style={{ width: "100%" }}
+                                className="d-flex justify-content-center align-items-center youTubeOption2"
+                              >
+                                <span
+                                  className="mx-4 custom-youtube-toggleLink"
+                                  onClick={() => {
+                                    toggleEducationYoutube
+                                      ? setToggleEducationYoutube(false)
+                                      : setToggleEducationYoutube(true);
+                                  }}
+                                >
+                                  <BsYoutube id="youTubelogo" />
+                                  YouTube Link
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -1457,7 +1826,39 @@ const Compaign_page = () => {
                                     </td>
 
                                     <td>
-                                      <Image
+                                      {item?.media_type == "video" ? (
+                                        <>
+                                          <ReactPlayer
+                                            url={upMediaPreview2}
+                                            controls
+                                            playing={true}
+                                            muted={true}
+                                            width="250px"
+                                            height="150px"
+                                          />
+                                        </>
+                                      ) : item?.media_type == "image" ? (
+                                        <Image
+                                          src={
+                                            item.media
+                                              ? process.env.SITE_URL +
+                                                item.media
+                                              : "/no-img.jpg"
+                                          }
+                                          width={80}
+                                          height={80}
+                                        />
+                                      ) : (
+                                        <ReactPlayer
+                                          url={item.media}
+                                          controls
+                                          playing={true}
+                                          muted={true}
+                                          width={"250px"}
+                                          height={"150px"}
+                                        />
+                                      )}
+                                      {/* <Image
                                         src={
                                           upMediaPreview2
                                             ? upMediaPreview2
@@ -1465,7 +1866,7 @@ const Compaign_page = () => {
                                         }
                                         width={80}
                                         height={80}
-                                      />
+                                      /> */}
                                       <input
                                         type="file"
                                         onChange={(e) =>
@@ -1548,93 +1949,180 @@ const Compaign_page = () => {
                               />
                             </div>
                           </div>
+                          {toggleWorkforceYoutube ? (
+                            <>
+                              <div className="container">
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="typeText"
+                                    >
+                                      Youtube Media
+                                    </label>
+                                  </div>
+                                  <div className="col-md-3">
+                                    {youtubeLinkValueWorkforce != ""
+                                      ? showVideo(youtubeLinkValueWorkforce)
+                                      : showVideo("no-video")}
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      className="form-control"
+                                      type="text"
+                                      value={youtubeLinkValueWorkforce}
+                                      onChange={(e) => {
+                                        const inputValue =
+                                          e.target.value.trim();
+                                        setyoutubeLinkValueWorkforce(
+                                          inputValue
+                                        );
+                                      }}
+                                    />
+                                    <span className="mbSpan">
+                                      Add YouTube video link.
+                                    </span>
+                                  </div>
 
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Add News Media
-                            </label>
-                          </div>
-                          <div className="col-md-3">
-                            <Image
-                              src={`${
-                                preview3 == "" ? "/no-img.jpg" : preview3
-                              }`}
-                              width={80}
-                              height={80}
-                              alt="Picture of the author"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Upload Image
-                            </label>
-                            <input
-                              className="form-control"
-                              type="file"
-                              onChange={(e) => {
-                                const img = e?.target?.files[0];
+                                  <div className="col-md-3">
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-primary"
+                                      onClick={(e) => updateWork(e)}
+                                    >
+                                      Update Site
+                                    </button>
+                                  </div>
+                                </div>
 
-                                const fileName = img.name.toLowerCase();
+                                <div className="text-center youTubeOption2">
+                                  <span
+                                    className="mx-4 custom-youtube-toggleLink"
+                                    onClick={() => {
+                                      toggleWorkforceYoutube
+                                        ? setToggleWorkforceYoutube(false)
+                                        : (setToggleWorkforceYoutube(true),
+                                          setyoutubeLinkValueWorkforce(""));
+                                    }}
+                                  >
+                                    <BsFileEarmarkImage id="youTubelogo" />
+                                    Custom Video
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Add Media
+                                </label>
+                              </div>
+                              <div className="col-md-3">
+                                <Image
+                                  src={`${
+                                    preview3 == "" ? "/no-img.jpg" : preview3
+                                  }`}
+                                  width={80}
+                                  height={80}
+                                  alt="Picture of the author"
+                                />
+                              </div>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Upload Image
+                                </label>
+                                <input
+                                  className="form-control"
+                                  type="file"
+                                  onChange={(e) => {
+                                    const img = e?.target?.files[0];
 
-                                // Check if the file has an image extension
-                                if (
-                                  /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 6 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Image size exceeds 2MB. Please choose a smaller image.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setWMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 100 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Video size exceeds 10MB. Please choose a smaller video.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setWMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|jsx|js|php)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  e.target.value = null;
-                                  showNotification(
-                                    "Unsupported File type.",
-                                    "Error"
-                                  );
-                                  return;
-                                }
-                              }}
-                            />
-                            <span className="mbSpan">
-                              Max file size for images is 6 MB,video 100 MB
-                            </span>
-                          </div>
+                                    const fileName = img.name.toLowerCase();
 
-                          <div className="col-md-3">
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary"
-                              onClick={(e) => updateWork(e)}
-                            >
-                              Update Site
-                            </button>
-                          </div>
+                                    // Check if the file has an image extension
+                                    if (
+                                      /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 6 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Image size exceeds 2MB. Please choose a smaller image.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setWMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 100 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Video size exceeds 10MB. Please choose a smaller video.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setWMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|jsx|js|php)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      e.target.value = null;
+                                      showNotification(
+                                        "Unsupported File type.",
+                                        "Error"
+                                      );
+                                      return;
+                                    }
+                                  }}
+                                />
+                                <span className="mbSpan">
+                                  Max file size for images is 6 MB,video 100 MB
+                                </span>
+                              </div>
+
+                              <div className="col-md-3">
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-primary"
+                                  onClick={(e) => updateWork(e)}
+                                >
+                                  Update Site
+                                </button>
+                              </div>
+                              <div
+                                style={{ width: "100%" }}
+                                className="d-flex justify-content-center align-items-center youTubeOption2"
+                              >
+                                <span
+                                  className="mx-4 custom-youtube-toggleLink"
+                                  onClick={() => {
+                                    toggleWorkforceYoutube
+                                      ? setToggleWorkforceYoutube(false)
+                                      : setToggleWorkforceYoutube(true);
+                                  }}
+                                >
+                                  <BsYoutube id="youTubelogo" />
+                                  YouTube Link
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -1817,7 +2305,7 @@ const Compaign_page = () => {
                                     setPMedia(e?.target?.files[0]);
                                   }
                                 } else if (
-                                  /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf)$/.test(
+                                  /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
                                     fileName
                                   )
                                 ) {
