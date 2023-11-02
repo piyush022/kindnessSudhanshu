@@ -67,7 +67,11 @@ const EventPage = () => {
   const [rsvp, setrsvp] = useState([]);
   const [toggleYoutube, setToggleYoutube] = useState(false);
   const [youtubeLinkCampHeader, setyoutubeLinkCampHeader] = useState("");
+
+  const [youtubeLinkEvent, setyoutubeLinkEvent] = useState("");
+  const [toggleEventYoutube, setToggleEventYoutube] = useState(false);
   let total = 0;
+  const [EventEditMedia, setEventEditMedia] = useState("");
 
   function countRSVP() {
     rsvp.map((item) => {
@@ -305,6 +309,9 @@ const EventPage = () => {
         if (EditAddress != "") {
           formData.append("locationAddress", EditAddress);
         }
+        if (EventEditMedia != "") {
+          formData.append("eventMedia", EventEditMedia);
+        }
         // console.log("editActive3", editActive3);
         formData.append("active", editActive3 ? 1 : 0);
 
@@ -467,58 +474,114 @@ const EventPage = () => {
   };
 
   const updateEventManagementSection = async () => {
-    if (
-      eventTitle != "" &&
-      eventDescription3 != "" &&
-      eventType2 != "" &&
-      locationAddress != "" &&
-      city != "" &&
-      state != "" &&
-      zipcode != "" &&
-      eventCost != ""
-    ) {
-      try {
-        // console.log("eventType2", eventType2);
-        const formData = new FormData();
-        formData.append("eventTitle", eventTitle);
-        formData.append("eventDescription", eventDescription3);
-        formData.append("date", getFormatedDate(startDate, "YYYY-MM-DD"));
-        formData.append("time", time);
-        formData.append("eventType", eventType2);
-        formData.append("locationAddress", locationAddress);
-        formData.append("city", city);
-        formData.append("state", state);
-        formData.append("eventMedia", newsMedia2);
-        formData.append("zipcode", zipcode);
-        formData.append("eventCost", eventCost);
-        formData.append("active", active3 ? 1 : 0);
+    if (toggleEventYoutube) {
+      if (
+        eventTitle != "" &&
+        eventDescription3 != "" &&
+        eventType2 != "" &&
+        locationAddress != "" &&
+        city != "" &&
+        state != "" &&
+        zipcode != "" &&
+        eventCost != ""
+      ) {
+        try {
+          // console.log("eventType2", eventType2);
+          const formData = new FormData();
+          formData.append("eventTitle", eventTitle);
+          formData.append("eventDescription", eventDescription3);
+          formData.append("date", getFormatedDate(startDate, "YYYY-MM-DD"));
+          formData.append("time", time);
+          formData.append("eventType", eventType2);
+          formData.append("locationAddress", locationAddress);
+          formData.append("city", city);
+          formData.append("state", state);
+          formData.append("eventMedia", youtubeLinkEvent);
+          formData.append("zipcode", zipcode);
+          formData.append("eventCost", eventCost);
+          formData.append("active", active3 ? 1 : 0);
 
-        const resp = await eventPageSevices.updateEventManagement(formData);
+          const resp = await eventPageSevices.updateEventManagement(formData);
 
-        if (resp?.data?.success) {
-          eventListsection();
-          showNotification("Record Added Successfully", "Success");
-          seteventTitle("");
-          seteventDescription3("");
-          setStartDate("");
-          settime("");
-          seteventType2("");
-          setlocationAddress("");
-          setcity("");
-          setstate("");
-          setnewsMedia("");
-          setzipcode("");
-          seteventCost("");
-          setactive3(false);
-        } else {
-          showNotification(resp?.data?.message, "Error");
+          if (resp?.data?.success) {
+            eventListsection();
+            showNotification("Record Added Successfully", "Success");
+            seteventTitle("");
+            seteventDescription3("");
+            setStartDate("");
+            settime("");
+            seteventType2("");
+            setlocationAddress("");
+            setcity("");
+            setstate("");
+            setnewsMedia("");
+            setzipcode("");
+            seteventCost("");
+            setactive3(false);
+          } else {
+            showNotification(resp?.data?.message, "Error");
+          }
+        } catch (err) {
+          // Handle any other errors that may occur during the request
+          console.log(err);
         }
-      } catch (err) {
-        // Handle any other errors that may occur during the request
-        console.log(err);
+      } else {
+        showNotification("Please fill all fields", "Error");
       }
     } else {
-      showNotification("Please fill all fields", "Error");
+      if (
+        eventTitle != "" &&
+        eventDescription3 != "" &&
+        eventType2 != "" &&
+        locationAddress != "" &&
+        city != "" &&
+        state != "" &&
+        zipcode != "" &&
+        eventCost != ""
+      ) {
+        try {
+          // console.log("eventType2", eventType2);
+          const formData = new FormData();
+          formData.append("eventTitle", eventTitle);
+          formData.append("eventDescription", eventDescription3);
+          formData.append("date", getFormatedDate(startDate, "YYYY-MM-DD"));
+          formData.append("time", time);
+          formData.append("eventType", eventType2);
+          formData.append("locationAddress", locationAddress);
+          formData.append("city", city);
+          formData.append("state", state);
+          formData.append("eventMedia", newsMedia2);
+          formData.append("zipcode", zipcode);
+          formData.append("eventCost", eventCost);
+          formData.append("active", active3 ? 1 : 0);
+
+          const resp = await eventPageSevices.updateEventManagement(formData);
+
+          if (resp?.data?.success) {
+            eventListsection();
+            showNotification("Record Added Successfully", "Success");
+            seteventTitle("");
+            seteventDescription3("");
+            setStartDate("");
+            settime("");
+            seteventType2("");
+            setlocationAddress("");
+            setcity("");
+            setstate("");
+            setnewsMedia("");
+            setzipcode("");
+            seteventCost("");
+            setactive3(false);
+          } else {
+            showNotification(resp?.data?.message, "Error");
+          }
+        } catch (err) {
+          // Handle any other errors that may occur during the request
+          console.log(err);
+        }
+      } else {
+        showNotification("Please fill all fields", "Error");
+      }
     }
   };
 
@@ -1213,6 +1276,7 @@ const EventPage = () => {
                         <th>Date</th>
                         <th>Description</th>
                         <th>Address</th>
+                        <th>Media</th>
                         <th>Active</th>
                         <th>Action</th>
                       </tr>
@@ -1264,6 +1328,52 @@ const EventPage = () => {
                                     }
                                   />
                                 </td>
+                                <td>
+                                  <Image
+                                    src={
+                                      process.env.SITE_URL + item.event_media
+                                    }
+                                    width={100}
+                                    height={80}
+                                  ></Image>
+                                  <input
+                                    type="file"
+                                    onChange={(e) => {
+                                      const img = e?.target?.files[0];
+
+                                      const fileName = img.name.toLowerCase();
+
+                                      // Check if the file has an image extension
+                                      if (
+                                        /\.(jpg|jpeg|png|gif|webp)$/.test(
+                                          fileName
+                                        )
+                                      ) {
+                                        if (img.size > 6 * 1024 * 1024) {
+                                          e.target.value = null;
+                                          showNotification(
+                                            "Image size exceeds 6MB. Please choose a smaller image.",
+                                            "Error"
+                                          );
+                                          return;
+                                        } else {
+                                          setEventEditMedia(e.target.files[0]);
+                                        }
+                                      } else if (
+                                        /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php|mp4|mov|avi|wmv|mkv)$/.test(
+                                          fileName
+                                        )
+                                      ) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Unsupported File type.",
+                                          "Error"
+                                        );
+                                        return;
+                                      }
+                                    }}
+                                  />
+                                </td>
 
                                 <td>
                                   <input
@@ -1283,6 +1393,7 @@ const EventPage = () => {
                                 <td>{getFormatedDate(item?.date, "M-DD-Y")}</td>
                                 <td>{item?.event_description}</td>
                                 <td>{item?.location_address}</td>
+                                <td>{item?.media_type}</td>
                                 <td>{parseInt(item?.active) ? "Yes" : "No"}</td>
                               </>
                             )}
@@ -1369,6 +1480,7 @@ const EventPage = () => {
                   <div className="col-md-3">
                     <label className="form-label">Time</label>
                     <TimePicker
+                      value={time}
                       start="10:00"
                       end="21:00"
                       step={30}
@@ -1437,62 +1549,133 @@ const EventPage = () => {
 
               <div className="container">
                 <div className="row">
-                  <p>Event Media</p>
-                  <div className="col-md-3">
-                    <Image
-                      src="/no-img.jpg"
-                      width={80}
-                      height={80}
-                      alt="Picture of the author"
-                    />
-                  </div>
+                  {toggleEventYoutube ? (
+                    <>
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-md-3">
+                            <label className="form-label" htmlFor="typeText">
+                              Youtube Media
+                            </label>
+                          </div>
+                          <div className="col-md-3">
+                            {youtubeLinkEvent != ""
+                              ? showVideo(youtubeLinkEvent)
+                              : showVideo("no-video")}
+                          </div>
+                          <div className="col-md-3">
+                            <input
+                              className="form-control"
+                              type="text"
+                              value={youtubeLinkEvent}
+                              onChange={(e) => {
+                                const inputValue = e.target.value.trim();
+                                setyoutubeLinkEvent(inputValue);
+                              }}
+                            />
+                            <span className="mbSpan">
+                              Add YouTube video link.
+                            </span>
+                          </div>
+                        </div>
 
-                  <div className="col-md-4">
-                    <input
-                      type="file"
-                      onChange={(e) => {
-                        const img = e?.target?.files[0];
+                        <div className="text-center youTubeOption2">
+                          <span
+                            className="mx-4 custom-youtube-toggleLink"
+                            onClick={() => {
+                              toggleEventYoutube
+                                ? setToggleEventYoutube(false)
+                                : (setToggleEventYoutube(true),
+                                  setyoutubeLinkEvent(""));
+                            }}
+                          >
+                            <BsFileEarmarkImage id="youTubelogo" />
+                            Custom Video
+                          </span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <p>Event Media</p>
+                      <div className="col-md-3">
+                        <Image
+                          src="/no-img.jpg"
+                          width={80}
+                          height={80}
+                          alt="Picture of the author"
+                        />
+                      </div>
 
-                        const fileName = img.name.toLowerCase();
+                      <div className="col-md-4">
+                        <input
+                          type="file"
+                          onChange={(e) => {
+                            const img = e?.target?.files[0];
 
-                        // Check if the file has an image extension
-                        if (/\.(jpg|jpeg|png|gif|webp)$/.test(fileName)) {
-                          if (img.size > 6 * 1024 * 1024) {
-                            e.target.value = null;
-                            showNotification(
-                              "Image size exceeds 6MB. Please choose a smaller image.",
-                              "Error"
-                            );
-                            return;
-                          } else {
-                            setnewsMedia2(e.target.files[0]);
-                          }
-                        } else if (/\.(mp4|mov|avi|wmv|mkv)$/.test(fileName)) {
-                          if (img.size > 100 * 1024 * 1024) {
-                            e.target.value = null;
-                            showNotification(
-                              "Video size exceeds 100MB. Please choose a smaller video.",
-                              "Error"
-                            );
-                            return;
-                          } else {
-                            setnewsMedia2(e.target.files[0]);
-                          }
-                        } else if (
-                          /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
-                            fileName
-                          )
-                        ) {
-                          e.target.value = null;
-                          showNotification("Unsupported File type.", "Error");
-                          return;
-                        }
-                      }}
-                    />
-                    <span className="mbSpan">
-                      Max file size for image is 6 MB, vide 100 MB
-                    </span>
-                  </div>
+                            const fileName = img.name.toLowerCase();
+
+                            // Check if the file has an image extension
+                            if (/\.(jpg|jpeg|png|gif|webp)$/.test(fileName)) {
+                              if (img.size > 6 * 1024 * 1024) {
+                                e.target.value = null;
+                                showNotification(
+                                  "Image size exceeds 6MB. Please choose a smaller image.",
+                                  "Error"
+                                );
+                                return;
+                              } else {
+                                setnewsMedia2(e.target.files[0]);
+                              }
+                            } else if (
+                              /\.(mp4|mov|avi|wmv|mkv)$/.test(fileName)
+                            ) {
+                              if (img.size > 100 * 1024 * 1024) {
+                                e.target.value = null;
+                                showNotification(
+                                  "Video size exceeds 100MB. Please choose a smaller video.",
+                                  "Error"
+                                );
+                                return;
+                              } else {
+                                setnewsMedia2(e.target.files[0]);
+                              }
+                            } else if (
+                              /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
+                                fileName
+                              )
+                            ) {
+                              e.target.value = null;
+                              showNotification(
+                                "Unsupported File type.",
+                                "Error"
+                              );
+                              return;
+                            }
+                          }}
+                        />
+                        <span className="mbSpan">
+                          Max file size for image is 6 MB
+                        </span>
+                      </div>
+                      {/* <div
+                        style={{ width: "100%" }}
+                        className="d-flex justify-content-center align-items-center youTubeOption2"
+                      >
+                        <span
+                          className="mx-4 custom-youtube-toggleLink"
+                          onClick={() => {
+                            toggleEventYoutube
+                              ? setToggleEventYoutube(false)
+                              : setToggleEventYoutube(true);
+                          }}
+                        >
+                          <BsYoutube id="youTubelogo" />
+                          YouTube Link
+                        </span>
+                      </div> */}
+                    </>
+                  )}
 
                   <div className="col-md-3">
                     <label className="form-check-label">Active &nbsp;</label>
