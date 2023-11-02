@@ -547,7 +547,7 @@ const Home = () => {
         }
       }
 
-      if (/\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|mpg)$/.test(fileName)) {
+      if (/\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|mpg|webm)$/.test(fileName)) {
         if (img.size > 100 * 1024 * 1024) {
           e.target.value = null;
           showNotification(
@@ -561,7 +561,8 @@ const Home = () => {
       const uplodingFileType = getFileType(e?.target?.files[0]?.type);
 
       let fileData = await getBase64(img);
-      // console.log("FileType", uplodingFileType);
+
+      console.log("FileType", uplodingFileType, fileData);
       if (uplodingFileType == "video") {
         if (fieldOrSectionName == "campaign") {
           setCampMedia(img);
@@ -1199,6 +1200,7 @@ const Home = () => {
   useEffect(() => {
     if (sortedCommentsOfNews.length > 0) {
       setChecker(true);
+      router.push(`/admin/comments/${News_title}?id=${News_ID}`);
     } else {
       if (manageCmtNotification != 0) {
         showNotification("There are no comments on this News!");
@@ -1408,6 +1410,13 @@ const Home = () => {
                         </label>
                       </div>
                       <div className="col-md-3">
+                        <>
+                          {console.log(
+                            "pageStaticContent?.imageType2",
+                            pageStaticContent?.imageType2,
+                            middleImagePreview
+                          )}
+                        </>
                         {pageStaticContent?.imageType2 == "video" ? (
                           <ReactPlayer
                             url={
@@ -2228,14 +2237,14 @@ const Home = () => {
                 <i className="fa fa-hand-o-right" aria-hidden="true"></i>{" "}
                 Campaign News
               </h2>
-              <CommentModal
+              {/* <CommentModal
                 fetchComments={fetchComments}
                 News_ID={News_ID}
                 checker={checker}
                 setChecker={setChecker}
                 News_title={News_title}
                 sortedCommentsOfNews={sortedCommentsOfNews}
-              />
+              /> */}
 
               <div className="container">
                 <label className="form-label-1" htmlFor="typeText">

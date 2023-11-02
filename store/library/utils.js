@@ -84,6 +84,8 @@ export function checkImageOrVideoFromUrl(dataurl) {
       "flv",
       "Ff4v",
       "swf",
+      "mpeg",
+      "mpg",
     ];
     const extension = dataurl.split(".").pop();
 
@@ -209,11 +211,6 @@ export function convertTo12HourFormat(timeIn24Hour) {
 }
 
 export const addToGoogleCalendar = (title, location, sDate, Desc) => {
-  console.log("title", title);
-  console.log("location", location);
-  console.log("Date", sDate);
-  console.log("Desc", Desc);
-
   const startTime = new Date(sDate).toISOString();
 
   // You can set a default duration, for example, 1 hour.

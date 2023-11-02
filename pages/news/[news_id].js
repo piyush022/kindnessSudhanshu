@@ -116,6 +116,9 @@ function NewsDetailPage({ data, Newsid }) {
             "Your comment is saved. It will be visible after Approval.",
             "Success"
           );
+          setCmt("");
+          setName("");
+          setEmail("");
         }
       } catch (error) {
         setIsSubmittingLoader(false);
