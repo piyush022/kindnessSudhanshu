@@ -207,7 +207,7 @@ function NewsDetailPage({ data, Newsid }) {
                     <Image
                       src={
                         data?.media
-                          ? process.env.SITE_URL + item?.media
+                          ? process.env.SITE_URL + data?.media
                           : "/no-img.jpg"
                       }
                       width={0}
@@ -220,7 +220,7 @@ function NewsDetailPage({ data, Newsid }) {
                     <ReactPlayer
                       url={
                         data?.media
-                          ? process.env.SITE_URL + item?.media
+                          ? process.env.SITE_URL + data?.media
                           : "/no-img.jpg"
                       }
                       playing={true}

@@ -2488,16 +2488,16 @@ const Home = () => {
                                               }
                                               playing={true}
                                               muted={true}
-                                              width={"150px"}
-                                              height={"100px"}
+                                              width={"100px"}
+                                              height={"80"}
                                             />
                                           ) : (
                                             <ReactPlayer
                                               url={item?.media}
                                               playing={true}
                                               muted={true}
-                                              width={"150px"}
-                                              height={"100px"}
+                                              width={"100px"}
+                                              height={"80px"}
                                             />
                                           )}
                                         </td>
