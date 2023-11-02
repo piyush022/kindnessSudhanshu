@@ -677,27 +677,41 @@ const Compaign_page = () => {
     }
   };
   const updatePublic = async (e) => {
-    try {
-      setIsSubmittingLoader(true);
-      const formData = new FormData();
-      formData.append("imgDesc", pDes);
-      formData.append("newsMedia", pMedia);
-      formData.append("secName", "public_equity");
+    if (togglePublicYoutube) {
+      try {
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", pDes);
+        formData.append("newsMedia", youtubeLinkValuePublic);
+        formData.append("secName", "public_equity");
 
-      const response = await campaignServices.addEquitySectionContent(formData);
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
 
-      if (response?.data) {
+        if (response?.data) {
+          getEquitySectionData();
+          setIsSubmittingLoader(false);
+          showNotification(response?.data?.message, "Success");
+          setPDes("");
+          setPMedia("");
+          setpreview2("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setPDes("");
+          setPMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        }
+      } catch (error) {
         setIsSubmittingLoader(false);
-        showNotification(response?.data?.message, "Success");
-        setPDes("");
-        setPMedia("");
-        setpreview2("");
-        setpreview2("");
-        setpreview3("");
-        setpreview4("");
-      } else {
-        setIsSubmittingLoader(false);
-        showNotification(response.data.message, "Error");
+        console.error(error);
         setPDes("");
         setPMedia("");
         setpreview("");
@@ -705,15 +719,48 @@ const Compaign_page = () => {
         setpreview3("");
         setpreview4("");
       }
-    } catch (error) {
-      setIsSubmittingLoader(false);
-      console.error(error);
-      setPDes("");
-      setPMedia("");
-      setpreview("");
-      setpreview2("");
-      setpreview3("");
-      setpreview4("");
+    } else {
+      try {
+        getEquitySectionData();
+        setIsSubmittingLoader(true);
+        const formData = new FormData();
+        formData.append("imgDesc", pDes);
+        formData.append("newsMedia", pMedia);
+        formData.append("secName", "public_equity");
+
+        const response = await campaignServices.addEquitySectionContent(
+          formData
+        );
+
+        if (response?.data) {
+          setIsSubmittingLoader(false);
+          showNotification(response?.data?.message, "Success");
+          setPDes("");
+          setPMedia("");
+          setpreview2("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification(response.data.message, "Error");
+          setPDes("");
+          setPMedia("");
+          setpreview("");
+          setpreview2("");
+          setpreview3("");
+          setpreview4("");
+        }
+      } catch (error) {
+        setIsSubmittingLoader(false);
+        console.error(error);
+        setPDes("");
+        setPMedia("");
+        setpreview("");
+        setpreview2("");
+        setpreview3("");
+        setpreview4("");
+      }
     }
   };
 
@@ -2170,7 +2217,7 @@ const Compaign_page = () => {
                                     </td>
 
                                     <td>
-                                      <Image
+                                      {/* <Image
                                         src={
                                           upMediaPreview4
                                             ? upMediaPreview4
@@ -2178,7 +2225,41 @@ const Compaign_page = () => {
                                         }
                                         width={80}
                                         height={80}
-                                      />
+                                      /> */}
+                                      {item?.media_type == "video" ? (
+                                        <>
+                                          <ReactPlayer
+                                            url={
+                                              process.env.SITE_URL + item.media
+                                            }
+                                            controls
+                                            playing={true}
+                                            muted={true}
+                                            width="250px"
+                                            height="150px"
+                                          />
+                                        </>
+                                      ) : item?.media_type == "image" ? (
+                                        <Image
+                                          src={
+                                            item.media
+                                              ? process.env.SITE_URL +
+                                                item.media
+                                              : "/no-img.jpg"
+                                          }
+                                          width={80}
+                                          height={80}
+                                        />
+                                      ) : (
+                                        <ReactPlayer
+                                          url={item.media}
+                                          controls
+                                          playing={true}
+                                          muted={true}
+                                          width={"250px"}
+                                          height={"150px"}
+                                        />
+                                      )}
                                       <input
                                         type="file"
                                         onChange={(e) =>
@@ -2260,93 +2341,178 @@ const Compaign_page = () => {
                               />
                             </div>
                           </div>
+                          {togglePublicYoutube ? (
+                            <>
+                              <div className="container">
+                                <div className="row">
+                                  <div className="col-md-3">
+                                    <label
+                                      className="form-label"
+                                      htmlFor="typeText"
+                                    >
+                                      Youtube Media
+                                    </label>
+                                  </div>
+                                  <div className="col-md-3">
+                                    {youtubeLinkValuePublic != ""
+                                      ? showVideo(youtubeLinkValuePublic)
+                                      : showVideo("no-video")}
+                                  </div>
+                                  <div className="col-md-3">
+                                    <input
+                                      className="form-control"
+                                      type="text"
+                                      value={youtubeLinkValuePublic}
+                                      onChange={(e) => {
+                                        const inputValue =
+                                          e.target.value.trim();
+                                        setyoutubeLinkValuePublic(inputValue);
+                                      }}
+                                    />
+                                    <span className="mbSpan">
+                                      Add YouTube video link.
+                                    </span>
+                                  </div>
 
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Add News Media
-                            </label>
-                          </div>
-                          <div className="col-md-3">
-                            <Image
-                              src={`${
-                                preview2 == "" ? "/no-img.jpg" : preview2
-                              }`}
-                              width={80}
-                              height={80}
-                              alt="Picture of the author"
-                            />
-                          </div>
-                          <div className="col-md-3">
-                            <label className="form-label" htmlFor="typeText">
-                              Upload Image
-                            </label>
-                            <input
-                              className="form-control"
-                              type="file"
-                              onChange={(e) => {
-                                const img = e?.target?.files[0];
+                                  <div className="col-md-3">
+                                    <button
+                                      type="button"
+                                      className="btn btn-outline-primary"
+                                      onClick={(e) => updatePublic(e)}
+                                    >
+                                      Update Site
+                                    </button>
+                                  </div>
+                                </div>
 
-                                const fileName = img.name.toLowerCase();
+                                <div className="text-center youTubeOption2">
+                                  <span
+                                    className="mx-4 custom-youtube-toggleLink"
+                                    onClick={() => {
+                                      togglePublicYoutube
+                                        ? setTogglePublicYoutube(false)
+                                        : (setTogglePublicYoutube(true),
+                                          setyoutubeLinkValuePublic(""));
+                                    }}
+                                  >
+                                    <BsFileEarmarkImage id="youTubelogo" />
+                                    Custom Video
+                                  </span>
+                                </div>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Add Media
+                                </label>
+                              </div>
+                              <div className="col-md-3">
+                                <Image
+                                  src={`${
+                                    preview2 == "" ? "/no-img.jpg" : preview2
+                                  }`}
+                                  width={80}
+                                  height={80}
+                                  alt="Picture of the author"
+                                />
+                              </div>
+                              <div className="col-md-3">
+                                <label
+                                  className="form-label"
+                                  htmlFor="typeText"
+                                >
+                                  Upload Image
+                                </label>
+                                <input
+                                  className="form-control"
+                                  type="file"
+                                  onChange={(e) => {
+                                    const img = e?.target?.files[0];
 
-                                // Check if the file has an image extension
-                                if (
-                                  /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 6 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Image size exceeds 6MB. Please choose a smaller image.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setPMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  if (img.size > 100 * 1024 * 1024) {
-                                    e.target.value = null;
-                                    showNotification(
-                                      "Video size exceeds 100MB. Please choose a smaller video.",
-                                      "Error"
-                                    );
-                                    return;
-                                  } else {
-                                    setPMedia(e?.target?.files[0]);
-                                  }
-                                } else if (
-                                  /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
-                                    fileName
-                                  )
-                                ) {
-                                  e.target.value = null;
-                                  showNotification(
-                                    "Unsupported File type.",
-                                    "Error"
-                                  );
-                                  return;
-                                }
-                              }}
-                            />
-                            <span className="mbSpan">
-                              Max file size for images is 6 MB, video 100 MB
-                            </span>
-                          </div>
+                                    const fileName = img.name.toLowerCase();
 
-                          <div className="col-md-3">
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary"
-                              onClick={(e) => updatePublic(e)}
-                            >
-                              Update Site
-                            </button>
-                          </div>
+                                    // Check if the file has an image extension
+                                    if (
+                                      /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 6 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Image size exceeds 6MB. Please choose a smaller image.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setPMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      if (img.size > 100 * 1024 * 1024) {
+                                        e.target.value = null;
+                                        showNotification(
+                                          "Video size exceeds 100MB. Please choose a smaller video.",
+                                          "Error"
+                                        );
+                                        return;
+                                      } else {
+                                        setPMedia(e?.target?.files[0]);
+                                      }
+                                    } else if (
+                                      /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
+                                        fileName
+                                      )
+                                    ) {
+                                      e.target.value = null;
+                                      showNotification(
+                                        "Unsupported File type.",
+                                        "Error"
+                                      );
+                                      return;
+                                    }
+                                  }}
+                                />
+                                <span className="mbSpan">
+                                  Max file size for images is 6 MB, video 100 MB
+                                </span>
+                              </div>
+
+                              <div className="col-md-3">
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-primary"
+                                  onClick={(e) => updatePublic(e)}
+                                >
+                                  Update Site
+                                </button>
+                              </div>
+                              <div
+                                style={{ width: "100%" }}
+                                className="d-flex justify-content-center align-items-center youTubeOption2"
+                              >
+                                <span
+                                  className="mx-4 custom-youtube-toggleLink"
+                                  onClick={() => {
+                                    togglePublicYoutube
+                                      ? setTogglePublicYoutube(false)
+                                      : setTogglePublicYoutube(true);
+                                  }}
+                                >
+                                  <BsYoutube id="youTubelogo" />
+                                  YouTube Link
+                                </span>
+                              </div>
+                            </>
+                          )}
                         </div>
                       </div>
                     </div>

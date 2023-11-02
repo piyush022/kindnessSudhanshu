@@ -97,6 +97,10 @@ const About = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("heathEquityData", heathEquityData);
+  }, [heathEquityData]);
+
   return (
     <>
       <Head>
@@ -267,7 +271,47 @@ const About = () => {
                   </div>
                 </div>
                 <div className="col-md-3">
-                  <Image
+                  {heathEquityData[1]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        heathEquityData[1]?.media
+                          ? process.env.SITE_URL + heathEquityData[1]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : heathEquityData[1]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={heathEquityData[1]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          heathEquityData[1]?.media
+                            ? process.env.SITE_URL + heathEquityData[1]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={heathEquityData[1]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
+                  {/* <Image
                     src={
                       heathEquityData[1]?.image
                         ? process.env.SITE_URL + heathEquityData[1]?.image
@@ -277,7 +321,7 @@ const About = () => {
                     height={220}
                     alt="Picture of the design"
                     className="about_img_bottom "
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -300,7 +344,47 @@ const About = () => {
                   </ul>
                 </div>
                 <div className="col-md-3">
-                  <Image
+                  {heathEquityData[2]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        heathEquityData[2]?.media
+                          ? process.env.SITE_URL + heathEquityData[2]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : heathEquityData[2]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={heathEquityData[2]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          heathEquityData[2]?.media
+                            ? process.env.SITE_URL + heathEquityData[2]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={heathEquityData[2]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
+                  {/* <Image
                     src={
                       heathEquityData[2]?.media
                         ? process.env.SITE_URL + heathEquityData[2]?.media
@@ -310,11 +394,11 @@ const About = () => {
                     height={220}
                     alt="Picture of the design"
                     className="about_img_top"
-                  />
+                  /> */}
                 </div>
                 <div className="col-md-5">
                   <div className="about_video_1">
-                    <Image
+                    {/* <Image
                       src={
                         heathEquityData[3]?.media
                           ? process.env.SITE_URL + heathEquityData[3]?.media
@@ -325,7 +409,47 @@ const About = () => {
                       alt="Picture of the design"
                       className="about_video_1"
                       style={{ width: "100%" }}
-                    />
+                    /> */}
+                    {heathEquityData[3]?.media_type == "video" ? (
+                      <ReactPlayer
+                        url={
+                          heathEquityData[3]?.media
+                            ? process.env.SITE_URL + heathEquityData[3]?.media
+                            : "demo-video.mp4"
+                        }
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    ) : heathEquityData[3]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={heathEquityData[3]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          src={
+                            heathEquityData[3]?.media
+                              ? process.env.SITE_URL + heathEquityData[0]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={heathEquityData[3]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -363,8 +487,50 @@ const About = () => {
                       width='100%'
                       height={300}
                     /> */}
-
                     {educationEquityData[0]?.media_type == "video" ? (
+                      <ReactPlayer
+                        url={
+                          educationEquityData[0]?.media
+                            ? process.env.SITE_URL +
+                              educationEquityData[0]?.media
+                            : "demo-video.mp4"
+                        }
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    ) : educationEquityData[0]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={educationEquityData[0]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          src={
+                            educationEquityData[0]?.media
+                              ? process.env.SITE_URL +
+                                educationEquityData[0]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={educationEquityData[0]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
+                    )}
+
+                    {/* {educationEquityData[0]?.media_type == "video" ? (
                       <ReactPlayer
                         url={
                           educationEquityData[0]?.media
@@ -391,21 +557,51 @@ const About = () => {
                         alt={educationEquityData[0]?.description}
                         className="about_img_bottom "
                       />
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div className="col-md-3">
-                  <Image
-                    src={
-                      educationEquityData[1]?.media
-                        ? process.env.SITE_URL + educationEquityData[1]?.media
-                        : "/about_video_2.png"
-                    }
-                    width={200}
-                    height={250}
-                    alt={educationEquityData[1]?.description}
-                    className="about_img_bottom "
-                  />
+                  {educationEquityData[1]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        educationEquityData[1]?.media
+                          ? process.env.SITE_URL + educationEquityData[1]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : educationEquityData[1]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={educationEquityData[1]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          educationEquityData[1]?.media
+                            ? process.env.SITE_URL +
+                              educationEquityData[1]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={educationEquityData[1]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -428,7 +624,48 @@ const About = () => {
                   </ul>
                 </div>
                 <div className="col-md-3">
-                  <Image
+                  {educationEquityData[2]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        educationEquityData[2]?.media
+                          ? process.env.SITE_URL + educationEquityData[2]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : educationEquityData[2]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={educationEquityData[2]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          educationEquityData[2]?.media
+                            ? process.env.SITE_URL +
+                              educationEquityData[2]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={educationEquityData[2]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
+                  {/* <Image
                     src={
                       educationEquityData[2]?.media
                         ? process.env.SITE_URL + educationEquityData[2]?.media
@@ -438,11 +675,53 @@ const About = () => {
                     height={220}
                     alt={educationEquityData[2]?.description}
                     className="about_img_top"
-                  />
+                  /> */}
                 </div>
                 <div className="col-md-5">
                   <div className="about_video_1">
-                    <Image
+                    {educationEquityData[3]?.media_type == "video" ? (
+                      <ReactPlayer
+                        url={
+                          educationEquityData[3]?.media
+                            ? process.env.SITE_URL +
+                              educationEquityData[3]?.media
+                            : "demo-video.mp4"
+                        }
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    ) : educationEquityData[3]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={educationEquityData[3]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          src={
+                            educationEquityData[3]?.media
+                              ? process.env.SITE_URL +
+                                educationEquityData[3]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={educationEquityData[3]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
+                    )}
+                    {/* <Image
                       src={
                         educationEquityData[3]?.media
                           ? process.env.SITE_URL + educationEquityData[3]?.media
@@ -453,7 +732,7 @@ const About = () => {
                       alt={educationEquityData[3]?.description}
                       className="about_video_1"
                       style={{ width: "100%" }}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -496,6 +775,48 @@ const About = () => {
                         width="100%"
                         height={300}
                       />
+                    ) : workforceEquityData[0]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={workforceEquityData[0]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          src={
+                            workforceEquityData[0]?.media
+                              ? process.env.SITE_URL +
+                                workforceEquityData[0]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={workforceEquityData[0]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
+                    )}
+                    {/* {workforceEquityData[0]?.media_type == "video" ? (
+                      <ReactPlayer
+                        url={
+                          workforceEquityData[0]?.media
+                            ? process.env.SITE_URL +
+                              workforceEquityData[0]?.media
+                            : "demo-video.mp4"
+                        }
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
                     ) : (
                       <Image
                         src={
@@ -509,11 +830,52 @@ const About = () => {
                         alt={workforceEquityData[1]?.description}
                         className="about_img_bottom "
                       />
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div className="col-md-3">
-                  <Image
+                  {workforceEquityData[1]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        workforceEquityData[1]?.media
+                          ? process.env.SITE_URL + workforceEquityData[1]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : workforceEquityData[1]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={workforceEquityData[1]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          workforceEquityData[1]?.media
+                            ? process.env.SITE_URL +
+                              workforceEquityData[1]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={workforceEquityData[1]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
+                  {/* <Image
                     src={
                       workforceEquityData[1]?.media
                         ? process.env.SITE_URL + workforceEquityData[1]?.media
@@ -523,7 +885,7 @@ const About = () => {
                     height={250}
                     alt={workforceEquityData[1]?.description}
                     className="about_img_bottom "
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -546,7 +908,48 @@ const About = () => {
                   </ul>
                 </div>
                 <div className="col-md-3">
-                  <Image
+                  {workforceEquityData[2]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        workforceEquityData[2]?.media
+                          ? process.env.SITE_URL + workforceEquityData[2]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : workforceEquityData[2]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={workforceEquityData[2]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          workforceEquityData[2]?.media
+                            ? process.env.SITE_URL +
+                              workforceEquityData[2]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={workforceEquityData[2]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
+                  {/* <Image
                     src={
                       workforceEquityData[2]?.media
                         ? process.env.SITE_URL + workforceEquityData[2]?.media
@@ -556,11 +959,53 @@ const About = () => {
                     height={250}
                     alt={workforceEquityData[2]?.description}
                     className="about_img_top"
-                  />
+                  /> */}
                 </div>
                 <div className="col-md-5">
                   <div className="about_video_1">
-                    <Image
+                    {workforceEquityData[3]?.media_type == "video" ? (
+                      <ReactPlayer
+                        url={
+                          workforceEquityData[3]?.media
+                            ? process.env.SITE_URL +
+                              workforceEquityData[3]?.media
+                            : "demo-video.mp4"
+                        }
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    ) : workforceEquityData[3]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={workforceEquityData[3]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          src={
+                            workforceEquityData[3]?.media
+                              ? process.env.SITE_URL +
+                                workforceEquityData[3]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={workforceEquityData[3]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
+                    )}
+                    {/* <Image
                       src={
                         workforceEquityData[3]?.media
                           ? process.env.SITE_URL + workforceEquityData[3]?.media
@@ -571,7 +1016,7 @@ const About = () => {
                       alt={workforceEquityData[3]?.description}
                       className="about_video_1"
                       style={{ width: "100%" }}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -605,6 +1050,47 @@ const About = () => {
                         width="100%"
                         height={300}
                       />
+                    ) : publicEquityData[0]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={publicEquityData[0]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          src={
+                            publicEquityData[0]?.media
+                              ? process.env.SITE_URL +
+                                publicEquityData[0]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={publicEquityData[0]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
+                    )}
+                    {/* {publicEquityData[0]?.media_type == "video" ? (
+                      <ReactPlayer
+                        url={
+                          publicEquityData[0]?.media
+                            ? process.env.SITE_URL + publicEquityData[0]?.media
+                            : "demo-video.mp4"
+                        }
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
                     ) : (
                       <Image
                         src={
@@ -617,11 +1103,51 @@ const About = () => {
                         alt={publicEquityData[1]?.description}
                         className="about_img_bottom "
                       />
-                    )}
+                    )} */}
                   </div>
                 </div>
                 <div className="col-md-3">
-                  <Image
+                  {publicEquityData[1]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        publicEquityData[1]?.media
+                          ? process.env.SITE_URL + publicEquityData[1]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : publicEquityData[1]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={publicEquityData[1]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          publicEquityData[1]?.media
+                            ? process.env.SITE_URL + publicEquityData[1]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={publicEquityData[1]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
+                  {/* <Image
                     src={
                       publicEquityData[1]?.media
                         ? process.env.SITE_URL + publicEquityData[1]?.media
@@ -631,7 +1157,7 @@ const About = () => {
                     height={250}
                     alt={publicEquityData[1]?.description}
                     className="about_img_bottom "
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -654,7 +1180,47 @@ const About = () => {
                   </ul>
                 </div>
                 <div className="col-md-3">
-                  <Image
+                  {publicEquityData[2]?.media_type == "video" ? (
+                    <ReactPlayer
+                      url={
+                        publicEquityData[2]?.media
+                          ? process.env.SITE_URL + publicEquityData[2]?.media
+                          : "demo-video.mp4"
+                      }
+                      controls
+                      playing={true}
+                      muted={true}
+                      width="100%"
+                      height={300}
+                    />
+                  ) : publicEquityData[2]?.media_type == "youtube" ? (
+                    <>
+                      {" "}
+                      <ReactPlayer
+                        url={publicEquityData[2]?.media}
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Image
+                        src={
+                          publicEquityData[2]?.media
+                            ? process.env.SITE_URL + publicEquityData[2]?.media
+                            : "/about_video_2.png"
+                        }
+                        width={455}
+                        height={300}
+                        alt={publicEquityData[2]?.description}
+                        className="about_img_bottom "
+                      />
+                    </>
+                  )}
+                  {/* <Image
                     src={
                       publicEquityData[2]?.media
                         ? process.env.SITE_URL + publicEquityData[2]?.media
@@ -664,11 +1230,52 @@ const About = () => {
                     height={250}
                     alt={publicEquityData[2]?.description}
                     className="about_img_top"
-                  />
+                  /> */}
                 </div>
                 <div className="col-md-5">
                   <div className="about_video_1">
-                    <Image
+                    {publicEquityData[3]?.media_type == "video" ? (
+                      <ReactPlayer
+                        url={
+                          publicEquityData[3]?.media
+                            ? process.env.SITE_URL + publicEquityData[3]?.media
+                            : "demo-video.mp4"
+                        }
+                        controls
+                        playing={true}
+                        muted={true}
+                        width="100%"
+                        height={300}
+                      />
+                    ) : publicEquityData[3]?.media_type == "youtube" ? (
+                      <>
+                        {" "}
+                        <ReactPlayer
+                          url={publicEquityData[3]?.media}
+                          controls
+                          playing={true}
+                          muted={true}
+                          width="100%"
+                          height={300}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Image
+                          src={
+                            publicEquityData[3]?.media
+                              ? process.env.SITE_URL +
+                                publicEquityData[3]?.media
+                              : "/about_video_2.png"
+                          }
+                          width={455}
+                          height={300}
+                          alt={publicEquityData[3]?.description}
+                          className="about_img_bottom "
+                        />
+                      </>
+                    )}
+                    {/* <Image
                       src={
                         publicEquityData[3]?.media
                           ? process.env.SITE_URL + publicEquityData[3].media
@@ -679,7 +1286,7 @@ const About = () => {
                       alt={publicEquityData[3]?.description}
                       className="about_video_1"
                       style={{ width: "100%" }}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
