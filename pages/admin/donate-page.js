@@ -29,7 +29,7 @@ const DonatePage = () => {
   const [donationStaticField, setDonationStaticField] = useState([]);
   const [zelleImgData, setZelleImgData] = useState("");
   const [cashAppImageData, setCashAppImageData] = useState("");
-
+  const [isSubmitingLoader, setIsSubmitingLoader] = useState(false);
   const [homelessPdfData, setHomelessPdfData] = useState("");
   const [studentPdfData, setStudentPdfData] = useState("");
   const [donationList, setdonationList] = useState([]);
@@ -62,13 +62,16 @@ const DonatePage = () => {
   const deleteData = async (data, sectionName) => {
     if (sectionName == "donationList") {
       try {
+        setIsSubmitingLoader(true);
         const params = { delId: data };
         const delResp = await homePageService.addDescription(params);
 
         const newDonationList = donationList.filter((item) => item.id != data);
         setdonationList(newDonationList);
+        setIsSubmitingLoader(false);
         showNotification("Item deleted", "Success");
       } catch (error) {
+        setIsSubmitingLoader(false);
         console.log(error);
       }
     }
@@ -76,17 +79,21 @@ const DonatePage = () => {
 
   const getDonationType = async () => {
     try {
+      setIsSubmitingLoader(true);
       const resp1 = await getInvolvePageSevices.getStaticData();
       if (resp1?.data?.success) {
+        setIsSubmitingLoader(false);
         setzelletext(resp1?.data?.data[0]?.zelle_text);
         setZelleImgData(resp1?.data?.data[0]?.zelle_image);
         setcashAppText(resp1?.data?.data[0]?.cash_app_text);
         setCashAppImageData(resp1?.data?.data[0]?.cash_app_image);
         setmailingText(resp1?.data?.data[0]?.mailing_text);
       } else {
+        setIsSubmitingLoader(false);
       }
       // setdata4(resp1?.data?.data[0]);
     } catch (err) {
+      setIsSubmitingLoader(false);
       // Handle any other errors that may occur during the request
       console.log(err);
     }
@@ -218,6 +225,21 @@ const DonatePage = () => {
     <>
       <AdminLayout title={"Donate Page"}>
         <main role="main">
+          {isSubmitingLoader ? (
+            <div className="overlay">
+              <div className="spinner-container">
+                <Spinner
+                  className="loaderSpinnerPiyush"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    color: "#0a1c51fc",
+                  }}
+                  animation="border"
+                />
+              </div>
+            </div>
+          ) : null}
           <section className="panel important">
             <h2>
               {" "}

@@ -72,6 +72,7 @@ const EventPage = () => {
   const [toggleEventYoutube, setToggleEventYoutube] = useState(false);
   let total = 0;
   const [EventEditMedia, setEventEditMedia] = useState("");
+  const [isSubmitingLoader, setIsSubmitingLoader] = useState(false);
 
   function countRSVP() {
     rsvp.map((item) => {
@@ -83,6 +84,7 @@ const EventPage = () => {
 
   async function postAttentionData() {
     try {
+      setIsSubmitingLoader(true);
       const formData = new FormData();
       formData.append("attentionText", AttentionText);
       formData.append("pageName", "event");
@@ -90,13 +92,16 @@ const EventPage = () => {
       const resp = await eventPageSevices.updateEventSectionVideo(formData);
 
       if (resp?.data?.success) {
+        setIsSubmitingLoader(false);
         showNotification("Data updated Successfully", "Success");
         setAttentionText("");
       } else {
+        setIsSubmitingLoader(false);
         showNotification("Some Data is missing", "Error");
         setAttentionText("");
       }
     } catch (err) {
+      setIsSubmitingLoader(false);
       showNotification(err?.message, "Error");
     }
   }
@@ -231,6 +236,7 @@ const EventPage = () => {
   const updateFormData = async (id, sectionName) => {
     if (sectionName == "EventCategoryList") {
       try {
+        setIsSubmitingLoader(true);
         const formData = new FormData();
         formData.append("updateId", id);
         if (text) {
@@ -246,6 +252,7 @@ const EventPage = () => {
         const resp = await eventPageSevices.updateEventSection(formData);
 
         if (resp?.data?.success) {
+          setIsSubmitingLoader(false);
           showNotification("Data updated Successfully", "Success");
           adminMedia();
 
@@ -254,15 +261,18 @@ const EventPage = () => {
           setUpdateActive("");
           adminMedia();
         } else {
+          setIsSubmitingLoader(false);
           showNotification("Some Data is missing", "Error");
         }
       } catch (err) {
+        setIsSubmitingLoader(false);
         // Handle any other errors that may occur during the request
         showNotification(err?.message, "Error");
       }
     }
     if (sectionName == "EventImageList") {
       try {
+        setIsSubmitingLoader(true);
         const formData = new FormData();
         formData.append("updateId", id);
 
@@ -278,15 +288,18 @@ const EventPage = () => {
         const resp = await eventPageSevices.updateEventSection2(formData);
 
         if (resp?.data?.success) {
+          setIsSubmitingLoader(false);
           adminMedia3();
           setupMedia2("");
           settext2("");
           setUpdateActive2("");
           showNotification("Data updated Successfully", "Success");
         } else {
+          setIsSubmitingLoader(false);
           showNotification("Some Data is missing", "Error");
         }
       } catch (err) {
+        setIsSubmitingLoader(false);
         // Handle any other errors that may occur during the request
         console.log(err);
       }
@@ -294,6 +307,7 @@ const EventPage = () => {
 
     if (sectionName == "EventList") {
       try {
+        setIsSubmitingLoader(true);
         const formData = new FormData();
         formData.append("updateId", id);
 
@@ -318,15 +332,18 @@ const EventPage = () => {
         const resp = await eventPageSevices.updateEventManagement(formData);
 
         if (resp?.data?.success) {
+          setIsSubmitingLoader(false);
           eventListsection();
 
           setEditEventTitle("");
           setEditStartDate("");
           showNotification("Data updated Successfully", "Success");
         } else {
+          setIsSubmitingLoader(false);
           showNotification("Some Data is missing", "Error");
         }
       } catch (err) {
+        setIsSubmitingLoader(false);
         // Handle any other errors that may occur during the request
         console.log(err);
       }
@@ -337,39 +354,63 @@ const EventPage = () => {
   const deleteData = async (data, sectionName) => {
     if (sectionName == "EventCategoryList") {
       try {
+        setIsSubmitingLoader(true);
         const params = { delId: data };
         const delResp = await eventPageSevices.updateEventSection(params);
-
+        console.log("delResp", delResp);
         const newAdminMediaData = adminMediaData.filter(
           (item) => item.id != data
         );
-        setadminMediaData(newAdminMediaData);
-        showNotification("Item deleted", "Success");
+        if (delResp.data.success) {
+          setadminMediaData(newAdminMediaData);
+          setIsSubmitingLoader(false);
+          showNotification("Item deleted", "Success");
+        } else {
+          setIsSubmitingLoader(false);
+          showNotification("Item not deleted", "Error");
+        }
       } catch (error) {
+        setIsSubmitingLoader(false);
         console.log(error);
       }
     } else if (sectionName == "EventImageList") {
       try {
+        setIsSubmitingLoader(true);
         const params = { delId: data };
         const delResp = await eventPageSevices.updateEventSection2(params);
 
         const newEventImageList = eventImageList.filter(
           (item) => item.id != data
         );
-        seteventImageList(newEventImageList);
-        showNotification("Item deleted", "Success");
+        if (delResp.data.success) {
+          seteventImageList(newEventImageList);
+          setIsSubmitingLoader(false);
+          showNotification("Item deleted", "Success");
+        } else {
+          setIsSubmitingLoader(false);
+          showNotification("Item not deleted", "Error");
+        }
       } catch (error) {
+        setIsSubmitingLoader(false);
         console.log(error);
       }
     } else if (sectionName == "EventList") {
       try {
+        setIsSubmitingLoader(true);
         const params = { delId: data };
         const delResp = await eventPageSevices.updateEventManagement(params);
 
         const newEventList = eventList.filter((item) => item.id != data);
-        seteventList(newEventList);
-        showNotification("Item deleted", "Success");
+        if (delResp.data.success) {
+          seteventList(newEventList);
+          setIsSubmitingLoader(false);
+          showNotification("Item deleted", "Success");
+        } else {
+          setIsSubmitingLoader(false);
+          showNotification("Item not deleted", "Error");
+        }
       } catch (error) {
+        setIsSubmitingLoader(false);
         console.log(error);
       }
     }
@@ -377,6 +418,7 @@ const EventPage = () => {
 
   const updateEventPageSec1 = async () => {
     try {
+      setIsSubmitingLoader(true);
       if (eventType && eventdec) {
         const formData = new FormData();
 
@@ -387,18 +429,22 @@ const EventPage = () => {
         const resp = await eventPageSevices.updateEventSection(formData);
 
         if (resp?.data?.success) {
+          setIsSubmitingLoader(false);
           showNotification("Data updated Successfully", "Success");
           seteventType("");
           seteventdec("");
           setactive("");
           adminMedia();
         } else {
+          setIsSubmitingLoader(false);
           showNotification("Some Data is missing", "Error");
         }
       } else {
+        setIsSubmitingLoader(false);
         showNotification("All fields is required", "Error");
       }
     } catch (err) {
+      setIsSubmitingLoader(false);
       // Handle any other errors that may occur during the request
       showNotification(err?.message, "Error");
     }
@@ -406,6 +452,7 @@ const EventPage = () => {
 
   const updateEventPageSec2 = async () => {
     try {
+      setIsSubmitingLoader(true);
       const formData = new FormData();
 
       formData.append("newsTitle", newsTitle);
@@ -418,14 +465,17 @@ const EventPage = () => {
         resp?.data.success == true ||
         resp.data.message == "New Record Created"
       ) {
+        setIsSubmitingLoader(false);
         adminMedia3();
         setnewsMedia("");
         setnewsTitle("");
         showNotification("Data updated Successfully", "Success");
       } else {
+        setIsSubmitingLoader(false);
         showNotification("Some Data is missing", "Error");
       }
     } catch (err) {
+      setIsSubmitingLoader(false);
       // Handle any other errors that may occur during the request
       console.log(err);
     }
@@ -435,6 +485,7 @@ const EventPage = () => {
     if (toggleYoutube == true) {
       console.log("youtube upload");
       try {
+        setIsSubmitingLoader(true);
         const formData = new FormData();
         formData.append("pageName", "event");
         formData.append("eventPromoVideo", youtubeLinkCampHeader);
@@ -442,18 +493,21 @@ const EventPage = () => {
         const resp = await eventPageSevices.updateEventSectionVideo(formData);
         console.log("event promo", resp);
         if (resp.status == 200) {
+          setIsSubmitingLoader(false);
           setpromo_video("");
           showNotification("Youtube media updated", "Success");
         } else {
+          setIsSubmitingLoader(false);
           showNotification("Youtube media update Failed", "Error");
         }
       } catch (err) {
+        setIsSubmitingLoader(false);
         // Handle any other errors that may occur during the request
         console.log(err);
       }
     } else {
-      console.log("video upload");
       try {
+        setIsSubmitingLoader(true);
         const formData = new FormData();
         formData.append("pageName", "event");
         formData.append("eventPromoVideo", promo_video);
@@ -461,12 +515,15 @@ const EventPage = () => {
         const resp = await eventPageSevices.updateEventSectionVideo(formData);
         console.log("event promo", resp);
         if (resp.status == 200) {
+          setIsSubmitingLoader(false);
           setpromo_video("");
           showNotification("Video uploaded Successfully", "Success");
         } else {
+          setIsSubmitingLoader(false);
           showNotification("Video upload Failed", "Error");
         }
       } catch (err) {
+        setIsSubmitingLoader(false);
         // Handle any other errors that may occur during the request
         console.log(err);
       }
@@ -486,6 +543,7 @@ const EventPage = () => {
         eventCost != ""
       ) {
         try {
+          setIsSubmitingLoader(true);
           // console.log("eventType2", eventType2);
           const formData = new FormData();
           formData.append("eventTitle", eventTitle);
@@ -504,6 +562,7 @@ const EventPage = () => {
           const resp = await eventPageSevices.updateEventManagement(formData);
 
           if (resp?.data?.success) {
+            setIsSubmitingLoader(false);
             eventListsection();
             showNotification("Record Added Successfully", "Success");
             seteventTitle("");
@@ -519,13 +578,16 @@ const EventPage = () => {
             seteventCost("");
             setactive3(false);
           } else {
+            setIsSubmitingLoader(false);
             showNotification(resp?.data?.message, "Error");
           }
         } catch (err) {
+          setIsSubmitingLoader(false);
           // Handle any other errors that may occur during the request
           console.log(err);
         }
       } else {
+        setIsSubmitingLoader(false);
         showNotification("Please fill all fields", "Error");
       }
     } else {
@@ -540,6 +602,7 @@ const EventPage = () => {
         eventCost != ""
       ) {
         try {
+          setIsSubmitingLoader(true);
           // console.log("eventType2", eventType2);
           const formData = new FormData();
           formData.append("eventTitle", eventTitle);
@@ -558,6 +621,7 @@ const EventPage = () => {
           const resp = await eventPageSevices.updateEventManagement(formData);
 
           if (resp?.data?.success) {
+            setIsSubmitingLoader(false);
             eventListsection();
             showNotification("Record Added Successfully", "Success");
             seteventTitle("");
@@ -573,13 +637,16 @@ const EventPage = () => {
             seteventCost("");
             setactive3(false);
           } else {
+            setIsSubmitingLoader(false);
             showNotification(resp?.data?.message, "Error");
           }
         } catch (err) {
+          setIsSubmitingLoader(false);
           // Handle any other errors that may occur during the request
           console.log(err);
         }
       } else {
+        setIsSubmitingLoader(false);
         showNotification("Please fill all fields", "Error");
       }
     }
@@ -587,11 +654,18 @@ const EventPage = () => {
 
   const adminMedia = async () => {
     try {
+      setIsSubmitingLoader(true);
       const mediaResp = await eventPageSevices.adminMedia();
 
-      setadminMediaData(mediaResp?.data?.data);
-      // console.log("Event cat List", mediaResp?.data?.data);
+      if (mediaResp?.data?.data.length > 0) {
+        setIsSubmitingLoader(false);
+        setadminMediaData(mediaResp?.data?.data);
+        console.log("Event cat List", mediaResp?.data?.data);
+      } else {
+        setIsSubmitingLoader(false);
+      }
     } catch (err) {
+      setIsSubmitingLoader(false);
       // Handle any other errors that may occur during the request
       console.log(err);
     }
@@ -599,18 +673,22 @@ const EventPage = () => {
 
   const adminMedia2 = async () => {
     try {
+      setIsSubmitingLoader(true);
       const mediaResp2 = await eventPageSevices.adminMedia2();
 
       if (mediaResp2?.data?.success) {
+        setIsSubmitingLoader(false);
         let campignNews = mediaResp2?.data?.data?.filter(
           (item) => item?.page_name == "event"
         );
 
         seteventpromovideo(campignNews[0]?.promo_video);
       } else {
+        setIsSubmitingLoader(false);
         seteventpromovideo("");
       }
     } catch (err) {
+      setIsSubmitingLoader(false);
       // Handle any other errors that may occur during the request
       console.log(err?.message);
     }
@@ -619,9 +697,12 @@ const EventPage = () => {
   const [eventImageList, seteventImageList] = useState([]);
   const adminMedia3 = async () => {
     try {
+      setIsSubmitingLoader(true);
       const mediaResp3 = await eventPageSevices.adminMedia3("event");
+      setIsSubmitingLoader(false);
       seteventImageList(mediaResp3?.data?.data);
     } catch (err) {
+      setIsSubmitingLoader(false);
       // Handle any other errors that may occur during the request
       console.log(err);
     }
@@ -630,10 +711,17 @@ const EventPage = () => {
 
   const eventListsection = async () => {
     try {
+      setIsSubmitingLoader(true);
       const eventListresp = await eventPageSevices.eventList();
       console.log("eventListresp", eventListresp);
-      seteventList(eventListresp?.data?.data);
+      if (eventListresp.data.success) {
+        setIsSubmitingLoader(true);
+        seteventList(eventListresp?.data?.data);
+      } else {
+        setIsSubmitingLoader(true);
+      }
     } catch (err) {
+      setIsSubmitingLoader(true);
       // Handle any other errors that may occur during the request
       console.log(err);
     }
@@ -701,6 +789,21 @@ const EventPage = () => {
     <>
       <AdminLayout title={"Event page"}>
         <main role="main">
+          {isSubmitingLoader ? (
+            <div className="overlay">
+              <div className="spinner-container">
+                <Spinner
+                  className="loaderSpinnerPiyush"
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    color: "#0a1c51fc",
+                  }}
+                  animation="border"
+                />
+              </div>
+            </div>
+          ) : null}
           <section className="panel important">
             <h2>
               {" "}

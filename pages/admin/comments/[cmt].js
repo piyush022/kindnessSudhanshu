@@ -3,47 +3,15 @@ import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { newsPageService } from "@/store/services/newsPageService";
-
-export async function getStaticPaths() {
-  const resp = await newsPageService.getComments(params);
-
-  const paths = resp.data.data.map((curElm) => {
-    return {
-      params: {
-        cmt_id: curElm.id.toString(),
-      },
-    };
-  });
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps(context) {
-  console.log("Context", context.params.cmt_id);
-  const result = await newsPageService.getComments(params);
-  const sortedComments = result.data.data.filter(
-    (item) => item.post_id == params
-  );
-
-  return {
-    props: { sortedComments, CmtID: context.params.cmt_id },
-  };
-}
-const Comments = (sortedComments, CmtID) => {
+const Comments = () => {
   const [sortedCommentsOfNews, setsortedCommentsOfNews] = useState([]);
   const [isSubmitingLoader, setIsSubmitingLoader] = useState(false);
   const router = useRouter();
   const { isReady } = useRouter();
-
-  useEffect(() => {
-    setsortedCommentsOfNews(sortedComments);
-  }, []);
   useEffect(() => {
     console.log("Router", router);
     if (isReady) {
-      // fetchComments(router.query.id);
+      fetchComments(router.query.id);
     }
   }, [router.query]);
 
@@ -136,17 +104,16 @@ const Comments = (sortedComments, CmtID) => {
             </div>
           ) : null}
           <section className="panel important">
-            <div className="container">
-              <h2>
-                {" "}
-                <i
-                  className="fa fa-hand-o-right"
-                  aria-hidden="true"
-                  style={{ color: "#ff651f" }}
-                />{" "}
-                {router.query.cmt} comments
-              </h2>
-            </div>
+            <h2>
+              {" "}
+              <i
+                className="fa fa-hand-o-right"
+                aria-hidden="true"
+                style={{ color: "#ff651f" }}
+              />{" "}
+              {router.query.cmt}-News Comments
+            </h2>
+
             <section className="">
               <>
                 {
@@ -155,52 +122,58 @@ const Comments = (sortedComments, CmtID) => {
                       <div>
                         <div></div>
                         <div>
-                          <table>
-                            <tr>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Comment</th>
-                              <th>Status</th>
+                          <div className="table-responsive">
+                            <table className="table">
+                              <tr style={{ backgroundColor: "#2b2d32" }}>
+                                <th style={{ paddingLeft: "85px" }}>Name</th>
+                                <th style={{ paddingLeft: "85px" }}>Email</th>
+                                <th style={{ paddingLeft: "85px" }}>Comment</th>
+                                <th style={{ paddingLeft: "85px" }}>Status</th>
 
-                              <th>Action</th>
-                            </tr>
-                            {sortedCommentsOfNews.map((item, index) => (
-                              <tr key={index}>
-                                <td>{item?.name}</td>
-                                <td>{item?.email_id}</td>
-                                <td>{item?.comment}</td>
-                                <td>
-                                  {item?.status == "1" ? "Active" : "Inactive"}
-                                </td>
-                                <td>
-                                  {item?.status == "1" ? (
-                                    <button
-                                      className="btn btn-secondary btn-sm"
-                                      onClick={(e) =>
-                                        deactivateComment(item?.id)
-                                      }
-                                    >
-                                      Deactivate
-                                    </button>
-                                  ) : (
-                                    <button
-                                      className="btn btn-secondary btn-sm"
-                                      onClick={(e) => activateComment(item?.id)}
-                                    >
-                                      Activate
-                                    </button>
-                                  )}
-
-                                  <button
-                                    className="btn btn-sm btn-secondary mx-3"
-                                    onClick={(e) => deleteComment(item?.id)}
-                                  >
-                                    Delete
-                                  </button>
-                                </td>
+                                <th>Action</th>
                               </tr>
-                            ))}
-                          </table>
+                              {sortedCommentsOfNews.map((item, index) => (
+                                <tr key={index}>
+                                  <td>{item?.name}</td>
+                                  <td>{item?.email_id}</td>
+                                  <td>{item?.comment}</td>
+                                  <td>
+                                    {item?.status == "1"
+                                      ? "Active"
+                                      : "Inactive"}
+                                  </td>
+                                  <td>
+                                    {item?.status == "1" ? (
+                                      <button
+                                        className="btn btn-secondary btn-sm"
+                                        onClick={(e) =>
+                                          deactivateComment(item?.id)
+                                        }
+                                      >
+                                        Deactivate
+                                      </button>
+                                    ) : (
+                                      <button
+                                        className="btn btn-secondary btn-sm"
+                                        onClick={(e) =>
+                                          activateComment(item?.id)
+                                        }
+                                      >
+                                        Activate
+                                      </button>
+                                    )}
+
+                                    <button
+                                      className="btn btn-sm btn-secondary mx-3"
+                                      onClick={(e) => deleteComment(item?.id)}
+                                    >
+                                      Delete
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </table>
+                          </div>
                         </div>
                       </div>
                     </div>

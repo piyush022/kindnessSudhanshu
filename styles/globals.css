@@ -101,6 +101,10 @@ section {
 }
 .commentsPage {
 }
+/* arjit css */
+.table td {
+  border: 1px solid #000;
+}
 
 /*--------------------------------------------------------------
 # Breadcrumbs
