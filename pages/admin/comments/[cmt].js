@@ -3,15 +3,47 @@ import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { newsPageService } from "@/store/services/newsPageService";
-const Comments = () => {
+
+export async function getStaticPaths() {
+  const resp = await newsPageService.getComments(params);
+
+  const paths = resp.data.data.map((curElm) => {
+    return {
+      params: {
+        cmt_id: curElm.id.toString(),
+      },
+    };
+  });
+  return {
+    paths,
+    fallback: false,
+  };
+}
+
+export async function getStaticProps(context) {
+  console.log("Context", context.params.cmt_id);
+  const result = await newsPageService.getComments(params);
+  const sortedComments = result.data.data.filter(
+    (item) => item.post_id == params
+  );
+
+  return {
+    props: { sortedComments, CmtID: context.params.cmt_id },
+  };
+}
+const Comments = (sortedComments, CmtID) => {
   const [sortedCommentsOfNews, setsortedCommentsOfNews] = useState([]);
   const [isSubmitingLoader, setIsSubmitingLoader] = useState(false);
   const router = useRouter();
   const { isReady } = useRouter();
+
+  useEffect(() => {
+    setsortedCommentsOfNews(sortedComments);
+  }, []);
   useEffect(() => {
     console.log("Router", router);
     if (isReady) {
-      fetchComments(router.query.id);
+      // fetchComments(router.query.id);
     }
   }, [router.query]);
 
