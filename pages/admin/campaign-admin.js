@@ -73,6 +73,13 @@ const Compaign_page = () => {
     useState("");
   const [youtubeLinkValueEducation, setyoutubeLinkValueEducation] =
     useState("");
+  const [toggleNewsYT, settoggleNewsYT] = useState(false);
+  const [toggleEduYT, settoggleEduYT] = useState(false);
+  const [toggleWorkYT, settoggleWorkYT] = useState(false);
+  const [togglePublicYT, settogglePublicYT] = useState(false);
+  const [newsupdateYTdata, setnewsupdateYTdata] = useState("");
+  const [updateYTdataEdu, setupdateYTdataEdu] = useState("");
+  const [updateYTdataPublic, setupdateYTdataPublic] = useState("");
   //function to update data - piyush
 
   function editFieldData(id, index, sectionName) {
@@ -157,8 +164,12 @@ const Compaign_page = () => {
             formData.append("imgDesc", text1);
           }
 
-          if (upMedia && typeof upMedia == "object") {
-            formData.append("newsMedia", upMedia);
+          if (toggleNewsYT) {
+            formData.append("newsMedia", newsupdateYTdata);
+          } else {
+            if (upMedia && typeof upMedia == "object") {
+              formData.append("newsMedia", upMedia);
+            }
           }
 
           formData.append("secName", "health_equity");
@@ -172,6 +183,7 @@ const Compaign_page = () => {
             getEquitySectionData();
             setupMedia("");
             settext1("");
+            setnewsupdateYTdata("");
           } else {
             setIsSubmittingLoader(false);
             showNotification(response.data.message, "Error");
@@ -186,8 +198,12 @@ const Compaign_page = () => {
           const formData = new FormData();
           formData.append("updateId", id);
           formData.append("imgDesc", text2);
-          if (upMedia2 && typeof upMedia2 == "object") {
-            formData.append("newsMedia", upMedia2);
+          if (toggleWorkYT) {
+            formData.append("newsMedia", updateYTdataWork);
+          } else {
+            if (upMedia2 && typeof upMedia2 == "object") {
+              formData.append("newsMedia", upMedia2);
+            }
           }
           formData.append("secName", "workforce_equity");
 
@@ -201,6 +217,7 @@ const Compaign_page = () => {
             getEquitySectionData();
             settext2("");
             setupMedia2("");
+            setnewsupdateYTdata("");
           } else {
             setIsSubmittingLoader(false);
             showNotification(response.data.message, "Error");
@@ -215,8 +232,12 @@ const Compaign_page = () => {
           const formData = new FormData();
           formData.append("updateId", id);
           formData.append("imgDesc", text3);
-          if (upMedia3 && typeof upMedia3 == "object") {
-            formData.append("newsMedia", upMedia3);
+          if (toggleEduYT) {
+            formData.append("newsMedia", updateYTdataEdu);
+          } else {
+            if (upMedia3 && typeof upMedia3 == "object") {
+              formData.append("newsMedia", upMedia3);
+            }
           }
 
           formData.append("secName", "education_equity");
@@ -231,6 +252,7 @@ const Compaign_page = () => {
             getEquitySectionData();
             settext3("");
             setupMedia3("");
+            setnewsupdateYTdata("");
           } else {
             setIsSubmittingLoader(false);
             showNotification(response.data.message, "Error");
@@ -245,8 +267,12 @@ const Compaign_page = () => {
           const formData = new FormData();
           formData.append("updateId", id);
           formData.append("imgDesc", text4);
-          if (upMedia4 && typeof upMedia4 == "object") {
-            formData.append("newsMedia", upMedia4);
+          if (togglePublicYT) {
+            formData.append("newsMedia", updateYTdataPublic);
+          } else {
+            if (upMedia4 && typeof upMedia4 == "object") {
+              formData.append("newsMedia", upMedia4);
+            }
           }
 
           formData.append("secName", "public_equity");
@@ -261,6 +287,7 @@ const Compaign_page = () => {
             getEquitySectionData();
             settext4("");
             setupMedia4("");
+            setnewsupdateYTdata("");
           } else {
             setIsSubmittingLoader(false);
             showNotification(response.data.message, "Error");
@@ -1202,7 +1229,7 @@ const Compaign_page = () => {
                                     </td>
 
                                     <td>
-                                      {item?.media_type == "video" ? (
+                                      {/* {item?.media_type == "video" ? (
                                         <>
                                           <ReactPlayer
                                             url={upMediaPreview}
@@ -1232,14 +1259,78 @@ const Compaign_page = () => {
                                             />
                                           )}
                                         </>
-                                      )}
+                                      )} */}
 
-                                      <input
+                                      {/* <input
                                         type="file"
                                         onChange={(e) =>
                                           onchangeFile(e, "healthEquity")
                                         }
-                                      />
+                                      /> */}
+                                      {toggleNewsYT ? (
+                                        <>
+                                          <div className="">
+                                            {newsupdateYTdata != ""
+                                              ? showVideo(newsupdateYTdata)
+                                              : showVideo("no-video")}
+                                          </div>
+                                          <div className="">
+                                            <input
+                                              className=""
+                                              type="text"
+                                              value={newsupdateYTdata}
+                                              onChange={(e) => {
+                                                const inputValue =
+                                                  e.target.value.trim();
+                                                setnewsupdateYTdata(inputValue);
+                                              }}
+                                            />
+                                            <span className="mbSpan">
+                                              Add YouTube video link.
+                                            </span>
+                                          </div>
+                                          <div className="">
+                                            <span
+                                              className=" custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                toggleNewsYT
+                                                  ? settoggleNewsYT(false)
+                                                  : (settoggleNewsYT(true),
+                                                    settoggleNewsYT(""));
+                                              }}
+                                            >
+                                              <BsFileEarmarkImage id="youTubelogo" />
+                                              Custom Video
+                                            </span>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <input
+                                            type="file"
+                                            name="media"
+                                            onChange={(e) =>
+                                              onchangeFile(e, "healthEquity")
+                                            }
+                                          />
+                                          <div
+                                            style={{ width: "100%" }}
+                                            className=""
+                                          >
+                                            <span
+                                              className="mx-4 custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                toggleNewsYT
+                                                  ? settoggleNewsYT(false)
+                                                  : settoggleNewsYT(true);
+                                              }}
+                                            >
+                                              <BsYoutube id="youTubelogo" />
+                                              YouTube Link
+                                            </span>
+                                          </div>
+                                        </>
+                                      )}
                                     </td>
                                     <td></td>
                                   </>
@@ -1536,7 +1627,7 @@ const Compaign_page = () => {
                                     </td>
 
                                     <td>
-                                      <input
+                                      {/* <input
                                         type="file"
                                         onChange={(e) =>
                                           onchangeFile(e, "educationEquity")
@@ -1575,6 +1666,69 @@ const Compaign_page = () => {
                                           width={"250px"}
                                           height={"150px"}
                                         />
+                                      )} */}
+                                      {toggleEduYT ? (
+                                        <>
+                                          <div className="">
+                                            {updateYTdataEdu != ""
+                                              ? showVideo(updateYTdataEdu)
+                                              : showVideo("no-video")}
+                                          </div>
+                                          <div className="">
+                                            <input
+                                              className=""
+                                              type="text"
+                                              value={updateYTdataEdu}
+                                              onChange={(e) => {
+                                                const inputValue =
+                                                  e.target.value.trim();
+                                                setupdateYTdataEdu(inputValue);
+                                              }}
+                                            />
+                                            <span className="mbSpan">
+                                              Add YouTube video link.
+                                            </span>
+                                          </div>
+                                          <div className="">
+                                            <span
+                                              className=" custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                toggleEduYT
+                                                  ? settoggleEduYT(false)
+                                                  : (settoggleEduYT(true),
+                                                    settoggleEduYT(""));
+                                              }}
+                                            >
+                                              <BsFileEarmarkImage id="youTubelogo" />
+                                              Custom Video
+                                            </span>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <input
+                                            type="file"
+                                            onChange={(e) =>
+                                              onchangeFile(e, "educationEquity")
+                                            }
+                                          />
+                                          <div
+                                            style={{ width: "100%" }}
+                                            className=""
+                                          >
+                                            <span
+                                              className="mx-4 custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                toggleEduYT
+                                                  ? settoggleEduYT(false)
+                                                  : settoggleEduYT(true);
+                                              }}
+                                            >
+                                              <BsYoutube id="youTubelogo" />
+                                              YouTube Link
+                                            </span>
+                                          </div>
+                                        </>
                                       )}
                                     </td>
                                     <td></td>
@@ -1873,7 +2027,7 @@ const Compaign_page = () => {
                                     </td>
 
                                     <td>
-                                      {item?.media_type == "video" ? (
+                                      {/* {item?.media_type == "video" ? (
                                         <>
                                           <ReactPlayer
                                             url={upMediaPreview2}
@@ -1904,7 +2058,7 @@ const Compaign_page = () => {
                                           width={"250px"}
                                           height={"150px"}
                                         />
-                                      )}
+                                      )} */}
                                       {/* <Image
                                         src={
                                           upMediaPreview2
@@ -1914,12 +2068,75 @@ const Compaign_page = () => {
                                         width={80}
                                         height={80}
                                       /> */}
-                                      <input
+                                      {/* <input
                                         type="file"
                                         onChange={(e) =>
                                           onchangeFile(e, "WorkforceEquity")
                                         }
-                                      />
+                                      /> */}
+                                      {toggleWorkYT ? (
+                                        <>
+                                          <div className="">
+                                            {updateYTdataWork != ""
+                                              ? showVideo(updateYTdataWork)
+                                              : showVideo("no-video")}
+                                          </div>
+                                          <div className="">
+                                            <input
+                                              className=""
+                                              type="text"
+                                              value={updateYTdataWork}
+                                              onChange={(e) => {
+                                                const inputValue =
+                                                  e.target.value.trim();
+                                                setupdateYTdataWork(inputValue);
+                                              }}
+                                            />
+                                            <span className="mbSpan">
+                                              Add YouTube video link.
+                                            </span>
+                                          </div>
+                                          <div className="">
+                                            <span
+                                              className=" custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                toggleWorkYT
+                                                  ? settoggleWorkYT(false)
+                                                  : (settoggleWorkYT(true),
+                                                    settoggleWorkYT(""));
+                                              }}
+                                            >
+                                              <BsFileEarmarkImage id="youTubelogo" />
+                                              Custom Video
+                                            </span>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <input
+                                            type="file"
+                                            onChange={(e) =>
+                                              onchangeFile(e, "WorkforceEquity")
+                                            }
+                                          />
+                                          <div
+                                            style={{ width: "100%" }}
+                                            className=""
+                                          >
+                                            <span
+                                              className="mx-4 custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                toggleWorkYT
+                                                  ? settoggleWorkYT(false)
+                                                  : settoggleWorkYT(true);
+                                              }}
+                                            >
+                                              <BsYoutube id="youTubelogo" />
+                                              YouTube Link
+                                            </span>
+                                          </div>
+                                        </>
+                                      )}
                                     </td>
                                     <td></td>
                                   </>
@@ -2226,7 +2443,7 @@ const Compaign_page = () => {
                                         width={80}
                                         height={80}
                                       /> */}
-                                      {item?.media_type == "video" ? (
+                                      {/* {item?.media_type == "video" ? (
                                         <>
                                           <ReactPlayer
                                             url={
@@ -2265,7 +2482,72 @@ const Compaign_page = () => {
                                         onChange={(e) =>
                                           onchangeFile(e, "PublicEquity")
                                         }
-                                      />
+                                      /> */}
+                                      {togglePublicYT ? (
+                                        <>
+                                          <div className="">
+                                            {updateYTdataPublic != ""
+                                              ? showVideo(updateYTdataPublic)
+                                              : showVideo("no-video")}
+                                          </div>
+                                          <div className="">
+                                            <input
+                                              className=""
+                                              type="text"
+                                              value={updateYTdataPublic}
+                                              onChange={(e) => {
+                                                const inputValue =
+                                                  e.target.value.trim();
+                                                setupdateYTdataPublic(
+                                                  inputValue
+                                                );
+                                              }}
+                                            />
+                                            <span className="mbSpan">
+                                              Add YouTube video link.
+                                            </span>
+                                          </div>
+                                          <div className="">
+                                            <span
+                                              className=" custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                togglePublicYT
+                                                  ? settogglePublicYT(false)
+                                                  : (settogglePublicYT(true),
+                                                    settogglePublicYT(""));
+                                              }}
+                                            >
+                                              <BsFileEarmarkImage id="youTubelogo" />
+                                              Custom Video
+                                            </span>
+                                          </div>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <input
+                                            type="file"
+                                            onChange={(e) =>
+                                              onchangeFile(e, "PublicEquity")
+                                            }
+                                          />
+                                          <div
+                                            style={{ width: "100%" }}
+                                            className=""
+                                          >
+                                            <span
+                                              className="mx-4 custom-youtube-toggleLink"
+                                              onClick={() => {
+                                                togglePublicYT
+                                                  ? settogglePublicYT(false)
+                                                  : settogglePublicYT(true);
+                                              }}
+                                            >
+                                              <BsYoutube id="youTubelogo" />
+                                              YouTube Link
+                                            </span>
+                                          </div>
+                                        </>
+                                      )}
                                     </td>
                                     <td></td>
                                   </>

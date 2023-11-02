@@ -161,7 +161,6 @@ const About = () => {
                           playing={true}
                           muted={true}
                           width={"100%"}
-                          height={"auto"}
                         />
                       ) : data2?.section_media_type == "image" ? (
                         <Image

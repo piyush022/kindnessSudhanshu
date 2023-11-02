@@ -288,6 +288,7 @@ const Home = () => {
                 setupdateFile("");
                 setupdateDate("");
                 setUpdateActive("");
+                setnewsupdateYTdata("");
               } else {
                 setIsSubmitingLoader(false);
 
@@ -346,6 +347,7 @@ const Home = () => {
                 setupdateFile("");
                 setupdateDate("");
                 setUpdateActive("");
+                setnewsupdateYTdata("");
               } else {
                 setIsSubmitingLoader(false);
 
@@ -2334,7 +2336,7 @@ const Home = () => {
 
                                                   // Check if the file has an image extension
                                                   if (
-                                                    /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
+                                                    /\.(jpg|jpeg|png|gif|webp|bmp)$/.test(
                                                       fileName
                                                     )
                                                   ) {
@@ -2372,7 +2374,7 @@ const Home = () => {
                                                       );
                                                     }
                                                   } else if (
-                                                    /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
+                                                    /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php|tiff)$/.test(
                                                       fileName
                                                     )
                                                   ) {
