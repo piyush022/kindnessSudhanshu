@@ -386,11 +386,13 @@ function NewsDetailPage({ data, Newsid }) {
             <form>
               <label>Add Comment:</label>
               <input
+                value={Name}
                 type="text"
                 placeholder="Name"
                 onChange={(e) => setName(e.target.value)}
               />
               <input
+                value={Email}
                 type="email"
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
@@ -398,6 +400,7 @@ function NewsDetailPage({ data, Newsid }) {
               <br />
 
               <textarea
+                value={Cmt}
                 id="w3review"
                 name="w3review"
                 rows="10"
