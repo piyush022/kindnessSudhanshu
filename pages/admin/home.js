@@ -118,6 +118,8 @@ const Home = () => {
   const [youtubeLinkCampHeader, setyoutubeLinkCampHeader] = useState("");
   const [youtubeLinkCampHeaderNews, setyoutubeLinkCampHeaderNews] =
     useState("");
+  const [toggleNewsYT, settoggleNewsYT] = useState(false);
+  const [newsupdateYTdata, setnewsupdateYTdata] = useState();
 
   //function to update the table data
   function editFieldData(id, index, sectionName) {
@@ -246,61 +248,122 @@ const Home = () => {
             return false;
           }
         }
-        try {
-          if (text1 && updateDate) {
-            setIsSubmitingLoader(true);
-            const formData = new FormData();
+        if (toggleNewsYT) {
+          console.log("toggleNewsYT", toggleNewsYT);
+          try {
+            if (text1 && updateDate) {
+              setIsSubmitingLoader(true);
+              const formData = new FormData();
 
-            formData.append("updateId", id);
-            if (text1) {
-              formData.append("title", text1);
-            }
-            if (updateFile && typeof updateFile == "object") {
-              formData.append("media", updateFile);
-            }
-            if (updateDate) {
-              formData.append("date", updateDate);
-            }
+              formData.append("updateId", id);
+              if (text1) {
+                formData.append("title", text1);
+              }
+              if (newsupdateYTdata != "") {
+                formData.append("media", newsupdateYTdata);
+              }
+              if (updateDate) {
+                formData.append("date", updateDate);
+              }
 
-            if (updateCampSection) {
-              formData.append("newsArticle", updateCampSection);
-            }
+              if (updateCampSection) {
+                formData.append("newsArticle", updateCampSection);
+              }
 
-            formData.append("featuredItem", featuredActive ? 1 : 0);
-            formData.append("active", updateActive ? 1 : 0);
-            formData.append("secName", "camp_news");
+              formData.append("featuredItem", featuredActive ? 1 : 0);
+              formData.append("active", updateActive ? 1 : 0);
+              formData.append("secName", "camp_news");
 
-            const response = await homePageService.addCampaignNewsData(
-              formData
-            );
+              const response = await homePageService.addCampaignNewsData(
+                formData
+              );
 
-            if (response?.data?.success) {
-              showNotification(response?.data?.message, "Success");
-              ////////////// Get News api ////////////////
-              showNewsSection();
-              setIsSubmitingLoader(false);
+              if (response?.data?.success) {
+                showNotification(response?.data?.message, "Success");
+                ////////////// Get News api ////////////////
+                showNewsSection();
+                setIsSubmitingLoader(false);
 
-              settext1("");
-              setupdateFile("");
-              setupdateDate("");
-              setUpdateActive("");
+                settext1("");
+                setupdateFile("");
+                setupdateDate("");
+                setUpdateActive("");
+              } else {
+                setIsSubmitingLoader(false);
+
+                showNotification(response?.data?.message, "Error");
+              }
             } else {
               setIsSubmitingLoader(false);
 
-              showNotification(response?.data?.message, "Error");
+              showNotification(
+                "Please fill all fields of Campaign news section",
+                "Error"
+              );
             }
-          } else {
+          } catch (error) {
             setIsSubmitingLoader(false);
 
-            showNotification(
-              "Please fill all fields of Campaign news section",
-              "Error"
-            );
+            console.error(error);
           }
-        } catch (error) {
-          setIsSubmitingLoader(false);
+        } else {
+          console.log("toggleNewsYT", toggleNewsYT);
+          try {
+            if (text1 && updateDate) {
+              setIsSubmitingLoader(true);
+              const formData = new FormData();
 
-          console.error(error);
+              formData.append("updateId", id);
+              if (text1) {
+                formData.append("title", text1);
+              }
+              if (updateFile && typeof updateFile == "object") {
+                formData.append("media", updateFile);
+              }
+              if (updateDate) {
+                formData.append("date", updateDate);
+              }
+
+              if (updateCampSection) {
+                formData.append("newsArticle", updateCampSection);
+              }
+
+              formData.append("featuredItem", featuredActive ? 1 : 0);
+              formData.append("active", updateActive ? 1 : 0);
+              formData.append("secName", "camp_news");
+
+              const response = await homePageService.addCampaignNewsData(
+                formData
+              );
+
+              if (response?.data?.success) {
+                showNotification(response?.data?.message, "Success");
+                ////////////// Get News api ////////////////
+                showNewsSection();
+                setIsSubmitingLoader(false);
+
+                settext1("");
+                setupdateFile("");
+                setupdateDate("");
+                setUpdateActive("");
+              } else {
+                setIsSubmitingLoader(false);
+
+                showNotification(response?.data?.message, "Error");
+              }
+            } else {
+              setIsSubmitingLoader(false);
+
+              showNotification(
+                "Please fill all fields of Campaign news section",
+                "Error"
+              );
+            }
+          } catch (error) {
+            setIsSubmitingLoader(false);
+
+            console.error(error);
+          }
         }
       } else if (sectionName == "SponsorPartner") {
         try {
@@ -2218,68 +2281,128 @@ const Home = () => {
                                           />
                                         </td>
                                         <td>
-                                          <input
-                                            type="file"
-                                            name="media"
-                                            onChange={(e) => {
-                                              const img = e?.target?.files[0];
+                                          {toggleNewsYT ? (
+                                            <>
+                                              <div className="">
+                                                {newsupdateYTdata != ""
+                                                  ? showVideo(newsupdateYTdata)
+                                                  : showVideo("no-video")}
+                                              </div>
+                                              <div className="">
+                                                <input
+                                                  className=""
+                                                  type="text"
+                                                  value={newsupdateYTdata}
+                                                  onChange={(e) => {
+                                                    const inputValue =
+                                                      e.target.value.trim();
+                                                    setnewsupdateYTdata(
+                                                      inputValue
+                                                    );
+                                                  }}
+                                                />
+                                                <span className="mbSpan">
+                                                  Add YouTube video link.
+                                                </span>
+                                              </div>
+                                              <div className="">
+                                                <span
+                                                  className=" custom-youtube-toggleLink"
+                                                  onClick={() => {
+                                                    toggleNewsYT
+                                                      ? settoggleNewsYT(false)
+                                                      : (settoggleNewsYT(true),
+                                                        settoggleNewsYT(""));
+                                                  }}
+                                                >
+                                                  <BsFileEarmarkImage id="youTubelogo" />
+                                                  Custom Video
+                                                </span>
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <input
+                                                type="file"
+                                                name="media"
+                                                onChange={(e) => {
+                                                  const img =
+                                                    e?.target?.files[0];
 
-                                              const fileName =
-                                                img.name.toLowerCase();
+                                                  const fileName =
+                                                    img.name.toLowerCase();
 
-                                              // Check if the file has an image extension
-                                              if (
-                                                /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
-                                                  fileName
-                                                )
-                                              ) {
-                                                if (
-                                                  img.size >
-                                                  6 * 1024 * 1024
-                                                ) {
-                                                  e.target.value = null;
-                                                  showNotification(
-                                                    "Image size exceeds 6MB. Please choose a smaller image.",
-                                                    "Error"
-                                                  );
-                                                } else {
-                                                  setupdateFile(
-                                                    e.target.files[0]
-                                                  );
-                                                }
-                                              } else if (
-                                                /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf)$/.test(
-                                                  fileName
-                                                )
-                                              ) {
-                                                if (
-                                                  img.size >
-                                                  100 * 1024 * 1024
-                                                ) {
-                                                  e.target.value = null;
-                                                  showNotification(
-                                                    "Video size exceeds 100MB. Please choose a smaller video.",
-                                                    "Error"
-                                                  );
-                                                } else {
-                                                  setupdateFile(
-                                                    e.target.files[0]
-                                                  );
-                                                }
-                                              } else if (
-                                                /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
-                                                  fileName
-                                                )
-                                              ) {
-                                                e.target.value = null;
-                                                showNotification(
-                                                  "Unsupported File type.",
-                                                  "Error"
-                                                );
-                                                return;
-                                              }
-                                            }}
-                                          />
+                                                  // Check if the file has an image extension
+                                                  if (
+                                                    /\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(
+                                                      fileName
+                                                    )
+                                                  ) {
+                                                    if (
+                                                      img.size >
+                                                      6 * 1024 * 1024
+                                                    ) {
+                                                      e.target.value = null;
+                                                      showNotification(
+                                                        "Image size exceeds 6MB. Please choose a smaller image.",
+                                                        "Error"
+                                                      );
+                                                    } else {
+                                                      setupdateFile(
+                                                        e.target.files[0]
+                                                      );
+                                                    }
+                                                  } else if (
+                                                    /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
+                                                      fileName
+                                                    )
+                                                  ) {
+                                                    if (
+                                                      img.size >
+                                                      100 * 1024 * 1024
+                                                    ) {
+                                                      e.target.value = null;
+                                                      showNotification(
+                                                        "Video size exceeds 100MB. Please choose a smaller video.",
+                                                        "Error"
+                                                      );
+                                                    } else {
+                                                      setupdateFile(
+                                                        e.target.files[0]
+                                                      );
+                                                    }
+                                                  } else if (
+                                                    /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php)$/.test(
+                                                      fileName
+                                                    )
+                                                  ) {
+                                                    e.target.value = null;
+                                                    showNotification(
+                                                      "Unsupported File type.",
+                                                      "Error"
+                                                    );
+                                                    return;
+                                                  }
+                                                }}
+                                              />
+                                              <div
+                                                style={{ width: "100%" }}
+                                                className=""
+                                              >
+                                                <span
+                                                  className="mx-4 custom-youtube-toggleLink"
+                                                  onClick={() => {
+                                                    toggleNewsYT
+                                                      ? settoggleNewsYT(false)
+                                                      : settoggleNewsYT(true);
+                                                  }}
+                                                >
+                                                  <BsYoutube id="youTubelogo" />
+                                                  YouTube Link
+                                                </span>
+                                              </div>
+                                            </>
+                                          )}
                                         </td>
                                         <td>
                                           <DatePicker
