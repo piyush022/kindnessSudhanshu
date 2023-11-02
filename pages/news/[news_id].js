@@ -119,9 +119,16 @@ function NewsDetailPage({ data, Newsid }) {
           setCmt("");
           setName("");
           setEmail("");
+        } else {
+          setIsSubmittingLoader(false);
+          showNotification("There is some error in the input data.", "Error");
+          setCmt("");
+          setName("");
+          setEmail("");
         }
       } catch (error) {
         setIsSubmittingLoader(false);
+        showNotification("There is some error in the input data.", "Error");
         console.log(error);
       }
     } else {
