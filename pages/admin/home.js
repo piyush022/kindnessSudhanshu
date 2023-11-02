@@ -536,7 +536,7 @@ const Home = () => {
       const fileName = img.name.toLowerCase();
 
       // Check if the file has an image extension
-      if (/\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(fileName)) {
+      if (/\.(jpg|jpeg|png|gif|webp|bmp)$/.test(fileName)) {
         if (img.size > 6 * 1024 * 1024) {
           e.target.value = null;
           showNotification(
@@ -634,7 +634,7 @@ const Home = () => {
       const fileName = img.name.toLowerCase();
 
       // Check if the file has an image extension
-      if (/\.(jpg|jpeg|png|gif|webp|tiff|bmp)$/.test(fileName)) {
+      if (/\.(jpg|jpeg|png|gif|webp|bmp)$/.test(fileName)) {
         if (img.size > 6 * 1024 * 1024) {
           e.target.value = null;
           showNotification(
