@@ -4,8 +4,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import { Spinner } from "react-bootstrap";
 import ReactPlayer from "react-player";
-import CommentModal from "../components/CommentModal";
-import { useRouter } from "next/router";
 import showNotification from "@/helpers/show_notification";
 import { newsPageService } from "../../store/services/newsPageService";
 import { homePageService } from "@/store/services/homepageServices";
@@ -18,12 +16,11 @@ import {
   getFileType,
 } from "@/store/library/utils";
 import { BsYoutube, BsFileEarmarkImage } from "react-icons/bs";
+import Link from "next/link";
 const Home = () => {
-  const router = useRouter();
+ 
   const [startDate, setStartDate] = useState(new Date());
-  const [descriptionAccomplishment, setDescriptionAccomplishment] = useState(
-    []
-  );
+  const [descriptionAccomplishment, setDescriptionAccomplishment] = useState([]);
   const [meetExeutive, setMeetExeutive] = useState([]);
   const [Mission, setMission] = useState("");
   const [pageStaticContent, setPageStaticContent] = useState("");
@@ -106,10 +103,7 @@ const Home = () => {
   const [updateCampSection, setUpdateCampSection] = useState("");
 
   const [Order, setOrder] = useState("");
-  const [checker, setChecker] = useState(false);
-  const [News_title, setNews_title] = useState("");
-  const [News_ID, setNews_ID] = useState("");
-  const [manageCmtNotification, setmanageCmtNotification] = useState(0);
+
   const [CmtCount, setCmtCount] = useState([]);
   const [updateOrder, setUpdateOrder] = useState("");
   const [manageReadmore, setmanageReadmore] = useState(true);
@@ -1162,32 +1156,31 @@ const Home = () => {
   };
 
   //function to fetch comments
-  async function fetchComments(params, title) {
-    setNews_title(title);
-    setNews_ID(params);
-    try {
-      setIsSubmitingLoader(true);
-      const resp = await newsPageService.getComments(params);
-      // console.log("Comments ===>", resp);
-
-      const sortedComments = resp.data.data.filter(
-        (item) => item.post_id == params
-      );
-      // console.log("sortedCommentsOfNews", sortedComments);
-      setmanageCmtNotification(manageCmtNotification + 1);
-      setSortedCommentsOfNews(sortedComments);
-      setIsSubmitingLoader(false);
-    } catch (error) {
-      setIsSubmitingLoader(false);
-      console.log(error);
-    }
-  }
+  /*  async function fetchComments(params, title) {
+     setNews_title(title);
+     setNews_ID(params);
+     try {
+       setIsSubmitingLoader(true);
+       const resp = await newsPageService.getComments(params);
+       // console.log("Comments ===>", resp);
+ 
+       const sortedComments = resp.data.data.filter(
+         (item) => item.post_id == params
+       );
+       // console.log("sortedCommentsOfNews", sortedComments);
+       setmanageCmtNotification(manageCmtNotification + 1);
+       setSortedCommentsOfNews(sortedComments);
+       setIsSubmitingLoader(false);
+     } catch (error) {
+       setIsSubmitingLoader(false);
+       console.log(error);
+     }
+   } */
 
   async function fetchALLComments(params) {
     try {
       setIsSubmitingLoader(true);
       const resp = await newsPageService.getComments(params);
-      // console.log("Comments ===>", resp.data.data);
       setCmtCount(resp.data.data);
 
       setIsSubmitingLoader(false);
@@ -1196,23 +1189,6 @@ const Home = () => {
       console.log(error);
     }
   }
-
-  useEffect(() => {
-    if (sortedCommentsOfNews.length > 0) {
-      setChecker(true);
-      router.push(`/admin/comments/${News_title}?id=${News_ID}`);
-    } else {
-      if (manageCmtNotification != 0) {
-        showNotification("There are no comments on this News!");
-      }
-    }
-  }, [sortedCommentsOfNews]);
-
-  useEffect(() => {
-    if (CmtCount.length > 0) {
-      // console.log("All comments", CmtCount);
-    }
-  }, [CmtCount]);
 
   function getCommentCount(id) {
     const count = CmtCount?.filter((item) => item.post_id == id);
@@ -1308,8 +1284,8 @@ const Home = () => {
                           leftImagePreview
                             ? leftImagePreview
                             : pageStaticContent?.image
-                            ? process.env.SITE_URL + pageStaticContent?.image
-                            : "/no-img.jpg"
+                              ? process.env.SITE_URL + pageStaticContent?.image
+                              : "/no-img.jpg"
                         }
                         width={80}
                         height={80}
@@ -1423,9 +1399,9 @@ const Home = () => {
                               middleImagePreview
                                 ? middleImagePreview
                                 : pageStaticContent?.image2
-                                ? process.env.SITE_URL +
+                                  ? process.env.SITE_URL +
                                   pageStaticContent?.image2
-                                : "demo-video.mp4"
+                                  : "demo-video.mp4"
                             }
                             playing={true}
                             muted={true}
@@ -1438,9 +1414,9 @@ const Home = () => {
                               middleImagePreview
                                 ? middleImagePreview
                                 : pageStaticContent?.image2
-                                ? process.env.SITE_URL +
+                                  ? process.env.SITE_URL +
                                   pageStaticContent?.image2
-                                : "/no-img.jpg"
+                                  : "/no-img.jpg"
                             }
                             width={80}
                             height={80}
@@ -1519,8 +1495,8 @@ const Home = () => {
                           rightImagePreview
                             ? rightImagePreview
                             : pageStaticContent?.image3
-                            ? process.env.SITE_URL + pageStaticContent?.image3
-                            : "/no-img.jpg"
+                              ? process.env.SITE_URL + pageStaticContent?.image3
+                              : "/no-img.jpg"
                         }
                         width={80}
                         height={80}
@@ -1646,133 +1622,133 @@ const Home = () => {
                       <tbody>
                         {descriptionAccomplishment?.length
                           ? descriptionAccomplishment?.map((item, index) => {
-                              return (
-                                <tr key={item?.id + index}>
-                                  {item?.edit ? (
-                                    <>
-                                      <td>
-                                        <input
-                                          type="number"
-                                          name="order"
-                                          value={updateOrder}
-                                          onChange={(e) =>
-                                            setUpdateOrder(
-                                              checkIsNumber(e?.target?.value)
-                                                ? e?.target?.value
-                                                : ""
-                                            )
-                                          }
-                                        />
-                                      </td>
+                            return (
+                              <tr key={item?.id + index}>
+                                {item?.edit ? (
+                                  <>
+                                    <td>
+                                      <input
+                                        type="number"
+                                        name="order"
+                                        value={updateOrder}
+                                        onChange={(e) =>
+                                          setUpdateOrder(
+                                            checkIsNumber(e?.target?.value)
+                                              ? e?.target?.value
+                                              : ""
+                                          )
+                                        }
+                                      />
+                                    </td>
 
-                                      <td>
-                                        <input
-                                          type="text"
-                                          name="total"
-                                          value={editDesTotal}
-                                          onChange={(e) =>
-                                            setEditDesTotal(e?.target?.value)
-                                          }
-                                        />
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="text"
-                                          name="Service"
-                                          value={editDesService}
-                                          onChange={(e) =>
-                                            setEditDesService(e?.target?.value)
-                                          }
-                                        />
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="number"
-                                          name="year"
-                                          value={editDesYear}
-                                          onChange={(e) =>
-                                            setEditDesYear(e?.target?.value)
-                                          }
-                                        />
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="checkbox"
-                                          name="status"
-                                          checked={editDesActive}
-                                          id="active"
-                                          onChange={(e) =>
-                                            setEditDesActive(e?.target?.checked)
-                                          }
-                                        />
-                                        {/* <span className="btn ">
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="total"
+                                        value={editDesTotal}
+                                        onChange={(e) =>
+                                          setEditDesTotal(e?.target?.value)
+                                        }
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        name="Service"
+                                        value={editDesService}
+                                        onChange={(e) =>
+                                          setEditDesService(e?.target?.value)
+                                        }
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="number"
+                                        name="year"
+                                        value={editDesYear}
+                                        onChange={(e) =>
+                                          setEditDesYear(e?.target?.value)
+                                        }
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="checkbox"
+                                        name="status"
+                                        checked={editDesActive}
+                                        id="active"
+                                        onChange={(e) =>
+                                          setEditDesActive(e?.target?.checked)
+                                        }
+                                      />
+                                      {/* <span className="btn ">
                                       {item?.active ? "Yes" : "No"}
                                     </span> */}
-                                      </td>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <td>{item?.order_in_slider}</td>
-                                      <td>{item?.column_1}+ </td>
-                                      <td>{item?.column_2}</td>
-                                      <td>{item?.impactYear}</td>
-                                      <td>
-                                        <span className="btn ">
-                                          {parseInt(item?.active)
-                                            ? "Yes"
-                                            : "No"}
-                                        </span>
-                                      </td>
-                                    </>
-                                  )}
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td>{item?.order_in_slider}</td>
+                                    <td>{item?.column_1}+ </td>
+                                    <td>{item?.column_2}</td>
+                                    <td>{item?.impactYear}</td>
+                                    <td>
+                                      <span className="btn ">
+                                        {parseInt(item?.active)
+                                          ? "Yes"
+                                          : "No"}
+                                      </span>
+                                    </td>
+                                  </>
+                                )}
 
-                                  <td>
-                                    <button
-                                      className="btn btn-primary mx-1"
-                                      onClick={() =>
-                                        item?.edit
-                                          ? updateFormData(
-                                              item?.id,
-                                              "DescriptionAccomplishment"
-                                            )
-                                          : editFieldData(
-                                              item?.id,
-                                              index,
-                                              "DescriptionAccomplishment"
-                                            )
-                                      }
-                                    >
-                                      {item?.edit ? (
-                                        <i
-                                          className="fa fa-floppy-o"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <i
-                                          className="fa fa-pencil-square-o"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </button>
-
-                                    <button
-                                      className="btn btn-secondary"
-                                      onClick={() =>
-                                        deleteData(
+                                <td>
+                                  <button
+                                    className="btn btn-primary mx-1"
+                                    onClick={() =>
+                                      item?.edit
+                                        ? updateFormData(
                                           item?.id,
                                           "DescriptionAccomplishment"
                                         )
-                                      }
-                                    >
+                                        : editFieldData(
+                                          item?.id,
+                                          index,
+                                          "DescriptionAccomplishment"
+                                        )
+                                    }
+                                  >
+                                    {item?.edit ? (
                                       <i
-                                        className="fa fa-trash-o"
+                                        className="fa fa-floppy-o"
                                         aria-hidden="true"
                                       />
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })
+                                    ) : (
+                                      <i
+                                        className="fa fa-pencil-square-o"
+                                        aria-hidden="true"
+                                      />
+                                    )}
+                                  </button>
+
+                                  <button
+                                    className="btn btn-secondary"
+                                    onClick={() =>
+                                      deleteData(
+                                        item?.id,
+                                        "DescriptionAccomplishment"
+                                      )
+                                    }
+                                  >
+                                    <i
+                                      className="fa fa-trash-o"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })
                           : ""}
                       </tbody>
                     </table>
@@ -1913,136 +1889,136 @@ const Home = () => {
                       <tbody>
                         {meetExeutive?.length
                           ? meetExeutive.map((item, index) => {
-                              return (
-                                <tr key={item?.id + index}>
-                                  {/* <td>{index + 1}</td> */}
-                                  {item?.edit ? (
-                                    <>
-                                      <td>
-                                        <input
-                                          type="text"
-                                          value={editExeName}
-                                          onChange={(e) =>
-                                            setEditExeName(e?.target?.value)
-                                          }
-                                        />
-                                      </td>
-                                      <td>
-                                        <input
-                                          type="text"
-                                          value={editExeTitle}
-                                          onChange={(e) =>
-                                            setEditExeTitle(e?.target?.value)
-                                          }
-                                        />
-                                      </td>
-                                      <td>
-                                        <textarea
-                                          className="form-control "
-                                          placeholder="Type here"
-                                          id="floatingTextarea"
-                                          value={editExeDes}
-                                          onChange={(e) =>
-                                            setEditExeDes(e?.target?.value)
-                                          }
-                                        ></textarea>
-                                      </td>
+                            return (
+                              <tr key={item?.id + index}>
+                                {/* <td>{index + 1}</td> */}
+                                {item?.edit ? (
+                                  <>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        value={editExeName}
+                                        onChange={(e) =>
+                                          setEditExeName(e?.target?.value)
+                                        }
+                                      />
+                                    </td>
+                                    <td>
+                                      <input
+                                        type="text"
+                                        value={editExeTitle}
+                                        onChange={(e) =>
+                                          setEditExeTitle(e?.target?.value)
+                                        }
+                                      />
+                                    </td>
+                                    <td>
+                                      <textarea
+                                        className="form-control "
+                                        placeholder="Type here"
+                                        id="floatingTextarea"
+                                        value={editExeDes}
+                                        onChange={(e) =>
+                                          setEditExeDes(e?.target?.value)
+                                        }
+                                      ></textarea>
+                                    </td>
 
-                                      <td>
-                                        <Image
-                                          src={
-                                            editExeMediaPreview
-                                              ? editExeMediaPreview
-                                              : "/no-img.jpg"
-                                          }
-                                          width={80}
-                                          height={80}
-                                          alt={editExeTitle}
-                                        />
+                                    <td>
+                                      <Image
+                                        src={
+                                          editExeMediaPreview
+                                            ? editExeMediaPreview
+                                            : "/no-img.jpg"
+                                        }
+                                        width={80}
+                                        height={80}
+                                        alt={editExeTitle}
+                                      />
+                                      <input
+                                        type="file"
+                                        onChange={(e) =>
+                                          onchangeFile(e, "editExecutive")
+                                        }
+                                      />
+                                    </td>
+                                    <td>
+                                      <span className="btn ">
                                         <input
-                                          type="file"
+                                          type="checkbox"
+                                          checked={editExeActive}
+                                          id="active"
                                           onChange={(e) =>
-                                            onchangeFile(e, "editExecutive")
-                                          }
-                                        />
-                                      </td>
-                                      <td>
-                                        <span className="btn ">
-                                          <input
-                                            type="checkbox"
-                                            checked={editExeActive}
-                                            id="active"
-                                            onChange={(e) =>
-                                              setEditExeActive(
-                                                e?.target?.checked
-                                              )
-                                            }
-                                          />
-                                        </span>
-                                      </td>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <td className="fixNameBreak fixLineHeight">
-                                        {item?.column_1}{" "}
-                                      </td>
-                                      <td className="fixLineHeight">
-                                        {item?.column_2}
-                                      </td>
-                                      <td className="fixLineHeight">
-                                        {item?.description}
-                                      </td>
-                                      <td className="fixLineHeight">
-                                        <span className="btn ">
-                                          {parseInt(item?.active)
-                                            ? "Yes"
-                                            : "No"}
-                                        </span>
-                                      </td>
-                                    </>
-                                  )}
-
-                                  <td>
-                                    <button
-                                      className="btn btn-primary mx-1"
-                                      onClick={() =>
-                                        item?.edit
-                                          ? updateMeetExecutive(item?.id)
-                                          : editFieldData(
-                                              item?.id,
-                                              index,
-                                              "MeetExecutive"
+                                            setEditExeActive(
+                                              e?.target?.checked
                                             )
-                                      }
-                                    >
-                                      {item?.edit ? (
-                                        <i
-                                          className="fa fa-floppy-o"
-                                          aria-hidden="true"
+                                          }
                                         />
-                                      ) : (
-                                        <i
-                                          className="fa fa-pencil-square-o"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                    </button>
+                                      </span>
+                                    </td>
+                                  </>
+                                ) : (
+                                  <>
+                                    <td className="fixNameBreak fixLineHeight">
+                                      {item?.column_1}{" "}
+                                    </td>
+                                    <td className="fixLineHeight">
+                                      {item?.column_2}
+                                    </td>
+                                    <td className="fixLineHeight">
+                                      {item?.description}
+                                    </td>
+                                    <td className="fixLineHeight">
+                                      <span className="btn ">
+                                        {parseInt(item?.active)
+                                          ? "Yes"
+                                          : "No"}
+                                      </span>
+                                    </td>
+                                  </>
+                                )}
 
-                                    <button
-                                      className="btn btn-secondary"
-                                      onClick={() =>
-                                        deleteData(item.id, "MeetExecutive")
-                                      }
-                                    >
+                                <td>
+                                  <button
+                                    className="btn btn-primary mx-1"
+                                    onClick={() =>
+                                      item?.edit
+                                        ? updateMeetExecutive(item?.id)
+                                        : editFieldData(
+                                          item?.id,
+                                          index,
+                                          "MeetExecutive"
+                                        )
+                                    }
+                                  >
+                                    {item?.edit ? (
                                       <i
-                                        className="fa fa-trash-o"
+                                        className="fa fa-floppy-o"
                                         aria-hidden="true"
                                       />
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            })
+                                    ) : (
+                                      <i
+                                        className="fa fa-pencil-square-o"
+                                        aria-hidden="true"
+                                      />
+                                    )}
+                                  </button>
+
+                                  <button
+                                    className="btn btn-secondary"
+                                    onClick={() =>
+                                      deleteData(item.id, "MeetExecutive")
+                                    }
+                                  >
+                                    <i
+                                      className="fa fa-trash-o"
+                                      aria-hidden="true"
+                                    />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })
                           : ""}
                       </tbody>
                     </table>
@@ -2192,9 +2168,9 @@ const Home = () => {
                           sectionMediaPreview
                             ? sectionMediaPreview
                             : pageStaticContent?.section_media
-                            ? process.env.SITE_URL +
+                              ? process.env.SITE_URL +
                               pageStaticContent?.section_media
-                            : "/no-img.jpg"
+                              : "/no-img.jpg"
                         }
                         width={80}
                         height={80}
@@ -2237,14 +2213,6 @@ const Home = () => {
                 <i className="fa fa-hand-o-right" aria-hidden="true"></i>{" "}
                 Campaign News
               </h2>
-              {/* <CommentModal
-                fetchComments={fetchComments}
-                News_ID={News_ID}
-                checker={checker}
-                setChecker={setChecker}
-                News_title={News_title}
-                sortedCommentsOfNews={sortedCommentsOfNews}
-              /> */}
 
               <div className="container">
                 <label className="form-label-1" htmlFor="typeText">
@@ -2276,351 +2244,351 @@ const Home = () => {
                           <tbody>
                             {newsSectionData?.length
                               ? newsSectionData?.map((item, index) => (
-                                  <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    {item?.edit ? (
-                                      <>
-                                        <td></td>
-                                        <td>
-                                          <input
-                                            type="text"
-                                            name="title"
-                                            value={text1}
-                                            onChange={(e) =>
-                                              settext1(e?.target?.value)
-                                            }
-                                          />
-                                        </td>
-                                        <td>
-                                          {toggleNewsYT ? (
-                                            <>
-                                              <div className="">
-                                                {newsupdateYTdata != ""
-                                                  ? showVideo(newsupdateYTdata)
-                                                  : showVideo("no-video")}
-                                              </div>
-                                              <div className="">
-                                                <input
-                                                  className=""
-                                                  type="text"
-                                                  value={newsupdateYTdata}
-                                                  onChange={(e) => {
-                                                    const inputValue =
-                                                      e.target.value.trim();
-                                                    setnewsupdateYTdata(
-                                                      inputValue
-                                                    );
-                                                  }}
-                                                />
-                                                <span className="mbSpan">
-                                                  Add YouTube video link.
-                                                </span>
-                                              </div>
-                                              <div className="">
-                                                <span
-                                                  className=" custom-youtube-toggleLink"
-                                                  onClick={() => {
-                                                    toggleNewsYT
-                                                      ? settoggleNewsYT(false)
-                                                      : (settoggleNewsYT(true),
-                                                        settoggleNewsYT(""));
-                                                  }}
-                                                >
-                                                  <BsFileEarmarkImage id="youTubelogo" />
-                                                  Custom Video
-                                                </span>
-                                              </div>
-                                            </>
-                                          ) : (
-                                            <>
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  {item?.edit ? (
+                                    <>
+                                      <td></td>
+                                      <td>
+                                        <input
+                                          type="text"
+                                          name="title"
+                                          value={text1}
+                                          onChange={(e) =>
+                                            settext1(e?.target?.value)
+                                          }
+                                        />
+                                      </td>
+                                      <td>
+                                        {toggleNewsYT ? (
+                                          <>
+                                            <div className="">
+                                              {newsupdateYTdata != ""
+                                                ? showVideo(newsupdateYTdata)
+                                                : showVideo("no-video")}
+                                            </div>
+                                            <div className="">
                                               <input
-                                                type="file"
-                                                name="media"
+                                                className=""
+                                                type="text"
+                                                value={newsupdateYTdata}
                                                 onChange={(e) => {
-                                                  const img =
-                                                    e?.target?.files[0];
+                                                  const inputValue =
+                                                    e.target.value.trim();
+                                                  setnewsupdateYTdata(
+                                                    inputValue
+                                                  );
+                                                }}
+                                              />
+                                              <span className="mbSpan">
+                                                Add YouTube video link.
+                                              </span>
+                                            </div>
+                                            <div className="">
+                                              <span
+                                                className=" custom-youtube-toggleLink"
+                                                onClick={() => {
+                                                  toggleNewsYT
+                                                    ? settoggleNewsYT(false)
+                                                    : (settoggleNewsYT(true),
+                                                      settoggleNewsYT(""));
+                                                }}
+                                              >
+                                                <BsFileEarmarkImage id="youTubelogo" />
+                                                Custom Video
+                                              </span>
+                                            </div>
+                                          </>
+                                        ) : (
+                                          <>
+                                            <input
+                                              type="file"
+                                              name="media"
+                                              onChange={(e) => {
+                                                const img =
+                                                  e?.target?.files[0];
 
-                                                  const fileName =
-                                                    img.name.toLowerCase();
+                                                const fileName =
+                                                  img.name.toLowerCase();
 
-                                                  // Check if the file has an image extension
+                                                // Check if the file has an image extension
+                                                if (
+                                                  /\.(jpg|jpeg|png|gif|webp|bmp)$/.test(
+                                                    fileName
+                                                  )
+                                                ) {
                                                   if (
-                                                    /\.(jpg|jpeg|png|gif|webp|bmp)$/.test(
-                                                      fileName
-                                                    )
-                                                  ) {
-                                                    if (
-                                                      img.size >
-                                                      6 * 1024 * 1024
-                                                    ) {
-                                                      e.target.value = null;
-                                                      showNotification(
-                                                        "Image size exceeds 6MB. Please choose a smaller image.",
-                                                        "Error"
-                                                      );
-                                                    } else {
-                                                      setupdateFile(
-                                                        e.target.files[0]
-                                                      );
-                                                    }
-                                                  } else if (
-                                                    /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
-                                                      fileName
-                                                    )
-                                                  ) {
-                                                    if (
-                                                      img.size >
-                                                      100 * 1024 * 1024
-                                                    ) {
-                                                      e.target.value = null;
-                                                      showNotification(
-                                                        "Video size exceeds 100MB. Please choose a smaller video.",
-                                                        "Error"
-                                                      );
-                                                    } else {
-                                                      setupdateFile(
-                                                        e.target.files[0]
-                                                      );
-                                                    }
-                                                  } else if (
-                                                    /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php|tiff)$/.test(
-                                                      fileName
-                                                    )
+                                                    img.size >
+                                                    6 * 1024 * 1024
                                                   ) {
                                                     e.target.value = null;
                                                     showNotification(
-                                                      "Unsupported File type.",
+                                                      "Image size exceeds 6MB. Please choose a smaller image.",
                                                       "Error"
                                                     );
-                                                    return;
+                                                  } else {
+                                                    setupdateFile(
+                                                      e.target.files[0]
+                                                    );
                                                   }
+                                                } else if (
+                                                  /\.(mp4|mov|avi|wmv|mkv|flv|Ff4v|swf|webm)$/.test(
+                                                    fileName
+                                                  )
+                                                ) {
+                                                  if (
+                                                    img.size >
+                                                    100 * 1024 * 1024
+                                                  ) {
+                                                    e.target.value = null;
+                                                    showNotification(
+                                                      "Video size exceeds 100MB. Please choose a smaller video.",
+                                                      "Error"
+                                                    );
+                                                  } else {
+                                                    setupdateFile(
+                                                      e.target.files[0]
+                                                    );
+                                                  }
+                                                } else if (
+                                                  /\.(pdf|doc|docx|xls|xlsx|ppt|pptx|txt|csv|html|js|jsx|php|tiff)$/.test(
+                                                    fileName
+                                                  )
+                                                ) {
+                                                  e.target.value = null;
+                                                  showNotification(
+                                                    "Unsupported File type.",
+                                                    "Error"
+                                                  );
+                                                  return;
+                                                }
+                                              }}
+                                            />
+                                            <div
+                                              style={{ width: "100%" }}
+                                              className=""
+                                            >
+                                              <span
+                                                className="mx-4 custom-youtube-toggleLink"
+                                                onClick={() => {
+                                                  toggleNewsYT
+                                                    ? settoggleNewsYT(false)
+                                                    : settoggleNewsYT(true);
                                                 }}
-                                              />
-                                              <div
-                                                style={{ width: "100%" }}
-                                                className=""
                                               >
-                                                <span
-                                                  className="mx-4 custom-youtube-toggleLink"
-                                                  onClick={() => {
-                                                    toggleNewsYT
-                                                      ? settoggleNewsYT(false)
-                                                      : settoggleNewsYT(true);
-                                                  }}
-                                                >
-                                                  <BsYoutube id="youTubelogo" />
-                                                  YouTube Link
-                                                </span>
-                                              </div>
-                                            </>
-                                          )}
-                                        </td>
-                                        <td>
-                                          <DatePicker
-                                            value={updateDate}
-                                            minDate={item?.expire_date}
-                                            onChange={(date) =>
-                                              setupdateDate(
-                                                getFormatedDate(
-                                                  date,
-                                                  "YYYY-MM-DD"
-                                                )
+                                                <BsYoutube id="youTubelogo" />
+                                                YouTube Link
+                                              </span>
+                                            </div>
+                                          </>
+                                        )}
+                                      </td>
+                                      <td>
+                                        <DatePicker
+                                          value={updateDate}
+                                          minDate={item?.expire_date}
+                                          onChange={(date) =>
+                                            setupdateDate(
+                                              getFormatedDate(
+                                                date,
+                                                "YYYY-MM-DD"
                                               )
-                                            }
-                                            dateFormat="MMMM d, yyyy h:mm aa"
-                                          />
-                                        </td>
-                                        <td>
-                                          <textarea
-                                            className="form-control "
-                                            placeholder="Type here"
-                                            id="floatingTextarea"
-                                            value={updateCampSection}
-                                            onChange={(e) =>
-                                              setUpdateCampSection(
-                                                e?.target?.value
-                                              )
-                                            }
-                                          ></textarea>
-                                        </td>
-                                        <td>
-                                          <input
-                                            type="checkbox"
-                                            name="status"
-                                            id="active"
-                                            checked={featuredActive}
-                                            onChange={(e) =>
-                                              setFeaturedActive(
-                                                e?.target?.checked
-                                              )
-                                            }
-                                          />
-                                        </td>
-                                        <td>
-                                          <input
-                                            type="checkbox"
-                                            name="status"
-                                            id="active"
-                                            checked={updateActive}
-                                            onChange={(e) =>
-                                              setUpdateActive(
-                                                e?.target?.checked
-                                              )
-                                            }
-                                          />
-                                        </td>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <td>{item?.view ? item?.view : 0} </td>
-                                        <td>{item?.title}</td>
-                                        <td>
-                                          {item.media_type == "image" ? (
-                                            <Image
-                                              src={
+                                            )
+                                          }
+                                          dateFormat="MMMM d, yyyy h:mm aa"
+                                        />
+                                      </td>
+                                      <td>
+                                        <textarea
+                                          className="form-control "
+                                          placeholder="Type here"
+                                          id="floatingTextarea"
+                                          value={updateCampSection}
+                                          onChange={(e) =>
+                                            setUpdateCampSection(
+                                              e?.target?.value
+                                            )
+                                          }
+                                        ></textarea>
+                                      </td>
+                                      <td>
+                                        <input
+                                          type="checkbox"
+                                          name="status"
+                                          id="active"
+                                          checked={featuredActive}
+                                          onChange={(e) =>
+                                            setFeaturedActive(
+                                              e?.target?.checked
+                                            )
+                                          }
+                                        />
+                                      </td>
+                                      <td>
+                                        <input
+                                          type="checkbox"
+                                          name="status"
+                                          id="active"
+                                          checked={updateActive}
+                                          onChange={(e) =>
+                                            setUpdateActive(
+                                              e?.target?.checked
+                                            )
+                                          }
+                                        />
+                                      </td>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <td>{item?.view ? item?.view : 0} </td>
+                                      <td>{item?.title}</td>
+                                      <td>
+                                        {item.media_type == "image" ? (
+                                          <Image
+                                            src={
+                                              item?.media
+                                                ? process.env.SITE_URL +
                                                 item?.media
-                                                  ? process.env.SITE_URL +
-                                                    item?.media
-                                                  : "/no-img.jpg"
-                                              }
-                                              width={80}
-                                              height={80}
-                                              alt="Picture of the author"
-                                            />
-                                          ) : item.media_type == "video" ? (
-                                            <ReactPlayer
-                                              url={
+                                                : "/no-img.jpg"
+                                            }
+                                            width={80}
+                                            height={80}
+                                            alt="Picture of the author"
+                                          />
+                                        ) : item.media_type == "video" ? (
+                                          <ReactPlayer
+                                            url={
+                                              item?.media
+                                                ? process.env.SITE_URL +
                                                 item?.media
-                                                  ? process.env.SITE_URL +
-                                                    item?.media
-                                                  : "/no-img.jpg"
-                                              }
-                                              playing={true}
-                                              muted={true}
-                                              width={"100px"}
-                                              height={"80"}
-                                            />
-                                          ) : (
-                                            <ReactPlayer
-                                              url={item?.media}
-                                              playing={true}
-                                              muted={true}
-                                              width={"100px"}
-                                              height={"80px"}
-                                            />
-                                          )}
-                                        </td>
-                                        <td>
-                                          {item?.expire_date &&
-                                            getFormatedDate(
-                                              item?.expire_date,
-                                              "DD-MM-YYYY"
-                                            )}
-                                        </td>
-                                        <td>
-                                          <p className="para-width  ">
-                                            {manageReadmore ? (
-                                              <>
-                                                {item?.news_artical?.slice(
-                                                  0,
-                                                  100
-                                                )}
-                                                <button
-                                                  class="readMoreBtn"
-                                                  onClick={() =>
-                                                    setmanageReadmore(false)
-                                                  }
-                                                >
-                                                  Read More
-                                                </button>
-                                              </>
-                                            ) : (
-                                              <>
-                                                {item?.news_artical}
-                                                <button
-                                                  class="readMoreBtn"
-                                                  onClick={() =>
-                                                    setmanageReadmore(true)
-                                                  }
-                                                >
-                                                  Read Less
-                                                </button>
-                                              </>
-                                            )}
-                                          </p>
-                                        </td>
-                                        <td>
-                                          <span className="btn ">
-                                            {parseInt(item?.featuredItem)
-                                              ? "Yes"
-                                              : "No"}
-                                          </span>{" "}
-                                        </td>
-
-                                        <td>
-                                          <span className="btn ">
-                                            {parseInt(item?.active)
-                                              ? "Yes"
-                                              : "No"}
-                                          </span>{" "}
-                                        </td>
-                                      </>
-                                    )}
-                                    <td>
-                                      <span
-                                        className="manageCommentBTN"
-                                        onClick={(e) =>
-                                          fetchComments(item?.id, item?.title)
-                                        }
-                                      >
-                                        {getCommentCount(item?.id)}
-                                        <br />
-                                        Manage
-                                      </span>
-                                    </td>
-                                    <td>
-                                      <button
-                                        className="btn btn-primary mx-1"
-                                        onClick={() =>
-                                          item?.edit
-                                            ? updateFormData(
-                                                item?.id,
-                                                "CampNews"
-                                              )
-                                            : editFieldData(
-                                                item?.id,
-                                                index,
-                                                "CampNews"
-                                              )
-                                        }
-                                      >
-                                        {item?.edit ? (
-                                          <i
-                                            className="fa fa-floppy-o"
-                                            aria-hidden="true"
+                                                : "/no-img.jpg"
+                                            }
+                                            playing={true}
+                                            muted={true}
+                                            width={"100px"}
+                                            height={"80"}
                                           />
                                         ) : (
-                                          <i
-                                            className="fa fa-pencil-square-o"
-                                            aria-hidden="true"
+                                          <ReactPlayer
+                                            url={item?.media}
+                                            playing={true}
+                                            muted={true}
+                                            width={"100px"}
+                                            height={"80px"}
                                           />
                                         )}
-                                      </button>
+                                      </td>
+                                      <td>
+                                        {item?.expire_date &&
+                                          getFormatedDate(
+                                            item?.expire_date,
+                                            "DD-MM-YYYY"
+                                          )}
+                                      </td>
+                                      <td>
+                                        <p className="para-width  ">
+                                          {manageReadmore ? (
+                                            <>
+                                              {item?.news_artical?.slice(
+                                                0,
+                                                100
+                                              )}
+                                              <button
+                                                class="readMoreBtn"
+                                                onClick={() =>
+                                                  setmanageReadmore(false)
+                                                }
+                                              >
+                                                Read More
+                                              </button>
+                                            </>
+                                          ) : (
+                                            <>
+                                              {item?.news_artical}
+                                              <button
+                                                class="readMoreBtn"
+                                                onClick={() =>
+                                                  setmanageReadmore(true)
+                                                }
+                                              >
+                                                Read Less
+                                              </button>
+                                            </>
+                                          )}
+                                        </p>
+                                      </td>
+                                      <td>
+                                        <span className="btn ">
+                                          {parseInt(item?.featuredItem)
+                                            ? "Yes"
+                                            : "No"}
+                                        </span>{" "}
+                                      </td>
 
-                                      <button
-                                        className="btn btn-secondary"
-                                        onClick={() =>
-                                          deleteData(item?.id, "CampaignNews")
-                                        }
-                                      >
+                                      <td>
+                                        <span className="btn ">
+                                          {parseInt(item?.active)
+                                            ? "Yes"
+                                            : "No"}
+                                        </span>{" "}
+                                      </td>
+                                    </>
+                                  )}
+                                  <td>
+
+                                    <span>
+                                      {getCommentCount(item?.id)}
+                                    </span>
+                                    {getCommentCount(item?.id) ?
+                                      <Link href={`/admin/comments/${item?.title}/${item?.id}`} target="_blank">
+                                      <br/> <span className="manageCommentBTN" > View All</span>
+                                      </Link>
+
+                                      : ""}
+                                  </td>
+                                  <td>
+                                    <button
+                                      className="btn btn-primary mx-1"
+                                      onClick={() =>
+                                        item?.edit
+                                          ? updateFormData(
+                                            item?.id,
+                                            "CampNews"
+                                          )
+                                          : editFieldData(
+                                            item?.id,
+                                            index,
+                                            "CampNews"
+                                          )
+                                      }
+                                    >
+                                      {item?.edit ? (
                                         <i
-                                          className="fa fa-trash-o"
+                                          className="fa fa-floppy-o"
                                           aria-hidden="true"
                                         />
-                                      </button>
-                                    </td>
-                                  </tr>
-                                ))
+                                      ) : (
+                                        <i
+                                          className="fa fa-pencil-square-o"
+                                          aria-hidden="true"
+                                        />
+                                      )}
+                                    </button>
+
+                                    <button
+                                      className="btn btn-secondary"
+                                      onClick={() =>
+                                        deleteData(item?.id, "CampaignNews")
+                                      }
+                                    >
+                                      <i
+                                        className="fa fa-trash-o"
+                                        aria-hidden="true"
+                                      />
+                                    </button>
+                                  </td>
+                                </tr>
+                              ))
                               : null}
                           </tbody>
                         </table>
@@ -2918,111 +2886,111 @@ const Home = () => {
                       <tbody>
                         {sponsorPartnerData?.length
                           ? sponsorPartnerData?.map((item, index) => (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                {/* <td>132 </td> */}
-                                {item?.edit ? (
-                                  <>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        name="title"
-                                        value={editSponTitle}
-                                        onChange={(e) =>
-                                          setEditSponTitle(e?.target?.value)
-                                        }
-                                      />
-                                    </td>
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              {/* <td>132 </td> */}
+                              {item?.edit ? (
+                                <>
+                                  <td>
+                                    <input
+                                      type="text"
+                                      name="title"
+                                      value={editSponTitle}
+                                      onChange={(e) =>
+                                        setEditSponTitle(e?.target?.value)
+                                      }
+                                    />
+                                  </td>
 
-                                    <td>
-                                      <Image
-                                        src={
-                                          editSponMediaPreview
-                                            ? editSponMediaPreview
-                                            : "/no-img.jpg"
-                                        }
-                                        width={80}
-                                        height={80}
-                                      />
-                                      <input
-                                        type="file"
-                                        onChange={(e) =>
-                                          onchangeFile(e, "sponsorUpdate")
-                                        }
-                                      />
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="checkbox"
-                                        name="status"
-                                        id="active"
-                                        checked={editSponActive}
-                                        onChange={(e) =>
-                                          setEditSponActive(e?.target?.checked)
-                                        }
-                                      />
-                                    </td>
-                                  </>
-                                ) : (
-                                  <>
-                                    {" "}
-                                    <td>{item?.title}</td>
-                                    <td>
-                                      {getFormatedDate(
-                                        item?.created_at,
-                                        "DD-MM-YYYY"
-                                      )}
-                                    </td>
-                                    <td>
-                                      <span className="btn ">
-                                        {parseInt(item?.active) ? "Yes" : "No"}
-                                      </span>{" "}
-                                    </td>
-                                  </>
-                                )}
-                                <td>
-                                  <button
-                                    className="btn btn-primary mx-1"
-                                    onClick={() =>
-                                      item?.edit
-                                        ? updateFormData(
-                                            item?.id,
-                                            "SponsorPartner"
-                                          )
-                                        : editFieldData(
-                                            item?.id,
-                                            index,
-                                            "SponsorPartner"
-                                          )
-                                    }
-                                  >
-                                    {item?.edit ? (
-                                      <i
-                                        className="fa fa-floppy-o"
-                                        aria-hidden="true"
-                                      />
-                                    ) : (
-                                      <i
-                                        className="fa fa-pencil-square-o"
-                                        aria-hidden="true"
-                                      />
+                                  <td>
+                                    <Image
+                                      src={
+                                        editSponMediaPreview
+                                          ? editSponMediaPreview
+                                          : "/no-img.jpg"
+                                      }
+                                      width={80}
+                                      height={80}
+                                    />
+                                    <input
+                                      type="file"
+                                      onChange={(e) =>
+                                        onchangeFile(e, "sponsorUpdate")
+                                      }
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      name="status"
+                                      id="active"
+                                      checked={editSponActive}
+                                      onChange={(e) =>
+                                        setEditSponActive(e?.target?.checked)
+                                      }
+                                    />
+                                  </td>
+                                </>
+                              ) : (
+                                <>
+                                  {" "}
+                                  <td>{item?.title}</td>
+                                  <td>
+                                    {getFormatedDate(
+                                      item?.created_at,
+                                      "DD-MM-YYYY"
                                     )}
-                                  </button>
-
-                                  <button
-                                    className="btn btn-secondary"
-                                    onClick={() =>
-                                      deleteData(item.id, "ExecutiveList")
-                                    }
-                                  >
+                                  </td>
+                                  <td>
+                                    <span className="btn ">
+                                      {parseInt(item?.active) ? "Yes" : "No"}
+                                    </span>{" "}
+                                  </td>
+                                </>
+                              )}
+                              <td>
+                                <button
+                                  className="btn btn-primary mx-1"
+                                  onClick={() =>
+                                    item?.edit
+                                      ? updateFormData(
+                                        item?.id,
+                                        "SponsorPartner"
+                                      )
+                                      : editFieldData(
+                                        item?.id,
+                                        index,
+                                        "SponsorPartner"
+                                      )
+                                  }
+                                >
+                                  {item?.edit ? (
                                     <i
-                                      className="fa fa-trash-o"
+                                      className="fa fa-floppy-o"
                                       aria-hidden="true"
                                     />
-                                  </button>
-                                </td>
-                              </tr>
-                            ))
+                                  ) : (
+                                    <i
+                                      className="fa fa-pencil-square-o"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                </button>
+
+                                <button
+                                  className="btn btn-secondary"
+                                  onClick={() =>
+                                    deleteData(item.id, "ExecutiveList")
+                                  }
+                                >
+                                  <i
+                                    className="fa fa-trash-o"
+                                    aria-hidden="true"
+                                  />
+                                </button>
+                              </td>
+                            </tr>
+                          ))
                           : null}
                       </tbody>
                     </table>
