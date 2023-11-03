@@ -4,8 +4,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
 import { Spinner } from "react-bootstrap";
 import ReactPlayer from "react-player";
-import CommentModal from "../components/CommentModal";
-import { useRouter } from "next/router";
 import showNotification from "@/helpers/show_notification";
 import { newsPageService } from "../../store/services/newsPageService";
 import { homePageService } from "@/store/services/homepageServices";
@@ -18,8 +16,8 @@ import {
   getFileType,
 } from "@/store/library/utils";
 import { BsYoutube, BsFileEarmarkImage } from "react-icons/bs";
+import Link from "next/link";
 const Home = () => {
-  const router = useRouter();
   const [startDate, setStartDate] = useState(new Date());
   const [descriptionAccomplishment, setDescriptionAccomplishment] = useState(
     []
@@ -106,10 +104,7 @@ const Home = () => {
   const [updateCampSection, setUpdateCampSection] = useState("");
 
   const [Order, setOrder] = useState("");
-  const [checker, setChecker] = useState(false);
-  const [News_title, setNews_title] = useState("");
-  const [News_ID, setNews_ID] = useState("");
-  const [manageCmtNotification, setmanageCmtNotification] = useState(0);
+
   const [CmtCount, setCmtCount] = useState([]);
   const [updateOrder, setUpdateOrder] = useState("");
   const [manageReadmore, setmanageReadmore] = useState(true);
@@ -1162,32 +1157,31 @@ const Home = () => {
   };
 
   //function to fetch comments
-  async function fetchComments(params, title) {
-    setNews_title(title);
-    setNews_ID(params);
-    try {
-      setIsSubmitingLoader(true);
-      const resp = await newsPageService.getComments(params);
-      // console.log("Comments ===>", resp);
-
-      const sortedComments = resp.data.data.filter(
-        (item) => item.post_id == params
-      );
-      // console.log("sortedCommentsOfNews", sortedComments);
-      setmanageCmtNotification(manageCmtNotification + 1);
-      setSortedCommentsOfNews(sortedComments);
-      setIsSubmitingLoader(false);
-    } catch (error) {
-      setIsSubmitingLoader(false);
-      console.log(error);
-    }
-  }
+  /*  async function fetchComments(params, title) {
+     setNews_title(title);
+     setNews_ID(params);
+     try {
+       setIsSubmitingLoader(true);
+       const resp = await newsPageService.getComments(params);
+       // console.log("Comments ===>", resp);
+ 
+       const sortedComments = resp.data.data.filter(
+         (item) => item.post_id == params
+       );
+       // console.log("sortedCommentsOfNews", sortedComments);
+       setmanageCmtNotification(manageCmtNotification + 1);
+       setSortedCommentsOfNews(sortedComments);
+       setIsSubmitingLoader(false);
+     } catch (error) {
+       setIsSubmitingLoader(false);
+       console.log(error);
+     }
+   } */
 
   async function fetchALLComments(params) {
     try {
       setIsSubmitingLoader(true);
       const resp = await newsPageService.getComments(params);
-      // console.log("Comments ===>", resp.data.data);
       setCmtCount(resp.data.data);
 
       setIsSubmitingLoader(false);
@@ -1196,23 +1190,6 @@ const Home = () => {
       console.log(error);
     }
   }
-
-  useEffect(() => {
-    if (sortedCommentsOfNews.length > 0) {
-      setChecker(true);
-      router.push(`/admin/comments/${News_title}?id=${News_ID}`);
-    } else {
-      if (manageCmtNotification != 0) {
-        showNotification("There are no comments on this News!");
-      }
-    }
-  }, [sortedCommentsOfNews]);
-
-  useEffect(() => {
-    if (CmtCount.length > 0) {
-      // console.log("All comments", CmtCount);
-    }
-  }, [CmtCount]);
 
   function getCommentCount(id) {
     const count = CmtCount?.filter((item) => item.post_id == id);
@@ -2237,14 +2214,6 @@ const Home = () => {
                 <i className="fa fa-hand-o-right" aria-hidden="true"></i>{" "}
                 Campaign News
               </h2>
-              {/* <CommentModal
-                fetchComments={fetchComments}
-                News_ID={News_ID}
-                checker={checker}
-                setChecker={setChecker}
-                News_title={News_title}
-                sortedCommentsOfNews={sortedCommentsOfNews}
-              /> */}
 
               <div className="container">
                 <label className="form-label-1" htmlFor="typeText">
@@ -2567,16 +2536,21 @@ const Home = () => {
                                       </>
                                     )}
                                     <td>
-                                      <span
-                                        className="manageCommentBTN"
-                                        onClick={(e) =>
-                                          fetchComments(item?.id, item?.title)
-                                        }
-                                      >
-                                        {getCommentCount(item?.id)}
-                                        <br />
-                                        Manage
-                                      </span>
+                                      <span>{getCommentCount(item?.id)}</span>
+                                      {getCommentCount(item?.id) ? (
+                                        <Link
+                                          href={`/admin/comments/${item?.title}/?id=${item?.id}`}
+                                          target="_blank"
+                                        >
+                                          <br />{" "}
+                                          <span className="manageCommentBTN">
+                                            {" "}
+                                            View All
+                                          </span>
+                                        </Link>
+                                      ) : (
+                                        ""
+                                      )}
                                     </td>
                                     <td>
                                       <button
