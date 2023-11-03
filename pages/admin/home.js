@@ -2539,7 +2539,7 @@ const Home = () => {
                                       <span>{getCommentCount(item?.id)}</span>
                                       {getCommentCount(item?.id) ? (
                                         <Link
-                                          href={`/admin/comments/${item?.title}/?id=${item?.id}`}
+                                          href={`/admin/comments/${item?.title}?id=${item?.id}`}
                                           target="_blank"
                                         >
                                           <br />{" "}
